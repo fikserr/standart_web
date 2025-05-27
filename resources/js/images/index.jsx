@@ -1,13 +1,13 @@
-import HeroImg from '../../../storage/app/private/assets/heroImg.png'
-import HeroImg2 from '../../../storage/app/private/assets/heroImg2.png'
-import iphone12 from '../../../storage/app/private/assets/group329rb.png'
-import iphone13 from '../../../storage/app/private/assets/Group329.png'
-import inbox from '../../../storage/app/private/assets/inbox.png'
-import user from '../../../storage/app/private/assets/user.png'
-import check from '../../../storage/app/private/assets/check.png'
-import Blog1 from '../../../storage/app/private/assets/blog_img1.png'
-import Blog2 from '../../../storage/app/private/assets/blog_img2.png'
-import Blog3 from '../../../storage/app/private/assets/blog_img3.png'
+import HeroImg from '@images/heroImg.png'
+import HeroImg2 from '@images/heroImg2.png'
+import iphone12 from '@images/group329rb.png'
+import iphone13 from '@images/Group329.png'
+import inbox from '@images/inbox.png'
+import user from '@images/user.png'
+import check from '@images/check.png'
+import Blog1 from '@images/blog_img1.png'
+import Blog2 from '@images/blog_img2.png'
+import Blog3 from '@images/blog_img3.png'
 
 export { 
     HeroImg,
