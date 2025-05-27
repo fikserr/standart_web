@@ -1,0 +1,20 @@
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', fn() => inertia('Home'));
+Route::get('/login', fn() => inertia('Login'));
+Route::get('/shoes', fn() => inertia('Shoes'));
+Route::get('/profile', fn() => inertia('Profile'));
+Route::get('/history-order', fn() => inertia('HistoryOrders'));
+Route::get('/profile-edit', fn() => inertia('EditProfile'));
+Route::get('/edit-password', fn() => inertia('EditPass'));
+Route::get('/edit-address', fn() => inertia('EditAddress'));
+Route::get('/clothes', fn() => inertia('Clothes'));
+Route::get('/address', fn() => inertia('Address'));
+Route::get('/accessory', fn() => inertia('Accessory'));
+
+// Register sahifasi
+Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [UserController::class, 'register']);
