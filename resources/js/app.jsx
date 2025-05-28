@@ -2,12 +2,14 @@ import './bootstrap';
 import '../css/app.css';
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
-import Layout from './Layout/UserLayout';
+import AdminLayout from './Layout/AdminLayout';
+import UserLayout from './Layout/UserLayout';
+
+const admin = true;
 
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./**/*.jsx', { eager: true });
-
     const match = Object.keys(pages).find(key => key.endsWith(`/${name}.jsx`));
 
     if (!match) {
@@ -16,7 +18,9 @@ createInertiaApp({
     }
 
     const page = pages[match];
-    page.default.layout = page.default.layout || ((page) => <Layout children={page} />);
+    page.default.layout = page.default.layout || ((page) => (
+      admin ? <AdminLayout children={page}/> : <UserLayout children={page}/>
+    ));
     return page;
   },
   setup({ el, App, props }) {
