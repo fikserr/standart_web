@@ -1,11 +1,14 @@
-import React from 'react'
-
-const AdminLayout = ({ children }) => {
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar"
+import { AppSidebar } from "../components/shared/app-sidebar"
+ 
+export default function Layout({ children }) {
   return (
-    <div >
-      {children}
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   )
 }
-
-export default AdminLayout
