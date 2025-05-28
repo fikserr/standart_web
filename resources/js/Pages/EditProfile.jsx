@@ -54,18 +54,13 @@ const EditProfile = () => {
                         <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '24px' }}>Profilni tahrirlash</h2>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='lg:hidden'>Open</DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent className="bg-white space-y-1 pb-3 flex flex-col">
                                 <DropdownMenuLabel>Profilni tahrirlash</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => navigate('/profile')}>Profil</DropdownMenuItem>
-                                
-                                <DropdownMenuItem onClick={() => navigate('/address')}>Joylashuv</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/edit-password')}>Parol</DropdownMenuItem>
-                                <DropdownMenuItem >Chiqish</DropdownMenuItem>
                                 <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>
                                 <Link href={"/history-order"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
-                                <Link href={"/history-orders"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
                                 <Link href={"/address"}><DropdownMenuItem>Joylashuv</DropdownMenuItem></Link>
+                                <Link href={"/edit-password"}><DropdownMenuItem>Parol</DropdownMenuItem></Link>
                                 <Link href={"/"}><DropdownMenuItem>Chiqish</DropdownMenuItem></Link>
                             </DropdownMenuContent>
                         </DropdownMenu>
