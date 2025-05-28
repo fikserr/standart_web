@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from '@inertiajs/react';
 import { HiOutlineMenuAlt4, HiOutlineSearch, HiOutlineShoppingBag } from "react-icons/hi";
 import { ImStarEmpty } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
@@ -45,7 +46,7 @@ const UserNavbar = () => {
                 </div>
 
                 <div className='flex items-center gap-10'>
-                    <button onClick={() => navigate('/')}><img src={Logo} alt="CompanyLogo" /></button>
+                    <Link href={"/"}><img src={Logo} alt="CompanyLogo" /></Link>
                     <HiOutlineMenuAlt4
                         style={{ color: 'white', fontSize: '32px', cursor: 'pointer' }}
                         className='hidden md:block xl:hidden'
@@ -75,12 +76,12 @@ const UserNavbar = () => {
                 <div className='flex items-center gap-5 md:gap-6'>
                     <HiOutlineSearch style={{ color: "white", fontSize: "25px" }} className='hidden md:block' />
                     <ImStarEmpty style={{ color: "white", fontSize: "25px" }} />
-                    <BiUser style={{ color: "white", fontSize: "25px" }} onClick={() => navigate('/profile')} />
+                    <Link href={"/profile"}><BiUser style={{ color: "white", fontSize: "25px" }} /></Link>
                     <div className='text-white flex items-end'>
                         <HiOutlineShoppingBag style={{ color: "white", fontSize: "25px" }} />
                         <span className='text-slate-400 text-sm hidden md:block'>11 899 ₽</span>
                     </div>
-                    <button onClick={() => navigate('/login')} className='text-white'>Login</button>
+                    <Link href={"/login"} className='text-white'>Login</Link>
                 </div>
             </div>
         </div>
