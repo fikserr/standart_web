@@ -58,7 +58,7 @@ const EditPass = () => {
                         <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '28px' }}>Parolni tahrirlash</h2>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='lg:hidden'>Open</DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent className="bg-white space-y-1 pb-3 flex flex-col">
                                 <DropdownMenuLabel>Parol</DropdownMenuLabel>
                                 <DropdownMenuSeparator/>
                                 <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>

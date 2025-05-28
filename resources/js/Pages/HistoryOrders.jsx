@@ -19,7 +19,7 @@ const HistoryOrders = () => {
     return (
         <div className='my-24 px-5 xl:px-32'>
             <div className='flex items-center gap-2'>
-                <HiOutlineChevronLeft className='text-2xl'/>
+                <HiOutlineChevronLeft className='text-2xl' />
                 <Link href={"/profile"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1></Link>
             </div>
             <div className='grid lg:grid-cols-4 gap-5'>
@@ -54,14 +54,14 @@ const HistoryOrders = () => {
                         <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: "32px" }}>Buyurtmalar</h2>
                         <DropdownMenu>
                             <DropdownMenuTrigger className='lg:hidden'>Open</DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent className="bg-white space-y-1 pb-3 flex flex-col">
                                 <DropdownMenuLabel>Buyurtmalar</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => navigate('/profile')}>Profil</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/edit-profile')}>Profilni tahrirlash</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => navigate('/address')}>Joylashuv</DropdownMenuItem>
-                                <DropdownMenuItem>Parol</DropdownMenuItem>
-                                <DropdownMenuItem>Chiqish</DropdownMenuItem>
+                                <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>
+                                <Link href={"/edit-profile"}><DropdownMenuItem>Profilni tahrirlash</DropdownMenuItem></Link>
+                                <Link href={"/address"}><DropdownMenuItem>Joylashuv</DropdownMenuItem></Link>
+                                <Link href={"/edit-password"}><DropdownMenuItem>Parol</DropdownMenuItem></Link>
+                                <Link href={"/"}><DropdownMenuItem>Chiqish</DropdownMenuItem></Link>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

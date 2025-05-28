@@ -6,7 +6,7 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false)
     return (
         <div className='px-5 xl:px-32 my-32 flex justify-center'>
-            <div className='border rounded-lg p-5 w-3/6'>
+            <div className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>
                 <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '24px' }}>Login</h2>
                 <div className='grid grid-cols-1 p-5 gap-5'>
                     <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
