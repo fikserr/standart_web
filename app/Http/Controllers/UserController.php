@@ -15,6 +15,7 @@ class UserController extends Controller
     // 1. Kod yuborish
     public function requestRegister(Request $request)
     {
+        \Log::info('Request keldi: ', $request->all()); //
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|unique:pending_users,email',

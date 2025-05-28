@@ -15,7 +15,7 @@ export default defineConfig({
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
             '@images': path.resolve(__dirname, 'storage/app/private/assets/'),
-            '@shered': path.resolve(__dirname, 'resources/js/components/shared'),
+            '@shared': path.resolve(__dirname, 'resources/js/components/shared'),
         }
     }
 });

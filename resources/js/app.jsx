@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 
-const admin = true;
+const admin = false;
 
 createInertiaApp({
   resolve: name => {

@@ -17,12 +17,12 @@ export default function VerifyCodeModal({ isOpen, onClose, onSubmit, email }) {
         <p className="mb-2 text-sm text-gray-600">Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong></p>
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
+            type="number"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             className="border px-3 py-2 w-full rounded mb-4"
             maxLength={6}
-            placeholder="123456"
+            placeholder="000000"
             required
           />
           <div className="flex justify-between">
