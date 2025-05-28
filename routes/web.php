@@ -15,6 +15,14 @@ Route::get('/clothes', fn() => inertia('Clothes'));
 Route::get('/address', fn() => inertia('Address'));
 Route::get('/accessory', fn() => inertia('Accessory'));
 
+// Admin panel
+Route::get('/admin-dashboard', fn() => inertia('admin-dashboard'));
+Route::get('/admin-favorites', fn() => inertia('admin-favorites'));
+Route::get('/admin-order-lists', fn() => inertia('admin-orderLists'));
+Route::get('/admin-products', fn() => inertia('admin-products'));
+Route::get('/admin-users', fn() => inertia('admin-users'));
+Route::get('/admin-add-product', fn() => inertia('admin-addProducts'));
+
 // Register sahifasi
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [UserController::class, 'register']);
