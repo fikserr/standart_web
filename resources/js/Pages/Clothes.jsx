@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import { ImStarEmpty } from "react-icons/im";
 
 const Clothes = () => {
@@ -34,7 +34,6 @@ const Clothes = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const categories = ['Кроссовки', 'Кеды', 'Лофферы', 'Сандали', 'Шлепки'];
-    const navigate = useNavigate()
     return (
         <div className='px-5 xl:px-20 mt-20'>
             <h2 style={{ fontFamily: "Oswald" }} className='text-2xl'>Kiyimlar</h2>
@@ -216,7 +215,7 @@ const Clothes = () => {
                 <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-3 gap-3 my-5 col-span-3'>
                     {
                         card.map((item, index) => (
-                            <button onClick={()=> navigate('/clothes/detail')} className='border-2 h-[250px] xl:h-[250px]'>
+                            <Link href={"/shoes/detail"} className='border-2 h-[250px] xl:h-[250px]'>
                                 <div key={index} className='bg-green-500 flex justify-end h-[75%] relative'>
                                     <button className='absolute top-4 right-4'>{item.star}</button>
                                 </div>
@@ -224,7 +223,7 @@ const Clothes = () => {
                                     <p>{item.title}</p>
                                     <p>{item.price}</p>
                                 </div>
-                            </button>
+                            </Link>
                         ))
                     }
                 </div>

@@ -1,11 +1,10 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
 import { ImStarEmpty } from "react-icons/im";
 import { HeroImg, HeroImg2, iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 
 const Home = () => {
-
   return (
     <div>
       <div className='p-5 relative w-full mt-20 2xl:px-20'>
@@ -46,8 +45,8 @@ const Home = () => {
             style={{ fontFamily: 'Oswald' }}
             className='border-b-2 border-black text-xl flex items-center p-1'
           >
-            <button onClick={() => navigate('/shoes')} className='md:hidden'>Ko'proq</button>
-            <button onClick={() => navigate('/shoes')} className='hidden md:block'>Ko'proq maxsulot</button>
+            <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>
@@ -103,8 +102,8 @@ const Home = () => {
             style={{ fontFamily: 'Oswald' }}
             className='border-b-2 border-black text-xl flex items-center p-1'
           >
-            <button onClick={() => navigate('/shoes')} className='md:hidden'>Ko'proq</button>
-            <button onClick={() => navigate('/shoes')} className='hidden md:block'>Ko'proq maxsulot</button>
+            <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>
@@ -159,8 +158,8 @@ const Home = () => {
             style={{ fontFamily: 'Oswald' }}
             className='border-b-2 border-black text-xl flex items-center p-1'
           >
-            <button onClick={() => navigate('/shoes')} className='md:hidden'>Ko'proq</button>
-            <button onClick={() => navigate('/shoes')} className='hidden md:block'>Ko'proq maxsulot</button>
+            <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>

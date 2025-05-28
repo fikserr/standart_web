@@ -1,11 +1,10 @@
 import React from 'react'
 import { BiUser } from "react-icons/bi";
+import { HiOutlineChevronLeft } from "react-icons/hi";
+import { Link } from '@inertiajs/react';
 import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
-import { VscChecklist, VscLocation } from "react-icons/vsc";
-import { GrMapLocation } from "react-icons/gr";
-import { ImStarEmpty } from "react-icons/im";
-import { useNavigate } from 'react-router-dom';
+import { VscLocation } from "react-icons/vsc";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -17,36 +16,38 @@ import {
 
 
 const EditProfile = () => {
-    const navigate = useNavigate()
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <h1 className='font-bold text-5xl' onClick={()=> navigate('/profile')} style={{ fontFamily: "Oswald" }}>Profile</h1>
+            <div className='flex items-center gap-2'>
+                <HiOutlineChevronLeft className='text-2xl' />
+                <Link href={"/profile"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1></Link>
+            </div>
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
                 <div className='border rounded-md max-w-xs p-5 my-5 space-y-3 text-xl hidden lg:block'>
-                    <button onClick={() => navigate('/profile')} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "bold" }}>
+                    <Link href={"/profile"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "bold" }}>
                         <BiUser />
                         <span>Profil</span>
-                    </button>
-                    <button className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full font-extrabold' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    </Link>
+                    <Link href={"/profile-edit"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full font-bold' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <RiUserSettingsLine />
                         <span>Profilni tahrirlash</span>
-                    </button>
-                    <button onClick={()=> navigate('/history-orders')} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    </Link>
+                    <Link href={"/history-order"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <RxHamburgerMenu />
                         <span>Tarix</span>
-                    </button>
-                    <button onClick={()=> navigate('/address')} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    </Link>
+                    <Link href={"/address"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <VscLocation />
                         <span>Joylashuv</span>
-                    </button>
-                    <button className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    </Link>
+                    <Link href={"/edit-password"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <RxLockOpen2 />
                         <span>Parol</span>
-                    </button>
-                    <button className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    </Link>
+                    <Link href={"/"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <RiLogoutBoxRLine />
                         <span>Chiqish</span>
-                    </button>
+                    </Link>
                 </div>
                 <div className='col-span-3 my-5'>
                     <div className='grid grid-cols-4 items-center'>
@@ -57,10 +58,15 @@ const EditProfile = () => {
                                 <DropdownMenuLabel>Profilni tahrirlash</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => navigate('/profile')}>Profil</DropdownMenuItem>
-                                <DropdownMenuItem onClick={()=> navigate('/history-orders')}>Buyurtmalar</DropdownMenuItem>
-                                <DropdownMenuItem onClick={()=> navigate('/address')}>Joylashuv</DropdownMenuItem>
-                                <DropdownMenuItem onClick={()=> navigate('/edit-password')}>Parol</DropdownMenuItem>
+                                
+                                <DropdownMenuItem onClick={() => navigate('/address')}>Joylashuv</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => navigate('/edit-password')}>Parol</DropdownMenuItem>
                                 <DropdownMenuItem >Chiqish</DropdownMenuItem>
+                                <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>
+                                <Link href={"/history-order"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
+                                <Link href={"/history-orders"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
+                                <Link href={"/address"}><DropdownMenuItem>Joylashuv</DropdownMenuItem></Link>
+                                <Link href={"/"}><DropdownMenuItem>Chiqish</DropdownMenuItem></Link>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
