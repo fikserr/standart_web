@@ -16,6 +16,7 @@ export default defineConfig({
             '@': path.resolve(__dirname, 'resources/js'),
             '@images': path.resolve(__dirname, 'storage/app/private/assets/'),
             '@shared': path.resolve(__dirname, 'resources/js/components/shared'),
+            '@ui': path.resolve(__dirname, 'resources/js/components/ui'),
         }
     }
 });

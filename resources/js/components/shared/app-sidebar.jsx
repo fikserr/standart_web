@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "..//ui/sidebar"
+} from "@ui/sidebar"
 
 // Menu items.
 const items = [
@@ -20,7 +20,7 @@ const items = [
   },
   {
     title: "Inbox",
-    url: "#",
+    url: "/admin-favorites",
     icon: Inbox,
   },
   {
@@ -46,7 +46,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent >
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

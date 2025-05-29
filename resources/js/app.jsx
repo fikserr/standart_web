@@ -18,9 +18,13 @@ createInertiaApp({
     }
 
     const page = pages[match];
-    page.default.layout = page.default.layout || ((page) => (
-      admin ? <AdminLayout children={page}/> : <UserLayout children={page}/>
+
+    page.default.layout = page.default.layout || ((pageComponent) => (
+      name.startsWith('admin-')
+        ? <AdminLayout>{pageComponent}</AdminLayout>
+        : <UserLayout>{pageComponent}</UserLayout>
     ));
+
     return page;
   },
   setup({ el, App, props }) {

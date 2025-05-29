@@ -1,9 +1,10 @@
 import React from 'react'
+import { AppSidebar } from '@shared/app-sidebar'
 
 const adminDashboard = () => {
   return (
     <div>
-      <h1></h1>
+      {/* <AppSidebar/> */}
     </div>
   )
 }
