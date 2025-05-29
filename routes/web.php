@@ -23,6 +23,13 @@ Route::get('/admin-products', fn() => inertia('admin-products'));
 Route::get('/admin-users', fn() => inertia('admin-users'));
 Route::get('/admin-add-product', fn() => inertia('admin-addProducts'));
 
-// Register sahifasi
+// Register sahifani ko‘rsatish (frontend form)
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
-Route::post('/register', [UserController::class, 'register']);
+
+// 1-qadam: Emailga kod yuborish
+Route::post('/request-register', [UserController::class, 'requestRegister']);
+
+// 2-qadam: Kodni tekshirib, ro‘yxatdan o‘tkazish
+Route::post('/verify-register', [UserController::class, 'verifyAndRegister']);
+
+

@@ -5,6 +5,8 @@ import { createRoot } from 'react-dom/client';
 import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 
+const admin = false;
+
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./**/*.jsx', { eager: true });

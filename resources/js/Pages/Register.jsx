@@ -1,17 +1,21 @@
+// src/Pages/Register.jsx
 import { useForm } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 import { Inertia } from '@inertiajs/inertia';
+import VerifyCodeModal from '@shared/VerifyCodeModal';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    code: '' // bu modal orqali kiritiladi
   });
 
   const handleChange = (e) => {
@@ -20,11 +24,22 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    post('/register', {
-      onSuccess: () => Inertia.visit('/login'),
+    post('/request-register', {
+      onSuccess: () => setShowModal(true)
     });
   };
-  console.log(processing);
+
+  const handleVerifyCode = (code) => {
+    setData('code', code);
+
+    post('/verify-register', {
+      onSuccess: () => {
+        setShowModal(false);
+        Inertia.visit('/login');
+      }
+    });
+  };
+
   return (
     <div className='px-5 xl:px-32 my-32 flex justify-center'>
       <form onSubmit={handleSubmit} className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>
@@ -111,6 +126,14 @@ const Register = () => {
           </a>
         </div>
       </form>
+
+      {/* Modal */}
+      <VerifyCodeModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleVerifyCode}
+        email={data.email}
+      />
     </div>
   );
 };

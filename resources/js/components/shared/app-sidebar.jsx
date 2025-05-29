@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@shared/ui/sidebar"
+} from "@ui/sidebar"
 
 // Menu items.
 const items = [
@@ -46,7 +46,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent className="bg-sidebar text-sidebar-foreground border border-sidebar-border ring-sidebar-ring">
+          <SidebarGroupContent >
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
