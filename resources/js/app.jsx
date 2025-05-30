@@ -5,12 +5,12 @@ import { createRoot } from 'react-dom/client';
 import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 
-const admin = false;
+const admin = true;
 
 createInertiaApp({
   resolve: name => {
-    const pages = import.meta.glob('./**/*.jsx', { eager: true });
-    const match = Object.keys(pages).find(key => key.endsWith(`/${name}.jsx`));
+    const pages = import.meta.glob(['./**/*.jsx', './**/*.tsx'], { eager: true });
+    const match = Object.keys(pages).find(key => key.endsWith(`/${name}.jsx`) || key.endsWith(`/${name}.tsx`));
 
     if (!match) {
       console.error(`[Inertia] Sahifa topilmadi: ${name}`);

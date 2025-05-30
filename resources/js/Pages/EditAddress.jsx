@@ -6,14 +6,8 @@ import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
 import { VscLocation } from "react-icons/vsc";
 import { GrMapLocation } from "react-icons/gr";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
 
 
 const EditAddress = () => {
@@ -57,7 +51,7 @@ const EditAddress = () => {
                             <DropdownMenuTrigger className='lg:hidden'>Open</DropdownMenuTrigger>
                             <DropdownMenuContent className="bg-white space-y-1 pb-3 flex flex-col">
                                 <DropdownMenuLabel>Buyurtmalar</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
+                                <DropdownMenuSeparator/>
                                 <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>
                                 <Link href={"/history-order"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
                                 <Link href={"/address"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>

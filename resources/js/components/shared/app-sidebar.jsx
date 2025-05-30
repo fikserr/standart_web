@@ -1,15 +1,6 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@ui/sidebar"
 
 // Menu items.
 const items = [
@@ -20,7 +11,7 @@ const items = [
   },
   {
     title: "Inbox",
-    url: "/admin-favorites",
+    url: "#",
     icon: Inbox,
   },
   {
@@ -45,8 +36,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent >
+          <SidebarGroupLabel>App</SidebarGroupLabel>
+          <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>

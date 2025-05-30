@@ -6,14 +6,8 @@ import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
 import { VscLocation } from "react-icons/vsc";
 import { PiEyeClosed, PiEye } from "react-icons/pi";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
 
 
 const EditPass = () => {
