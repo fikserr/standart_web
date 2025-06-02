@@ -105,3 +105,46 @@ export const orders = [
     { id: "00008", name: "Rosie Todd", address: "New Jon", date: "30 Apr 2019", type: "Medicine", status: "On Hold" },
     { id: "00009", name: "Dollie Hines", address: "124 Lyla Forge Suite 975", date: "09 Jan 2019", type: "Book", status: "In Transit" },
 ];
+
+export const productStock = [
+    {
+        image: Watch,
+        name: "Apple Watch Series 4",
+        category: "Digital Product",
+        price: "$690.00",
+        piece: 63,
+        colors: ["#000000", "#F87171", "#D1D5DB"]
+    },
+    {
+        image: Watch,
+        name: "Microsoft Headsquare",
+        category: "Digital Product",
+        price: "$190.00",
+        piece: 13,
+        colors: ["#000000", "#3B82F6", "#FBBF24"]
+    },
+    {
+        image: Watch,
+        name: "Women's Dress",
+        category: "Fashion",
+        price: "$640.00",
+        piece: 635,
+        colors: ["#7C3AED", "#60A5FA", "#4338CA"]
+    },
+    {
+        image: Watch,
+        name: "Samsung A50",
+        category: "Mobile",
+        price: "$400.00",
+        piece: 67,
+        colors: ["#1E3A8A", "#6B21A8", "#B91C1C"]
+    },
+    {
+        image: Watch,
+        name: "Camera",
+        category: "Electronic",
+        price: "$420.00",
+        piece: 52,
+        colors: ["#1E3A8A", "#000000", "#B91C1C"]
+    }
+];
