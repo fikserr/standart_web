@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "Product Stock",
-    url: "/admin-product-stock",
+    url: "/admin-productStock",
     icon: BsBookshelf,
   },
   {
@@ -37,7 +37,7 @@ const items = [
   },
   {
     title: "LogOut",
-    url: "/admin-logout",
+    url: "/",
     icon: MdLogout,
   }
 ]
