@@ -11,7 +11,7 @@ const items = [
     icon: MdDashboard,
   },
   {
-    title: "Products",
+    title: "Productlar",
     url: "/admin-products",
     icon: MdAllInbox ,
   },
