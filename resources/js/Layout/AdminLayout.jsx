@@ -1,11 +1,13 @@
-import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar"
-import { AppSidebar } from "../components/shared/app-sidebar"
- 
+import { AppSidebar } from "@/components/shared/app-sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+
+
+
 export default function Layout({ children }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main>
+      <main >
         <SidebarTrigger />
         {children}
       </main>

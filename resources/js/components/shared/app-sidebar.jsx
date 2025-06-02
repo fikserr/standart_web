@@ -1,43 +1,45 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
+import { MdDashboard, MdAllInbox, MdLogout  } from "react-icons/md";
+import { ImHeart, ImUsers } from "react-icons/im";
+import { VscChecklist } from "react-icons/vsc";
+import { BsBookshelf } from "react-icons/bs";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "..//ui/sidebar"
-
-// Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
-    icon: Home,
+    title: "Dashboard",
+    url: "/admin-dashboard",
+    icon: MdDashboard,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Products",
+    url: "/admin-products",
+    icon: MdAllInbox ,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Favorites",
+    url: "/admin-favorites",
+    icon: ImHeart,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Order Lists",
+    url: "/admin-order-lists",
+    icon: VscChecklist,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Product Stock",
+    url: "/admin-product-stock",
+    icon: BsBookshelf,
   },
+  {
+    title: "Users",
+    url: "/admin-users",
+    icon: ImUsers,
+  },
+  {
+    title: "LogOut",
+    url: "/admin-logout",
+    icon: MdLogout,
+  }
 ]
 
 export function AppSidebar() {
@@ -45,14 +47,14 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel style={{padding: "30px", fontSize: "30px", color: "black"}}><span style={{color: "blue"}}>Admin</span> Panel</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title}  style={{padding: "5px"}}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
-                      <item.icon />
+                      <item.icon/>
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
