@@ -1,9 +1,11 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import React, { useState } from 'react'
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 
-const Login = () => {
+const Login = ({users}) => {
+
     const [showPassword, setShowPassword] = useState(false)
+    console.log(users);
     return (
         <div className='px-5 xl:px-32 my-32 flex justify-center'>
             <div className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>

@@ -2,69 +2,75 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\VerifyCodeMail;
-use App\Models\PendingUser;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    // 1. Kod yuborish
-    public function requestRegister(Request $request)
+    // Barcha foydalanuvchilar ro'yxati
+    public function index()
     {
-        \Log::info('Request keldi: ', $request->all()); //
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email|unique:pending_users,email',
+        $users = User::all();
+        return inertia('Login', [
+            'users' => $users
         ]);
-
-        $code = rand(100000, 999999);
-
-        PendingUser::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'verification_code' => $code,
-        ]);
-
-        Mail::to($data['email'])->send(new VerifyCodeMail($code));
-
-        return response()->json(['message' => 'Tasdiqlash kodi yuborildi']);
     }
 
-    // 2. Kodni tekshirish va ro'yxatdan o'tkazish
-    public function verifyAndRegister(Request $request)
+    // Yangi foydalanuvchi yaratish
+    public function register(Request $request)
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+        'is_admin' => 'boolean',
+    ]);
+
+    $data['password'] = bcrypt($data['password']);
+
+    $user = User::create($data);
+
+    // Agar avtomatik login qilmoqchi bo'lsang, auth()->login($user);
+
+    // Inertia uchun JSON javob
+    return Inertia::location('/login');
+}
+
+
+    // Foydalanuvchini ko‘rsatish
+    public function show(User $user)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'code' => 'required',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $pending = PendingUser::where('email', $data['email'])
-            ->where('verification_code', $data['code'])
-            ->first();
-
-        if (!$pending) {
-            return response()->json(['message' => 'Kod noto‘g‘ri'], 422);
-        }
-
-        $user = User::create([
-            'name' => $pending->name,
-            'email' => $pending->email,
-            'password' => Hash::make($data['password']),
-        ]);
-
-        $pending->delete();
-
-        return Inertia::location('/login');
+        return response()->json($user);
     }
     public function showRegisterForm()
     {
-        return Inertia::render('Register'); // yoki boshqa view nomi
+        return Inertia::render('Register');
     }
 
-    // Qolgan metodlaring o'zgarishsiz qoladi
+    // Foydalanuvchini yangilash
+    public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:6',
+            'is_admin' => 'sometimes|boolean',
+        ]);
+
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $user->update($data);
+
+        return response()->json($user);
+    }
+
+    // Foydalanuvchini o‘chirish
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return response()->json(['message' => 'User deleted']);
+    }
 }

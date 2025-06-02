@@ -4,7 +4,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => inertia('Home'));
-Route::get('/login', fn() => inertia('Login'));
+
 Route::get('/shoes', fn() => inertia('Shoes'));
 Route::get('/profile', fn() => inertia('Profile'));
 Route::get('/history-order', fn() => inertia('HistoryOrders'));
@@ -25,9 +25,10 @@ Route::get('/admin-add-product', fn() => inertia('admin-addProducts'));
 
 // Register sahifani ko‘rsatish (frontend form)
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
+Route::get('/login', [UserController::class, 'index'])->name('login');
 
 // 1-qadam: Emailga kod yuborish
-Route::post('/request-register', [UserController::class, 'requestRegister']);
+Route::post('/request-register', [UserController::class, 'register']);
 
 // 2-qadam: Kodni tekshirib, ro‘yxatdan o‘tkazish
 Route::post('/verify-register', [UserController::class, 'verifyAndRegister']);
