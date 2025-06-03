@@ -1,11 +1,140 @@
-import React from 'react'
+import React, { useState } from "react";
+import { products } from "@/components/shared/lists";
+import { Link } from "@inertiajs/react";
 
-const adminProducts = () => {
+const stars = (rating) => {
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
   return (
-    <div>
-      <h1>Admin Products</h1>
-    </div>
-  )
-}
+    <>
+      {"★".repeat(fullStars)}
+      {halfStar && "☆"}
+      {"☆".repeat(emptyStars)}
+    </>
+  );
+};
 
-export default adminProducts
+export default function ProductsUI() {
+  const [bannerIndex, setBannerIndex] = useState(0);
+
+  const banners = [
+    {
+      id: 1,
+      date: "September 12-22",
+      title: "Enjoy free home delivery in this summer",
+      subtitle: "Designer Dresses - Pick from trendy Designer Dress.",
+    },
+    {
+      id: 2,
+      date: "October 1-10",
+      title: "Big Sale on Electronics",
+      subtitle: "Save up to 50% on selected gadgets.",
+    },
+  ];
+
+  const nextBanner = () => {
+    setBannerIndex((prev) => (prev + 1) % banners.length);
+  };
+
+  const prevBanner = () => {
+    setBannerIndex((prev) => (prev - 1 + banners.length) % banners.length);
+  };
+
+  return (
+    <div className="p-6 min-h-screen font-sans xl:w-[1200px] mx-5">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-3xl font-bold">Products</h2>
+        <Link href={'/admin-add-product'} className="bg-blue-600 text-white text-md px-3 py-1 rounded hover:bg-blue-700">
+          Add Products
+        </Link>
+      </div>
+
+      {/* Banner */}
+      <div className="relative bg-blue-600 text-white rounded-xl p-8 mb-8 flex items-center overflow-hidden">
+        <button
+          onClick={prevBanner}
+          className="absolute left-2 bg-white bg-opacity-30 text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-50"
+          aria-label="Previous banner"
+        >
+          ‹
+        </button>
+        <div className="max-w-xl">
+          <p className="text-sm opacity-70">{banners[bannerIndex].date}</p>
+          <h3 className="text-3xl font-bold leading-snug mb-2">
+            {banners[bannerIndex].title}
+          </h3>
+          <p className="opacity-80 mb-4">{banners[bannerIndex].subtitle}</p>
+          <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-semibold">
+            Get Started
+          </button>
+        </div>
+        <button
+          onClick={nextBanner}
+          className="absolute right-2 bg-white bg-opacity-30 text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-50"
+          aria-label="Next banner"
+        >
+          ›
+        </button>
+      </div>
+
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {products.map((p) => (
+          <div
+            key={p.id}
+            className="bg-white rounded-lg shadow p-4 flex flex-col items-center"
+          >
+            <div className="relative w-40 h-40 mb-4">
+              <img
+                src={p.image}
+                alt={p.title}
+                className="object-contain w-full h-full"
+              />
+              <button className="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full w-6 h-6 flex items-center justify-center text-gray-700">
+                ‹
+              </button>
+              <button className="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full w-6 h-6 flex items-center justify-center text-gray-700">
+                ›
+              </button>
+            </div>
+            <div className="w-full flex justify-between items-center mb-1">
+              <div>
+                <h4 className="text-sm font-medium">{p.title}</h4>
+                <p className="text-blue-600 font-semibold">${p.price.toFixed(2)}</p>
+                <div className="text-orange-400 text-xs flex items-center">
+                  <span>{stars(p.rating)}</span>
+                  <span className="ml-1 text-gray-500 text-[10px]">
+                    ({p.reviews})
+                  </span>
+                </div>
+              </div>
+              <button
+                aria-label="Add to favorites"
+                className="p-1 rounded-full hover:bg-gray-200"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  viewBox="0 0 24 24"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs rounded px-3 py-1">
+              Edit Product
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

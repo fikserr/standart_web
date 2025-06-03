@@ -22,6 +22,7 @@ Route::get('/admin-order-lists', fn() => inertia('admin-orderLists'));
 Route::get('/admin-products', fn() => inertia('admin-products'));
 Route::get('/admin-users', fn() => inertia('admin-users'));
 Route::get('/admin-add-product', fn() => inertia('admin-addProducts'));
+Route::get('/admin-productStock', fn() => inertia('admin-productStock'));
 
 // Register sahifani ko‘rsatish (frontend form)
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
