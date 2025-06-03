@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { products } from "@/components/shared/lists";
+import { Link } from "@inertiajs/react";
 
 const stars = (rating) => {
   const fullStars = Math.floor(rating);
@@ -44,9 +45,9 @@ export default function ProductsUI() {
     <div className="p-6 min-h-screen font-sans xl:w-[1200px] mx-5">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold">Products</h2>
-        <button className="bg-blue-600 text-white text-md px-3 py-1 rounded hover:bg-blue-700">
+        <Link href={'/admin-add-product'} className="bg-blue-600 text-white text-md px-3 py-1 rounded hover:bg-blue-700">
           Add Products
-        </button>
+        </Link>
       </div>
 
       {/* Banner */}

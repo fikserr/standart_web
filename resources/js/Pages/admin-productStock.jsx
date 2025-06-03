@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
@@ -7,6 +7,7 @@ import { productStock } from "@/components/shared/lists";
 
 
 const ProductStock = () => {
+    const [selectedImage, setSelectedImage] = useState(null);
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
@@ -31,7 +32,12 @@ const ProductStock = () => {
                             {productStock.map((product, idx) => (
                                 <tr key={idx} className="border-b hover:bg-gray-50">
                                     <td className="py-2">
-                                        <img src={product.image} alt={product.name} className="w-12 h-12 rounded" />
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                            className="w-32 h-20 rounded cursor-pointer"
+                                            onClick={() => setSelectedImage(product.image)}
+                                        />
                                     </td>
                                     <td>{product.name}</td>
                                     <td>{product.category}</td>
@@ -62,6 +68,16 @@ const ProductStock = () => {
                             ))}
                         </tbody>
                     </table>
+                    {selectedImage && (
+                        <div
+                            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-1000 ease-in opacity-100"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <div className="bg-white p-4 rounded shadow-lg max-w-lg max-h-[90vh] overflow-auto transform transition-transform duration-1000 scale-100">
+                                <img src={selectedImage} alt="Modal" className="w-full h-auto rounded" />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="text-sm text-gray-500 mt-4">Showing 1–09 of 78</div>
