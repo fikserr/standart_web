@@ -5,7 +5,8 @@ import Group from '@images/groupIcon.svg';
 import Order from '@images/orderIcon.svg';
 import Sales from '@images/salesIcon.svg';
 import Pending from '@images/pendingIcon.svg';
-import CountUp from '@/components/shared/CountUp';
+import CountUp from '@/components/shared/countUp';
+
 const cards = [
   {
     title: "Total Users",
