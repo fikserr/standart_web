@@ -16,7 +16,13 @@ class UserController extends Controller
             'users' => $users
         ]);
     }
-
+    public function adminUsers()
+    {
+        $users = User::all();
+        return inertia('admin-users', [
+            'users' => $users
+        ]);
+    }
     // Yangi foydalanuvchi yaratish
     public function register(Request $request)
 {

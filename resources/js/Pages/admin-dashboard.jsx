@@ -59,7 +59,7 @@ const AdminDashboard = () => {
   return (
     <div className="px-5">
       <AppSidebar />
-      <h1 className="text-3xl font-bold mb-4 p-5">Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4 p-5">Dashboardd</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5">
         {cards.map((card, index) => (

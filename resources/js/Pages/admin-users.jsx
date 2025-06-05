@@ -1,6 +1,7 @@
 import React from 'react';
 
-const AddProductForm = () => {
+const AddProductForm = ({users}) => {
+  console.log(users);
   return (
     <div className="p-6 mx-5 w-[1200px]">
       <h1 className="text-3xl font-bold mb-10">Add New Product</h1>
