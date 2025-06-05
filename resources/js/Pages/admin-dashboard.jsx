@@ -6,7 +6,6 @@ import Order from '@images/orderIcon.svg';
 import Sales from '@images/salesIcon.svg';
 import Pending from '@images/pendingIcon.svg';
 import CountUp from '@/components/shared/CountUp';
-
 const cards = [
   {
     title: "Total Users",
@@ -55,10 +54,11 @@ const cards = [
 ];
 
 const AdminDashboard = () => {
+  const [value, cycleValue] = useCycle(cards.value);
   return (
     <div className="px-5">
       <AppSidebar />
-      <h1 className="text-3xl font-bold mb-4 p-5">Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4 p-5">Dashboardd</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 px-5">
         {cards.map((card, index) => (
@@ -70,6 +70,7 @@ const AdminDashboard = () => {
               <div className="flex justify-between">
                 <div className="space-y-3">
                   <h2 className="text-lg font-semibold">{card.title}</h2>
+
                   <CountUp
                     from={0}
                     to={card.value}
@@ -78,6 +79,7 @@ const AdminDashboard = () => {
                     duration={1}
                     className="count-up-text text-3xl font-bold"
                   />
+
                 </div>
                 <div
                   className={`flex justify-center items-center p-5 rounded-[40%] ${card.iconStyle}`}
