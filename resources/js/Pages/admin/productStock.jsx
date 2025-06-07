@@ -3,11 +3,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
 import { productStock } from "@/components/shared/lists";
+import { Link } from "@inertiajs/react";
 
 
 
-const ProductStock = () => {
+const ProductStock = ({ products }) => {
     const [selectedImage, setSelectedImage] = useState(null);
+    console.log(products);
+    const handlePhotoDelete = async (productId, photoKeys) => {
+        // photoKeys — massiv bo'lishi kerak, masalan: ['photo1', 'photo2']
+
+        if (!confirm("Rostdan ham bu rasmlarni o‘chirmoqchimisiz?")) return;
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            const response = await fetch(`/admin-delete-photo/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRF-TOKEN": csrfToken,
+                },
+                body: JSON.stringify({ photoKeys }),
+            });
+
+            if (response.ok) {
+                alert("Rasmlar muvaffaqiyatli o‘chirildi");
+                window.location.reload(); // yoki Reactda state update qilish mumkin
+            } else {
+                const data = await response.json();
+                alert("Xatolik: " + (data.message || "Noma'lum xatolik"));
+            }
+        } catch (error) {
+            console.error("Xatolik:", error);
+            alert("Serverda xatolik yuz berdi");
+        }
+    };
+
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
@@ -23,43 +56,41 @@ const ProductStock = () => {
                                 <th>Product Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Piece</th>
+                                <th>Brand</th>
                                 <th>Available Color</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {productStock.map((product, idx) => (
+                            {products.map((product, idx) => (
                                 <tr key={idx} className="border-b hover:bg-gray-50">
                                     <td className="py-2">
                                         <img
-                                            src={product.image}
-                                            alt={product.name}
+                                            src={`/storage/${product.photo1}`}
+                                            alt={product.product_name}
                                             className="w-32 h-20 rounded cursor-pointer"
                                             onClick={() => setSelectedImage(product.image)}
                                         />
                                     </td>
-                                    <td>{product.name}</td>
+                                    <td>{product.product_name}</td>
                                     <td>{product.category}</td>
                                     <td>{product.price}</td>
-                                    <td>{product.piece}</td>
+                                    <td>{product.brend}</td>
                                     <td>
                                         <div className="flex gap-1">
-                                            {product.colors.map((color, i) => (
-                                                <span
-                                                    key={i}
-                                                    className="w-4 h-4 rounded-full border"
-                                                    style={{ backgroundColor: color }}
-                                                ></span>
-                                            ))}
+                                            <td>{product.colors}</td>
+
                                         </div>
                                     </td>
                                     <td>
                                         <div className="flex gap-2">
                                             <Button size="icon" variant="outline">
-                                                <Pencil className="w-4 h-4" />
+                                                <Link href={`/admin-products/${product.id}/edit`} >
+                                                    <Pencil className="w-4 h-4" />
+                                                </Link>
                                             </Button>
-                                            <Button size="icon" variant="outline" className="text-red-500">
+
+                                            <Button size="icon" variant="outline" className="text-red-500" onClick={() => handlePhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}>
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
                                         </div>

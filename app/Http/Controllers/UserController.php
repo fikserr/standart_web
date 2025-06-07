@@ -19,7 +19,7 @@ class UserController extends Controller
     public function adminUsers()
     {
         $users = User::all();
-        return inertia('admin-users', [
+        return inertia('admin/users', [
             'users' => $users
         ]);
     }
