@@ -1,5 +1,5 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
-import { MdDashboard, MdAllInbox, MdLogout  } from "react-icons/md";
+import { MdDashboard, MdAllInbox, MdLogout, MdCreateNewFolder   } from "react-icons/md";
 import { ImHeart, ImUsers } from "react-icons/im";
 import { VscChecklist } from "react-icons/vsc";
 import { BsBookshelf } from "react-icons/bs";
@@ -16,9 +16,9 @@ const items = [
     icon: MdAllInbox ,
   },
   {
-    title: "Favorites",
-    url: "/admin-favorites",
-    icon: ImHeart,
+    title: "Add Product",
+    url: "/admin-add-product",
+    icon: MdCreateNewFolder,
   },
   {
     title: "Order Lists",
@@ -34,11 +34,6 @@ const items = [
     title: "Users",
     url: "/admin-users",
     icon: ImUsers,
-  },
-  {
-    title: "LogOut",
-    url: "/",
-    icon: MdLogout,
   }
 ]
 
