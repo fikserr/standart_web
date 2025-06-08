@@ -53,84 +53,101 @@ const AddProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold">Add New Product</h1>
+    <div className='px-5 w-[1200px]'>
+      <h1 className="text-3xl font-bold mb-4 p-5">Add New Product</h1>
+      <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
+        <div className="flex gap-24 justify-center">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="flex flex-col items-center  transition-all duration-700 ease-in-out hover:scale-110">
+              <div className="relative group w-24 h-24">
+                <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden hover:rotate-6 transition-transform duration-700">
+                  {previewImages[`photo${i}`] ? (
+                    <img
+                      src={previewImages[`photo${i}`]}
+                      alt={`Preview ${i}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-5xl animate-pulse">📷</span>
+                  )}
+                </div>
+                <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black bg-opacity-0 hover:bg-opacity-30 rounded-full transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={e => handleFileUpload(e, `photo${i}`)}
+                  />
+                  <span className="text-xs text-white bg-black bg-opacity-50 px-2 py-1 rounded-full">
+                    Upload
+                  </span>
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className='grid grid-cols-2 gap-5'>
+          <input
+            name="product_name"
+            value={data.product_name}
+            onChange={handleChange}
+            placeholder="Product name"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
+          {errors.product_name && <div className="text-red-600">{errors.product_name}</div>}
 
-      <input
-        name="product_name"
-        value={data.product_name}
-        onChange={handleChange}
-        placeholder="Product name"
-        className="w-full border p-2 rounded"
-      />
-      {errors.product_name && <div className="text-red-600">{errors.product_name}</div>}
+          <input
+            name="category"
+            value={data.category}
+            onChange={handleChange}
+            placeholder="Category"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
+          {errors.category && <div className="text-red-600">{errors.category}</div>}
 
-      <input
-        name="category"
-        value={data.category}
-        onChange={handleChange}
-        placeholder="Category"
-        className="w-full border p-2 rounded"
-      />
-      {errors.category && <div className="text-red-600">{errors.category}</div>}
+          <input
+            name="sizes"
+            value={data.sizes.join(', ')}
+            onChange={handleChange}
+            placeholder="Sizes (e.g. S, M, L)"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
 
-      <input
-        name="sizes"
-        value={data.sizes.join(', ')}
-        onChange={handleChange}
-        placeholder="Sizes (e.g. S, M, L)"
-        className="w-full border p-2 rounded"
-      />
+          <input
+            name="price"
+            value={data.price}
+            onChange={handleChange}
+            type="number"
+            placeholder="Price"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
+          {errors.price && <div className="text-red-600">{errors.price}</div>}
 
-      <input
-        name="price"
-        value={data.price}
-        onChange={handleChange}
-        type="number"
-        placeholder="Price"
-        className="w-full border p-2 rounded"
-      />
-      {errors.price && <div className="text-red-600">{errors.price}</div>}
+          <input
+            name="colors"
+            value={data.colors}
+            onChange={handleChange}
+            placeholder="Colors (e.g. red, blue)"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
 
-      <input
-        name="colors"
-        value={data.colors}
-        onChange={handleChange}
-        placeholder="Colors (e.g. red, blue)"
-        className="w-full border p-2 rounded"
-      />
-
-      <input
-        name="brend"
-        value={data.brend}
-        onChange={handleChange}
-        placeholder="Brend"
-        className="w-full border p-2 rounded"
-      />
-
-      <div className="flex gap-4">
-        {[1, 2, 3].map(i => (
-          <div key={i} className="flex flex-col items-center">
-            <input type="file" accept="image/*" onChange={e => handleFileUpload(e, `photo${i}`)} />
-            {previewImages[`photo${i}`] && (
-              <img
-                src={previewImages[`photo${i}`]}
-                alt={`Preview ${i}`}
-                className="w-24 h-24 object-cover mt-2"
-              />
-            )}
-          </div>
-        ))}
-      </div>
-
-      <button
-        type="submit"
-        disabled={processing}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        {processing ? 'Adding...' : 'Add Product'}
-      </button>
-    </form>
+          <input
+            name="brend"
+            value={data.brend}
+            onChange={handleChange}
+            placeholder="Brend"
+            className="w-full border p-5 rounded-lg outline-none"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={processing}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          {processing ? 'Adding...' : 'Add Product'}
+        </button>
+      </form>
+    </div>
   );
 };
 
