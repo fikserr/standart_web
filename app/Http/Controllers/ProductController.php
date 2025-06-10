@@ -1,8 +1,5 @@
 <?php
 
-// app/Http/Controllers/Admin/ProductController.php;
-namespace App\Http\Controllers;
-
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -78,7 +75,7 @@ class ProductController extends Controller
         $data = $request->validate([
             'product_name' => 'required|string',
             'category' => 'required|string',
-            'sizes' => 'array',
+            'sizes' => 'nullable|array',
             'price' => 'required|numeric',
             'colors' => 'nullable|string',
             'brend' => 'nullable|string',
@@ -96,7 +93,10 @@ class ProductController extends Controller
             }
         }
 
+        \Log::info('Product update data:', ['data' => $data, 'product_id' => $product->id]);
+
         $product->update($data);
+
         return back()->with('success', 'Mahsulot yangilandi');
     }
 
@@ -112,5 +112,21 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi']);
     }
+    public function deletePhoto($id, $key)
+    {
+        $product = Product::findOrFail($id);
 
+        // Masalan, $key = 'photo1', 'photo2', yoki 'photo3'
+        $photoPath = $product->$key;
+
+        if ($photoPath && Storage::exists($photoPath)) {
+            Storage::delete($photoPath);
+        }
+
+        // Bazadagi photo fieldni null qilamiz
+        $product->$key = null;
+        $product->save();
+
+        return response()->json(['message' => 'Photo deleted']);
+    }
 }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
-import { productStock } from "@/components/shared/lists";
 import { Link } from "@inertiajs/react";
 
 

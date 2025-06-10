@@ -24,7 +24,7 @@ Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
 Route::get('/admin-products', fn() => inertia('admin/products'));
 // Route::get('/admin-users', fn() => inertia('admin-users'));
 // Route::get('/admin-add-product', fn() => inertia('admin-addProducts'));
-Route::get('/admin-productStock', [ProductController::class, 'showProduct'])->name('admin.products.show');
+Route::get('/admin-productStock', [ProductController::class, 'showProduct'])->name(name: 'admin.products.show');
 Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('users');
 // Register sahifani ko‘rsatish (frontend form)
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
@@ -44,5 +44,5 @@ Route::post('/admin-add-store', [ProductController::class, 'store'])->name('admi
 
 Route::get('/admin-products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
 Route::put('/admin-products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
-Route::delete('/admin-delete-photo/{product}', [ProductController::class, 'deleteProduct']);
-
+Route::delete('/admin-delete-product/{product}', [ProductController::class, 'deleteProduct']);
+Route::delete('/admin-delete-photo/{product}/{key}', [ProductController::class, 'deletePhoto']);
