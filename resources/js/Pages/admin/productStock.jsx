@@ -56,7 +56,7 @@ const ProductStock = ({ products }) => {
                                 <th>Product Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Brand</th>
+                                <th>Bran</th>
                                 <th>Available Color</th>
                                 <th>Action</th>
                             </tr>
