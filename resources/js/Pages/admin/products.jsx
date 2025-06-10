@@ -1,6 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { products } from "@/components/shared/lists";
 import { Link } from "@inertiajs/react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@ui/carousel";
+import { Star } from "lucide-react";
 
 const stars = (rating) => {
   const fullStars = Math.floor(rating);
@@ -16,14 +25,15 @@ const stars = (rating) => {
 };
 
 export default function ProductsUI() {
-  const [bannerIndex, setBannerIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const intervalRef = useRef(null);
 
   const banners = [
     {
       id: 1,
       date: "September 12-22",
-      title: "Enjoy free home delivery in this summer",
-      subtitle: "Designer Dresses - Pick from trendy Designer Dress.",
+      title: "Enjoy free home delivery this summer",
+      subtitle: "Designer Dresses - Pick from trendy Designer Dresses.",
     },
     {
       id: 2,
@@ -33,53 +43,65 @@ export default function ProductsUI() {
     },
   ];
 
-  const nextBanner = () => {
-    setBannerIndex((prev) => (prev + 1) % banners.length);
-  };
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
+    }, 3000); // 3000 ms = 3 seconds
 
-  const prevBanner = () => {
-    setBannerIndex((prev) => (prev - 1 + banners.length) % banners.length);
-  };
+    return () => clearInterval(intervalRef.current); // Cleanup on component unmount
+  }, [banners.length]);
 
   return (
-    <div className="p-6 min-h-screen font-sans xl:w-[1200px] mx-5">
+    <div className="p-6 min-h-screen font-sans xl:w-[1200px] mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold">Products</h2>
-        <Link href={'/admin-add-product'} className="bg-blue-600 text-white text-md px-3 py-1 rounded hover:bg-blue-700">
-          Add Products
-        </Link>
       </div>
 
       {/* Banner */}
-      <div className="relative bg-blue-600 text-white rounded-xl p-8 mb-8 flex items-center overflow-hidden">
-        <button
-          onClick={prevBanner}
-          className="absolute left-2 bg-white bg-opacity-30 text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-50"
-          aria-label="Previous banner"
+      <div className="relative bg-blue-500 h-[400px] text-white rounded-xl p-8 mb-8 flex items-center overflow-hidden">
+        <Carousel
+          opts={{ loop: true, align: "start" }}
+          className="w-full"
         >
-          ‹
-        </button>
-        <div className="max-w-xl">
-          <p className="text-sm opacity-70">{banners[bannerIndex].date}</p>
-          <h3 className="text-3xl font-bold leading-snug mb-2">
-            {banners[bannerIndex].title}
-          </h3>
-          <p className="opacity-80 mb-4">{banners[bannerIndex].subtitle}</p>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-semibold">
-            Get Started
-          </button>
-        </div>
-        <button
-          onClick={nextBanner}
-          className="absolute right-2 bg-white bg-opacity-30 text-black rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-50"
-          aria-label="Next banner"
-        >
-          ›
-        </button>
+          <CarouselContent >
+            <AnimatePresence>
+              {banners.map((banner) => (
+                <CarouselItem key={banner.id}>
+                  <motion.div
+                    className="inset-0 flex"
+                    style={{
+                      transform: `translateX(-${currentIndex * 100}%)`,
+                      transition: "transform 0.5s ease-in-out",
+                    }}
+                  >
+                    <div className="max-w-xl h-[380px] flex flex-col gap-5 px-24 pt-16">
+                      <p className="text-sm opacity-70 top-1 left-5">{banner.date}</p>
+                      <h3 className="text-3xl font-bold leading-snug mb-2">
+                        {banner.title}
+                      </h3>
+                      <p className="opacity-80 mb-4">{banner.subtitle}</p>
+                      <button className="bg-orange-500 w-[35%] hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-semibold">
+                        Get Started
+                      </button>
+                    </div>
+                    {/* <div className={`transition-opacity duration-1000 ${currentIndex === index ? "opacity-100" : "opacity-0"}`}>
+                  </div> */}
+                  </motion.div>
+                </CarouselItem>
+              ))}
+            </AnimatePresence>
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-1 top-1/2 transform -translate-y-1/2 text-black">
+            ‹
+          </CarouselPrevious >
+          <CarouselNext className="absolute right-1 top-1/2 transform -translate-y-1/2 text-black">
+            ›
+          </CarouselNext>
+        </Carousel>
       </div>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.map((p) => (
           <div
             key={p.id}
@@ -113,25 +135,15 @@ export default function ProductsUI() {
                 aria-label="Add to favorites"
                 className="p-1 rounded-full hover:bg-gray-200"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  viewBox="0 0 24 24"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"
-                  />
-                </svg>
+                <Star className="w-5 h-5" />
               </button>
             </div>
-            <button className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs rounded px-3 py-1">
+            <Link
+              href={`/products/${p.id}`}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs rounded px-3 py-1"
+            >
               Edit Product
-            </button>
+            </Link>
           </div>
         ))}
       </div>

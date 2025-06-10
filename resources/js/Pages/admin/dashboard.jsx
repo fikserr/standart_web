@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppSidebar } from '@/components/shared/app-sidebar';
 import { IoMdTrendingDown, IoMdTrendingUp } from "react-icons/io";
 import Group from '@images/groupIcon.svg';
@@ -6,6 +5,7 @@ import Order from '@images/orderIcon.svg';
 import Sales from '@images/salesIcon.svg';
 import Pending from '@images/pendingIcon.svg';
 import CountUp from '@/components/shared/countUp';
+import { useCycle } from 'framer-motion';
 
 const cards = [
   {
@@ -42,7 +42,7 @@ const cards = [
     chartColor: "text-red-500",
   },
   {
-    title: "Total Pending",
+    title: "Total Products",
     value: 2040,
     diff: "1.8%",
     icon: Pending,

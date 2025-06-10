@@ -17,7 +17,7 @@ const ProductStock = ({ products }) => {
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-            const response = await fetch(`/admin-delete-photo/${productId}`, {
+            const response = await fetch(`/admin-delete-product/${productId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const ProductStock = ({ products }) => {
                                 <th>Product Name</th>
                                 <th>Category</th>
                                 <th>Price</th>
-                                <th>Brand</th>
+                                <th>Bran</th>
                                 <th>Available Color</th>
                                 <th>Action</th>
                             </tr>
@@ -67,7 +67,7 @@ const ProductStock = ({ products }) => {
                                         <img
                                             src={`/storage/${product.photo1}`}
                                             alt={product.product_name}
-                                            className="w-32 h-20 rounded cursor-pointer"
+                                            className="w-20 h-20 rounded cursor-pointer"
                                             onClick={() => setSelectedImage(product.image)}
                                         />
                                     </td>
