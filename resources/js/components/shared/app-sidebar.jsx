@@ -1,9 +1,10 @@
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
 import { MdDashboard, MdAllInbox, MdLogout, MdCreateNewFolder   } from "react-icons/md";
-import { ImHeart, ImUsers } from "react-icons/im";
+import { ImUsers } from "react-icons/im";
 import { VscChecklist } from "react-icons/vsc";
-import { BsBookshelf } from "react-icons/bs";
-
+import { BsClipboard2CheckFill, BsCollectionFill } from "react-icons/bs";
+import { Link } from "@inertiajs/react";
+ 
 const items = [
   {
     title: "Dashboard",
@@ -23,17 +24,22 @@ const items = [
   {
     title: "Order Lists",
     url: "/admin-order-lists",
-    icon: VscChecklist,
+    icon: BsClipboard2CheckFill,
   },
   {
     title: "Product Stock",
     url: "/admin-productStock",
-    icon: BsBookshelf,
+    icon: BsCollectionFill,
   },
   {
     title: "Users",
     url: "/admin-users",
     icon: ImUsers,
+  },
+  {
+    title: "Log out",
+    url: "/",
+    icon: MdLogout,
   }
 ]
 
@@ -42,7 +48,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel style={{padding: "30px", fontSize: "30px", color: "black"}}><span style={{color: "blue"}}>Admin</span> Panel</SidebarGroupLabel>
+          <Link href={"/admin-dashboard"}><SidebarGroupLabel style={{padding: "30px", fontSize: "30px", color: "black"}}><span style={{color: "blue"}}>Admin</span> Panel</SidebarGroupLabel></Link>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
