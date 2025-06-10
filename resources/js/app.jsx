@@ -5,35 +5,26 @@ import { createRoot } from 'react-dom/client';
 import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 
-// Hozircha static holatda (faqat AdminLayout ishlaydi)
-const admin = true;
-
 createInertiaApp({
-  resolve: name => {
-    // Pages papkasidagi barcha .jsx fayllarni olish
-    const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
+  resolve: async (name) => {
+    const pages = import.meta.glob('./Pages/**/*.jsx');
 
-    // Kiruvchi route nomi (masalan, 'admin/products') ga mos faylni topish
-    const match = Object.keys(pages).find(key =>
-      key.endsWith(`${name}.jsx`)
-    );
-
-    // Fayl topilmasa, xatolik chiqarish
-    if (!match) {
+    const importPage = pages[`./Pages/${name}.jsx`];
+    if (!importPage) {
       console.error(`[Inertia] Sahifa topilmadi: ${name}`);
       return;
     }
 
-    const page = pages[match];
+    const page = await importPage();
     const Component = page.default;
 
-    // Hozircha: Barcha sahifalarda static layout (Admin yoki User)
-    // Kelajakda: name.startsWith('admin/') orqali avtomatik layout tanlanadi
-    Component.layout = Component.layout || ((page) =>
-      admin
-        ? <AdminLayout>{page}</AdminLayout>
-        : <UserLayout>{page}</UserLayout>
-    );
+    // Sahifaga dynamic layout biriktirish (admin yoki user)
+    Component.layout = (pageProps) => {
+      const isAdmin = pageProps.props?.auth?.user?.is_admin;
+      return isAdmin
+        ? <AdminLayout>{pageProps}</AdminLayout>
+        : <UserLayout>{pageProps}</UserLayout>;
+    };
 
     return Component;
   },
