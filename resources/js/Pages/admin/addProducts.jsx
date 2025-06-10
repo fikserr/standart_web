@@ -54,7 +54,7 @@ const AddProductForm = () => {
 
   return (
     <div className='px-5 w-[1200px]'>
-      <h1 className="text-3xl font-bold mb-4 p-5">Add New Product</h1>
+      <h1 className="text-3xl font-bold mb-4 p-5">Mahsulot qo'shish</h1>
       <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
         <div className="flex gap-24 justify-center">
           {[1, 2, 3].map(i => (
@@ -144,7 +144,7 @@ const AddProductForm = () => {
           disabled={processing}
           className="bg-blue-600 text-white px-4 py-2 rounded"
         >
-          {processing ? 'Adding...' : 'Add Product'}
+          {processing ? 'Saqlanmoqda...' : '💾 Saqlash'}
         </button>
       </form>
     </div>

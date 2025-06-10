@@ -1,18 +1,42 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
-import { productStock } from "@/components/shared/lists";
 import { Link } from "@inertiajs/react";
 
 
-
 const ProductStock = ({ products }) => {
-    const [selectedImage, setSelectedImage] = useState(null);
-    console.log(products);
-    const handlePhotoDelete = async (productId, photoKeys) => {
-        // photoKeys — massiv bo'lishi kerak, masalan: ['photo1', 'photo2']
+    const [imageIndexes, setImageIndexes] = useState({});
+    const [modalImage, setModalImage] = useState(null);
+    const openImgModal = (productId, imagePath, photos) => {
+        setModalImage(imagePath);
+        setCurrentProductId(productId);
+        setCurrentPhotos(photos);
+    };
+    const [currentProductId, setCurrentProductId] = useState(null);
+    const [currentPhotos, setCurrentPhotos] = useState([]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setImageIndexes((prev) => {
+                const updated = {};
+                products.forEach((product) => {
+                    const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
+                    const currentIndex = prev[product.id] || 0;
+                    updated[product.id] = (currentIndex + 1) % photos.length;
+                });
+                return updated;
+            });
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, [products]);
+
+    const closeModal = () => {
+        setModalImage(null);
+    };
+
+    const handlePhotoDelete = async (productId, photoKeys) => {
         if (!confirm("Rostdan ham bu rasmlarni o‘chirmoqchimisiz?")) return;
 
         try {
@@ -30,7 +54,7 @@ const ProductStock = ({ products }) => {
 
             if (response.ok) {
                 alert("Rasmlar muvaffaqiyatli o‘chirildi");
-                window.location.reload(); // yoki Reactda state update qilish mumkin
+                window.location.reload();
             } else {
                 const data = await response.json();
                 alert("Xatolik: " + (data.message || "Noma'lum xatolik"));
@@ -47,71 +71,106 @@ const ProductStock = ({ products }) => {
             <div className="mb-4">
                 <Input placeholder="Search product name" className="max-w-sm" />
             </div>
-            <div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                        <thead className="text-left border-b">
-                            <tr>
-                                <th className="py-2">Image</th>
-                                <th>Product Name</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Bran</th>
-                                <th>Available Color</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {products.map((product, idx) => (
+            <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                    <thead className="text-left border-b">
+                        <tr>
+                            <th className="py-2">Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Brand</th>
+                            <th>Available Color</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {products.map((product, idx) => {
+                            const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
+                            const currentImage = photos[imageIndexes[product.id] || 0];
+                            return (
                                 <tr key={idx} className="border-b hover:bg-gray-50">
                                     <td className="py-2">
-                                        <img
-                                            src={`/storage/${product.photo1}`}
-                                            alt={product.product_name}
-                                            className="w-20 h-20 rounded cursor-pointer"
-                                            onClick={() => setSelectedImage(product.image)}
-                                        />
+                                        <div className="relative w-24 h-24 flex items-center justify-center">
+                                            <img
+                                                src={`/storage/${currentImage}`}
+                                                alt={product.product_name}
+                                                className="w-20 h-20 rounded object-cover cursor-zoom-in"
+                                                onClick={() => openImgModal(product.id, `/storage/${currentImage}`, photos)}
+                                            />
+                                        </div>
                                     </td>
                                     <td>{product.product_name}</td>
                                     <td>{product.category}</td>
                                     <td>{product.price}</td>
                                     <td>{product.brend}</td>
-                                    <td>
-                                        <div className="flex gap-1">
-                                            <td>{product.colors}</td>
-
-                                        </div>
-                                    </td>
+                                    <td>{product.colors}</td>
                                     <td>
                                         <div className="flex gap-2">
                                             <Button size="icon" variant="outline">
-                                                <Link href={`/admin-products/${product.id}/edit`} >
+                                                <Link href={`/admin-products/${product.id}/edit`}>
                                                     <Pencil className="w-4 h-4" />
                                                 </Link>
                                             </Button>
-
-                                            <Button size="icon" variant="outline" className="text-red-500" onClick={() => handlePhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}>
+                                            <Button
+                                                size="icon"
+                                                variant="outline"
+                                                className="text-red-500"
+                                                onClick={() => handlePhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}
+                                            >
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
                                         </div>
                                     </td>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    {selectedImage && (
-                        <div
-                            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-1000 ease-in opacity-100"
-                            onClick={() => setSelectedImage(null)}
-                        >
-                            <div className="bg-white p-4 rounded shadow-lg max-w-lg max-h-[90vh] overflow-auto transform transition-transform duration-1000 scale-100">
-                                <img src={selectedImage} alt="Modal" className="w-full h-auto rounded" />
-                            </div>
+                            );
+                        })}
+                    </tbody>
+                </table>
+                {modalImage && (
+                    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+                        <div className="relative max-w-3xl w-full mx-4">
+                            <button
+                                onClick={closeModal}
+                                className="absolute top-4 right-4 text-xl"
+                                title="Yopish"
+                            >
+                                ✖
+                            </button>
+                            {currentPhotos.length > 1 && (
+                                <button
+                                    onClick={() => {
+                                        const index = currentPhotos.findIndex((img) => `/storage/${img}` === modalImage);
+                                        const prevIndex = (index - 1 + currentPhotos.length) % currentPhotos.length;
+                                        setModalImage(`/storage/${currentPhotos[prevIndex]}`);
+                                    }}
+                                    className="absolute left-2 top-1/2 hover:bg-black duration-700 bg-opacity-55 text-white p-2 px-4 rounded"
+                                >
+                                    &#8249;
+                                </button>
+                            )}
+                            <img
+                                src={modalImage}
+                                alt="Product preview"
+                                className="max-h-[70vh] w-full object-cover rounded shadow-lg"
+                            />
+                            {currentPhotos.length > 1 && (
+                                <button
+                                    onClick={() => {
+                                        const index = currentPhotos.findIndex((img) => `/storage/${img}` === modalImage);
+                                        const nextIndex = (index + 1) % currentPhotos.length;
+                                        setModalImage(`/storage/${currentPhotos[nextIndex]}`);
+                                    }}
+                                    className="absolute right-2 top-1/2 hover:bg-black duration-700 bg-opacity-50 text-white p-2 px-4 rounded"
+                                >
+                                    &#8250;
+                                </button>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
+                <div className="text-sm text-gray-500 mt-4">Showing 1–09 of 78</div>
             </div>
-            <div className="text-sm text-gray-500 mt-4">Showing 1–09 of 78</div>
         </div>
     );
 };
