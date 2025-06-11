@@ -1,20 +1,45 @@
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { router } from '@inertiajs/react'; // inertia router kerak
+import { useToast } from '@/hooks/use-toast';
 
 const AddProductForm = ({ users }) => {
-  console.log(users);
+  const [loadingId, setLoadingId] = useState(null);
+  const { toast } = useToast()
+
+  const toggleAdmin = async (user) => {
+    setLoadingId(user.id);
+
+    try {
+      await router.put(
+        `/admin/users/${user.id}`,
+        { is_admin: !user.is_admin },
+        {
+          preserveScroll: true,
+          onSuccess: () => {
+            toast({
+              title: "Muvaffaqiyatli",
+              description: !user.is_admin
+                ? `${user.name} adminga tayyorlandi`
+                : `${user.name} dan adminlik olib tashlandi`,
+            });
+          },
+          onFinish: () => setLoadingId(null),
+        }
+      );
+    } catch (err) {
+      console.error(err);
+      setLoadingId(null);
+      toast({
+        title: "Xatolik yuz berdi",
+        description: "Iltimos, keyinroq urinib ko‘ring",
+      });
+    }
+  };
+
+
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
-      <h1 className="text-3xl font-bold mb-6">Order Lists</h1>
-      <div className=" mb-4 flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex gap-2">
-          <Button variant="outline">Filter By</Button>
-          <Button variant="outline">Date</Button>
-          <Button variant="outline">Order Type</Button>
-          <Button variant="outline">Order Status</Button>
-        </div>
-        <Button variant="ghost" className="text-red-500">Reset Filter</Button>
-      </div>
-
+      <h1 className="text-3xl font-bold mb-6">User List</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead>
@@ -23,29 +48,45 @@ const AddProductForm = ({ users }) => {
               <th className="px-4 py-2 font-medium">Name</th>
               <th className="px-4 py-2 font-medium">Email</th>
               <th className="px-4 py-2 font-medium">Created</th>
-              <th className="px-4 py-2 font-medium">Order</th>
+              <th className="px-4 py-2 font-medium">Role</th>
               <th className="px-4 py-2 font-medium">Action</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((order) => (
-              <tr key={order.id} className="border-b border-gray-200">
-                <td className="px-4 py-3">{order.id}</td>
-                <td className="px-4 py-3 font-medium text-gray-900">{order.name}</td>
-                <td className="px-4 py-3">{order.email}</td>
-                <td className="px-4 py-3" >{new Date(order.created_at).toLocaleDateString("en-GB", {year: "numeric",month: "long",day: "2-digit",})}</td>
-                <td className="px-4 py-3">{order.is_admin ? "Admin" : "User"}</td>
+            {users.map((user) => (
+              <tr key={user.id} className="border-b border-gray-200">
+                <td className="px-4 py-3">{user.id}</td>
+                <td className="px-4 py-3 font-medium text-gray-900">{user.name}</td>
+                <td className="px-4 py-3">{user.email}</td>
+                <td className="px-4 py-3">
+                  {new Date(user.created_at).toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                  })}
+                </td>
+                <td className="px-4 py-3">{user.is_admin ? "Admin" : "User"}</td>
+                <td className="px-4 py-3">
+                  <label className="relative inline-flex items-center cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={user.is_admin}
+                      onChange={() => toggleAdmin(user)}
+                      disabled={loadingId === user.id}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition duration-300 ease-in-out group-hover:scale-105"></div>
+                    <div className="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full transition-all duration-300 ease-in-out peer-checked:translate-x-5 peer-disabled:bg-gray-200 peer-disabled:cursor-not-allowed"></div>
+                    <span className="ml-3 text-sm font-medium text-gray-900 select-none">
+                      {user.is_admin ? "Admin" : "User"}
+                    </span>
+                  </label>
+                </td>
+
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
-        {/* <div className="flex gap-2">
-                <Button variant="outline" size="icon"><ChevronLeft className="h-4 w-4" /></Button>
-                <Button variant="outline" size="icon"><ChevronRight className="h-4 w-4" /></Button>
-            </div> */}
       </div>
     </div>
   );
