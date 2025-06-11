@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
+
 
 const EditProduct = ({ product }) => {
   const [previewImages, setPreviewImages] = useState({
@@ -33,25 +34,21 @@ const EditProduct = ({ product }) => {
       setData(name, value);
     }
   };
-
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
-    if (file) {
-      setData(key, file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImages(prev => ({ ...prev, [key]: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    if (!file) return;
 
-  const handlePhotoDelete = (key) => {
-    Inertia.delete(`/admin-delete-photo/${product.id}/${key}`, {
-      onSuccess: () => {
-        setPreviewImages(prev => ({ ...prev, [key]: null }));
-      },
-    });
+    setData(key, file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImages(prev => ({
+        ...prev,
+        [key]: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+    e.target.value = '';
   };
 
   const handleSubmit = (e) => {
@@ -65,9 +62,10 @@ const EditProduct = ({ product }) => {
     formData.append('brend', data.brend);
 
     // Fayllar
-    if (data.photo1) formData.append('photo1', data.photo1);
-    if (data.photo2) formData.append('photo2', data.photo2);
-    if (data.photo3) formData.append('photo3', data.photo3);
+    if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
+    if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
+    if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
+
 
     // Razmerlar
     data.sizes.forEach((size, i) => {
@@ -97,21 +95,21 @@ const EditProduct = ({ product }) => {
                   <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden hover:rotate-6 transition-transform duration-700">
                     {previewImages[key] && (
                       <div className="relative">
-                        <img src={`/storage/${previewImages[key]}`} alt={`Photo ${i}`} className="w-full h-32 object-cover rounded" />
-                        <button
-                          type="button"
-                          onClick={() => handlePhotoDelete(key)}
-                          className="absolute top-1 right-1 text-white bg-red-600 p-1 rounded-full text-xs"
-                        >🗑</button>
+                        <img
+                          src={previewImages[key]?.startsWith('data') ? previewImages[key] : `/storage/${previewImages[key]}`}
+                          alt={`Photo ${i}`}
+                          className="w-full h-32 object-cover rounded"
+                        />
                       </div>
                     )}
                   </div>
                   <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black bg-opacity-0 hover:bg-opacity-30 rounded-full transition">
                     <input
+                      key={previewImages[key] || 'empty'}
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={e => handleFileUpload(e, `photo${i}`)}
+                      onChange={e => handleFileChange(e, `photo${i}`)}
                     />
                     <span className="text-xs text-white bg-black bg-opacity-50 px-2 py-1 rounded-full">
                       Upload
