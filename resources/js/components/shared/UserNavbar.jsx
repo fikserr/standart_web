@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Link, usePage, router } from '@inertiajs/react';
 import { HiOutlineMenuAlt4, HiOutlineSearch, HiOutlineShoppingBag } from "react-icons/hi";
@@ -13,10 +14,9 @@ const UserNavbar = () => {
     const { auth } = usePage().props
     const handleLogout = () => {
         router.post('/logout')
-    }
-
+    }   
     return (
-        <div className='py-5 md:px-16 xl:px-36 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]'>
+        <div className='py-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]'>
             <div className='flex items-center justify-around md:justify-between'>
                 <div className='flex items-center gap-5 md:hidden'>
                     <HiOutlineMenuAlt4

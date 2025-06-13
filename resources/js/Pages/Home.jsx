@@ -51,7 +51,7 @@ const Home = () => {
           </h4>
         </div>
         <div className='grid grid-cols-2 sm:grid-cols-3 md992:grid-cols-4 gap-2 my-4'>
-          <button onClick={() => navigate('/detail')} className='border-2 rounded-lg flex flex-col'>
+          <Link href={'/detail'} className='border-2 rounded-lg flex flex-col'>
             <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
               <button><ImStarEmpty className='absolute top-4 right-4' /></button>
             </div>
@@ -59,8 +59,8 @@ const Home = () => {
               <p>Product nomi</p>
               <p>Product narxi</p>
             </div>
-          </button>
-          <button onClick={() => navigate('/detail')} className='border-2 h-[250px] xl:h-[350px] rounded-lg flex flex-col'>
+          </Link>
+          <Link href={'/detail'} className='border-2 h-[250px] xl:h-[350px] rounded-lg flex flex-col'>
             <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
               <button><ImStarEmpty className='absolute top-4 right-4' /></button>
             </div>
@@ -68,8 +68,8 @@ const Home = () => {
               <p>Product nomi</p>
               <p>Product narxi</p>
             </div>
-          </button>
-          <button onClick={() => navigate('/detail')} className='border-2 sm:flex flex-col h-[250px] xl:h-[350px] hidden rounded-lg'>
+          </Link>
+          <Link href={'/detail'} className='border-2 sm:flex flex-col h-[250px] xl:h-[350px] hidden rounded-lg'>
             <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
               <button><ImStarEmpty className='absolute top-4 right-4' /></button>
             </div>
@@ -77,8 +77,8 @@ const Home = () => {
               <p>Product nomi</p>
               <p>Product narxi</p>
             </div>
-          </button>
-          <button onClick={() => navigate('/detail')} className='border-2 h-[250px] xl:h-[350px] hidden md992:flex flex-col rounded-lg'>
+          </Link>
+          <Link href={'/detail'} className='border-2 h-[250px] xl:h-[350px] hidden md992:flex flex-col rounded-lg'>
             <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
               <button><ImStarEmpty className='absolute top-4 right-4' /></button>
             </div>
@@ -86,7 +86,7 @@ const Home = () => {
               <p>Product nomi</p>
               <p>Product narxi</p>
             </div>
-          </button>
+          </Link>
         </div>
       </div>
 

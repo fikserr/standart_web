@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // Foydalanuvchini tekshirish va asosiy sahifaga yo‘naltirish
@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/clothes', fn() => inertia('Clothes'));
     Route::get('/address', fn() => inertia('Address'));
     Route::get('/accessory', fn() => inertia('Accessory'));
+    Route::get('/detail', fn() => inertia('detail'));
 });
 
 // Admin sahifalari (faqat adminlar uchun)
@@ -33,7 +34,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
     Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
     Route::get('/admin-products', fn() => inertia('admin/products'));
-    Route::get('/admin-productStock', [ProductController::class, 'showProduct'])->name('admin.products.show');
+    Route::get('/admin-productStock', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('users');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::get('/admin-add-product', [ProductController::class, 'create'])->name('admin.products.create');
