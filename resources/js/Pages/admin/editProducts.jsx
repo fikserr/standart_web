@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 
-
 const EditProduct = ({ product }) => {
   const [previewImages, setPreviewImages] = useState({
     photo1: product.photo1 || null,
@@ -21,9 +20,9 @@ const EditProduct = ({ product }) => {
     price: product.price || '',
     colors: product.colors || '',
     brend: product.brend || '',
-    photo1: null,
-    photo2: null,
-    photo3: null,
+    // photo1: null,
+    // photo2: null,
+    // photo3: null,
   });
 
   const handleInputChange = (e) => {
@@ -34,6 +33,7 @@ const EditProduct = ({ product }) => {
       setData(name, value);
     }
   };
+
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -48,7 +48,12 @@ const EditProduct = ({ product }) => {
       }));
     };
     reader.readAsDataURL(file);
-    e.target.value = '';
+    e.target.value = ''; // reset file input
+  };
+
+  const handlePhotoDelete = (key) => {
+    setPreviewImages(prev => ({ ...prev, [key]: null }));
+    setData(key, null);
   };
 
   const handleSubmit = (e) => {
@@ -60,12 +65,11 @@ const EditProduct = ({ product }) => {
     formData.append('price', data.price);
     formData.append('colors', data.colors);
     formData.append('brend', data.brend);
-    // Fayllar — Faqat File bo‘lsa qo‘sh
+
     if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
     if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
     if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
 
-    // Razmerlar
     data.sizes.forEach((size, i) => {
       formData.append(`sizes[${i}]`, size);
     });
@@ -80,7 +84,6 @@ const EditProduct = ({ product }) => {
     });
   };
 
-
   return (
     <div className='px-5 w-[1200px]'>
       <h1 className="text-3xl font-bold mb-4 p-5">Mahsulotni tahrirlash</h1>
@@ -89,19 +92,18 @@ const EditProduct = ({ product }) => {
           {[1, 2, 3].map(i => {
             const key = `photo${i}`;
             return (
-              <div key={i} className="flex flex-col items-center  transition-all duration-700 ease-in-out hover:scale-110">
+              <div key={i} className="flex flex-col items-center transition-all duration-700 ease-in-out hover:scale-110">
                 <div className="relative group w-24 h-24">
                   <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden hover:rotate-6 transition-transform duration-700">
                     {previewImages[key] && (
                       <div className="relative">
                         <img
                           src={previewImages[key]?.startsWith('data:')
-                            ? previewImages[key] // base64 bo‘lsa
-                            : `/storage/${previewImages[key]}`} // aks holda storage
+                            ? previewImages[key]
+                            : `/storage/${previewImages[key]}`}
                           alt={`Photo ${i}`}
                           className="w-full h-32 object-cover rounded"
                         />
-
                         <button
                           type="button"
                           onClick={() => handlePhotoDelete(key)}
@@ -116,7 +118,7 @@ const EditProduct = ({ product }) => {
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={e => handleFileChange(e, `photo${i}`)}
+                      onChange={e => handleFileChange(e, key)}
                     />
                     <span className="text-xs text-white bg-black bg-opacity-50 px-2 py-1 rounded-full">
                       Upload
@@ -124,7 +126,7 @@ const EditProduct = ({ product }) => {
                   </label>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
         <div className='grid grid-cols-2 gap-5'>

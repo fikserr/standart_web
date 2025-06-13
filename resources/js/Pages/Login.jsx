@@ -16,7 +16,7 @@ const Login = () => {
   };
 
   return (
-    <div className='px-5 xl:px-32 my-32 flex justify-center'>
+    <div className='px-5 xl:px-32 my-32 flex justify-center items-center'>
       <form onSubmit={handleSubmit} className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>
         <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '24px' }}>Login</h2>
         <div className='grid grid-cols-1 p-5 gap-5'>

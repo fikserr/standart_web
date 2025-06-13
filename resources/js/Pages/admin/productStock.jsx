@@ -2,7 +2,16 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@ui/pagination"
 
 
 const ProductStock = ({ products }) => {
@@ -15,12 +24,13 @@ const ProductStock = ({ products }) => {
     };
     const [currentProductId, setCurrentProductId] = useState(null);
     const [currentPhotos, setCurrentPhotos] = useState([]);
+    const [search,setSearch] = useState('')
 
     useEffect(() => {
         const interval = setInterval(() => {
             setImageIndexes((prev) => {
                 const updated = {};
-                products.forEach((product) => {
+                products.data.forEach((product) => {
                     const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
                     const currentIndex = prev[product.id] || 0;
                     updated[product.id] = (currentIndex + 1) % photos.length;
@@ -64,14 +74,27 @@ const ProductStock = ({ products }) => {
             alert("Serverda xatolik yuz berdi");
         }
     };
+    useEffect(() => {
 
+        const delayDebounceFn = setTimeout(() => {
+            router.get('/admin-productStock', { search }, { preserveState: true });
+        }, 500); // 500ms kutadi, foydalanuvchi yozishni to‘xtatguncha
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [search]);
+    console.log(products);
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
             <div className="mb-4">
-                <Input placeholder="Search product name" className="max-w-sm" />
+                <Input
+                    placeholder="Search product name"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="max-w-sm"
+                />
             </div>
-            <div className="overflow-x-auto">
+            <div className="">
                 <table className="w-full text-sm">
                     <thead className="text-left border-b">
                         <tr>
@@ -85,7 +108,7 @@ const ProductStock = ({ products }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product, idx) => {
+                        {products.data.map((product, idx) => {
                             const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
                             const currentImage = photos[imageIndexes[product.id] || 0];
                             return (
@@ -169,7 +192,28 @@ const ProductStock = ({ products }) => {
                         </div>
                     </div>
                 )}
-                <div className="text-sm text-gray-500 mt-4">Showing 1–09 of 78</div>
+                <Pagination>
+                    <PaginationContent>
+                        {products.links.map((item, i) => (
+                            <PaginationItem key={i}>
+                                {item.url ? (
+                                    <Link
+                                        href={item.url}
+                                        className={`px-3 py-1 rounded hover:bg-gray-200 ${item.active ? "bg-gray-300 font-bold" : ""
+                                            }`}
+                                        dangerouslySetInnerHTML={{ __html: item.label }}
+                                    />
+                                ) : (
+                                    <span
+                                        className="px-3 py-1 text-gray-400"
+                                        dangerouslySetInnerHTML={{ __html: item.label }}
+                                    />
+                                )}
+                            </PaginationItem>
+                        ))}
+                    </PaginationContent>
+                </Pagination>
+
             </div>
         </div>
     );
