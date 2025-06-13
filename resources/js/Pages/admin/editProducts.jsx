@@ -20,9 +20,9 @@ const EditProduct = ({ product }) => {
     price: product.price || '',
     colors: product.colors || '',
     brend: product.brend || '',
-    photo1: null,
-    photo2: null,
-    photo3: null,
+    // photo1: null,
+    // photo2: null,
+    // photo3: null,
   });
 
   const handleInputChange = (e) => {
@@ -37,7 +37,8 @@ const EditProduct = ({ product }) => {
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
     if (file) {
-      setData(key, file);
+      setData(prev => ({ ...prev, [key]: file }));
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImages(prev => ({ ...prev, [key]: reader.result }));
@@ -119,7 +120,7 @@ const EditProduct = ({ product }) => {
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={e => handleFileUpload(e, `photo${i}`)}
+                      onChange={e => handleFileChange(e, `photo${i}`)}
                     />
                     <span className="text-xs text-white bg-black bg-opacity-50 px-2 py-1 rounded-full">
                       Upload
