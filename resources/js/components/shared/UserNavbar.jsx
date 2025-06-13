@@ -1,17 +1,25 @@
-import React, { useState } from 'react'
+
+import { useState } from 'react'
 import { Link } from '@inertiajs/react';
+import React, { useState } from 'react'
+import { Link, usePage, router } from '@inertiajs/react';
 import { HiOutlineMenuAlt4, HiOutlineSearch, HiOutlineShoppingBag } from "react-icons/hi";
 import { ImStarEmpty } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { BiUser } from "react-icons/bi";
 import Logo from '@images/Logo1.webp'
+import { Button } from '../ui/button';
 
 
 const UserNavbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const { auth } = usePage().props
+    const handleLogout = () => {
+        router.post('/logout')
+    }
 
     return (
-        <div className='py-5 md:px-16 xl:px-36 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]'>
+        <div className='py-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]'>
             <div className='flex items-center justify-around md:justify-between'>
                 <div className='flex items-center gap-5 md:hidden'>
                     <HiOutlineMenuAlt4
@@ -81,7 +89,7 @@ const UserNavbar = () => {
                         <HiOutlineShoppingBag style={{ color: "white", fontSize: "25px" }} />
                         <span className='text-slate-400 text-sm hidden md:block'>11 899 ₽</span>
                     </div>
-                    <Link href={"/login"} className='text-white'>Login</Link>
+                    {auth.user ? (<Button onClick={handleLogout} className='text-white'>Logout</Button>) :(<Link href={"/login"} className='text-white'>Login</Link>)}
                 </div>
             </div>
         </div>

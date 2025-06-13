@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/clothes', fn() => inertia('Clothes'));
     Route::get('/address', fn() => inertia('Address'));
     Route::get('/accessory', fn() => inertia('Accessory'));
+    Route::get('/detail', fn() => inertia('detail'));
 });
 
 // Admin sahifalari (faqat adminlar uchun)
@@ -46,6 +47,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
 
 // Auth sahifalar
 
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
