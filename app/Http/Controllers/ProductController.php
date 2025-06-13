@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Storage;
 
 class ProductController extends Controller
 {
@@ -53,9 +54,9 @@ class ProductController extends Controller
         $products = Product::when($search, function ($query, $search) {
             $query->where('product_name', 'like', "%{$search}%")
                 ->orWhere('category', 'like', "%{$search}%");
-        })->latest()->paginate(10);
+        })->latest()->paginate(5);
 
-        return Inertia::render('admin/products', [
+        return Inertia::render('admin/productStock', [
             'products' => $products,
             'filters' => [
                 'search' => $search,
