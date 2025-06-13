@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/clothes', fn() => inertia('Clothes'));
     Route::get('/address', fn() => inertia('Address'));
     Route::get('/accessory', fn() => inertia('Accessory'));
+    Route::get('/detail', fn() => inertia('detail'));
 });
 
 // Admin sahifalari (faqat adminlar uchun)
