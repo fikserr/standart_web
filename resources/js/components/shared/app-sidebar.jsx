@@ -1,8 +1,19 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "../ui/sidebar";
+
 import { MdDashboard, MdAllInbox, MdLogout, MdCreateNewFolder } from "react-icons/md";
 import { ImUsers } from "react-icons/im";
 import { BsClipboard2CheckFill, BsCollectionFill } from "react-icons/bs";
-import { Link } from "@inertiajs/react";
+import { Link, usePage, router } from "@inertiajs/react";
+import { Button } from "../ui/button";
 
 const items = [
   {
@@ -35,47 +46,44 @@ const items = [
     url: "/admin-users",
     icon: ImUsers,
   },
-  {
-    title: "Log out",
-    url: "/",
-    icon: MdLogout,
-  }
-]
+];
 
 export function AppSidebar() {
   const currentPath = window.location.pathname;
+  const { auth } = usePage().props;
+
+  const handleLogout = () => {
+    router.post("/logout");
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <Link href={"/admin-dashboard"}><SidebarGroupLabel style={{ padding: "30px", fontSize: "30px", color: "black" }}><span style={{ color: "blue" }}>Admin</span> Panel</SidebarGroupLabel></Link>
+          <Link href={"/admin-dashboard"}>
+            <SidebarGroupLabel style={{ padding: "30px", fontSize: "30px", color: "black" }}>
+              <span style={{ color: "blue" }}>Admin</span> Panel
+            </SidebarGroupLabel>
+          </Link>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => {
-                const isActive = currentPath === item.url;
-
-                return (
-                  <SidebarMenuItem
-                    key={item.title}
-                    style={{
-                      padding: "5px",
-                      backgroundColor: isActive ? "#e0f0ff" : "transparent", // active background
-                      borderLeft: isActive ? "4px solid blue" : "4px solid transparent", // active indicator
-                    }}
-                  >
-                    <SidebarMenuButton asChild>
-                      <a href={item.url} style={{ display: "flex", alignItems: "center", gap: "8px", color: isActive ? "blue" : "inherit" }}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+              {items.map((item) => (
+                <SidebarMenuItem key={item.title} style={{ padding: "5px" }}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url} className="flex items-center gap-2">
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+              <Button onClick={handleLogout} className="w-full mt-2" variant="destructive">
+                Log Out
+              </Button>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

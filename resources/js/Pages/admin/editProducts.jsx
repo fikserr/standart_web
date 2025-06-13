@@ -60,12 +60,10 @@ const EditProduct = ({ product }) => {
     formData.append('price', data.price);
     formData.append('colors', data.colors);
     formData.append('brend', data.brend);
-
-    // Fayllar
+    // Fayllar — Faqat File bo‘lsa qo‘sh
     if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
     if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
     if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
-
 
     // Razmerlar
     data.sizes.forEach((size, i) => {
@@ -82,6 +80,7 @@ const EditProduct = ({ product }) => {
     });
   };
 
+
   return (
     <div className='px-5 w-[1200px]'>
       <h1 className="text-3xl font-bold mb-4 p-5">Mahsulotni tahrirlash</h1>
@@ -96,10 +95,18 @@ const EditProduct = ({ product }) => {
                     {previewImages[key] && (
                       <div className="relative">
                         <img
-                          src={previewImages[key]?.startsWith('data') ? previewImages[key] : `/storage/${previewImages[key]}`}
+                          src={previewImages[key]?.startsWith('data:')
+                            ? previewImages[key] // base64 bo‘lsa
+                            : `/storage/${previewImages[key]}`} // aks holda storage
                           alt={`Photo ${i}`}
                           className="w-full h-32 object-cover rounded"
                         />
+
+                        <button
+                          type="button"
+                          onClick={() => handlePhotoDelete(key)}
+                          className="absolute top-1 right-1 text-white bg-red-600 p-1 rounded-full text-xs"
+                        >🗑</button>
                       </div>
                     )}
                   </div>

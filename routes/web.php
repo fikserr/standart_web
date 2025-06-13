@@ -47,6 +47,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
 
 // Auth sahifalar
 
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
