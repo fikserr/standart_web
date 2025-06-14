@@ -1,47 +1,47 @@
+// src/Shared/VerifyCodeModal.jsx
 import React, { useState } from 'react';
 
-export default function VerifyCodeModal({ isOpen, onClose, onSubmit, email }) {
+const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
   const [code, setCode] = useState('');
 
-  if (!isOpen) return null;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleVerify = () => {
     onSubmit(code);
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-96">
-        <h2 className="text-xl font-bold mb-4">Tasdiqlash kodi</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-xl shadow-md w-[90%] sm:w-[400px]">
+        <h2 className="text-xl font-semibold mb-4">Tasdiqlash kodi</h2>
         <p className="mb-2 text-sm text-gray-600">Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong></p>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="number"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className="border px-3 py-2 w-full rounded mb-4"
-            maxLength={6}
-            placeholder="000000"
-            required
-          />
-          <div className="flex justify-between">
-            <button
-              type="button"
-              onClick={onClose}
-              className="text-gray-600 hover:underline"
-            >
-              Bekor qilish
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Tasdiqlash
-            </button>
-          </div>
-        </form>
+
+        <input
+          type="text"
+          maxLength={6}
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          className="w-full p-2 border rounded mb-3 outline-none"
+          placeholder="123456"
+        />
+
+        <div className="flex justify-end space-x-2">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+          >
+            Bekor qilish
+          </button>
+          <button
+            onClick={handleVerify}
+            className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded"
+          >
+            Tasdiqlash
+          </button>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default VerifyCodeModal;

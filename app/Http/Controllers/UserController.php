@@ -3,69 +3,100 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\SendVerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Wotz\VerificationCode\Models\VerificationCode;
 
 class UserController extends Controller
 {
+    // 🟢 LOGIN
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return to_route($user->is_admin ? 'admin.products.show' : 'home');
+            return to_route($user->is_admin ? 'admin.dashboard' : 'home');
         }
 
         return back()->withErrors(['email' => 'Email yoki parol noto‘g‘ri.'])->withInput();
     }
-    // Barcha foydalanuvchilar ro'yxati
-    public function index()
+
+    // 🔐 LOGOUT
+    public function logout(Request $request)
     {
-        $users = User::all();
-        return inertia('Login', [
-            'users' => $users,
-        ]);
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return Inertia::location('/login');
     }
-    public function adminUsers()
-    {
-        $users = User::all();
-        return inertia('admin/users', [
-            'users' => $users,
-        ]);
-    }
-    // Yangi foydalanuvchi yaratish
-    public function register(Request $request)
+
+    // 🧾 RO‘YXATDAN O‘TISH – 1-qadam: kod yuborish
+    public function requestRegister(Request $request)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'is_admin' => 'boolean',
         ]);
 
         $data['password'] = bcrypt($data['password']);
 
         $user = User::create($data);
 
-        // Agar avtomatik login qilmoqchi bo'lsang, auth()->login($user);
+        // Kod yaratish
+        $verification = VerificationCode::create([
+            'email' => $user->email,
+        ]);
 
-        // Inertia uchun JSON javob
-        return Inertia::location('/login');
+        // Emailga yuborish
+        $user->notify(new SendVerificationCode($verification->code));
+        // Email tekshiruv modalini ko‘rsatish uchun
+        session(['pending_user_id' => $user->id]);
+
+        return response()->json(['message' => 'Tasdiqlash kodi yuborildi']);
     }
 
-    // Foydalanuvchini ko‘rsatish
-    public function show(User $user)
+    // ✅ RO‘YXATDAN O‘TISH – 2-qadam: kodni tasdiqlash
+    public function verifyRegister(Request $request)
     {
-        return response()->json($user);
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $user = User::findOrFail(session('pending_user_id'));
+
+        if (VerificationCode::verify($request->code, $user->email)) {
+            $user->markEmailAsVerified();
+            session()->forget('pending_user_id');
+            return response()->json(['message' => 'Email tasdiqlandi']);
+        }
+
+        return response()->json(['errors' => ['code' => 'Kod noto‘g‘ri yoki eskirgan']], 422);
     }
+
+    // 👥 Admin panel uchun barcha userlar
+    public function adminUsers()
+    {
+        $users = User::all();
+        return Inertia::render('admin/users', ['users' => $users]);
+    }
+
+    // 🧾 Ro‘yxat sahifasi
     public function showRegisterForm()
     {
         return Inertia::render('Register');
     }
 
-    // Foydalanuvchini yangilash
+    // 🧍Userni ko‘rsatish
+    public function show(User $user)
+    {
+        return response()->json($user);
+    }
+
+    // ✏️ Userni yangilash (masalan: is_admin)
     public function update(Request $request, User $user)
     {
         $data = $request->validate([
@@ -73,23 +104,20 @@ class UserController extends Controller
         ]);
 
         $user->update($data);
-
         return redirect()->back();
     }
 
-    // Foydalanuvchini o‘chirish
+    // ❌ Userni o‘chirish
     public function destroy(User $user)
     {
         $user->delete();
-        return response()->json(['message' => 'User deleted']);
+        return response()->json(['message' => 'User o‘chirildi']);
     }
-    public function logout(Request $request)
+
+    // 🔐 Login sahifasi orqali kirish
+    public function index()
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Inertia::location('/login');
+        $users = User::all();
+        return inertia('Login', ['users' => $users]);
     }
 }
