@@ -15,7 +15,7 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return to_route($user->is_admin ? 'admin.products.show' : 'home');
+            return to_route($user->is_admin ? 'admin.dashboard' : 'home');
         }
 
         return back()->withErrors(['email' => 'Email yoki parol noto‘g‘ri.'])->withInput();

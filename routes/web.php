@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
 // Admin sahifalari (faqat adminlar uchun)
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
-    Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'));
+    Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
     Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
     Route::get('/admin-products', fn() => inertia('admin/products'));
