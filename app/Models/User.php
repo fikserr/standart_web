@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
+    use Notifiable;
     protected $fillable = [
         'name',
         'email',
@@ -31,4 +31,5 @@ class User extends Authenticatable
             'is_admin' => 'boolean', // 👈 Cast qilish ham tavsiya etiladi
         ];
     }
+
 }

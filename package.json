@@ -18,7 +18,6 @@
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.1",
-        "@inertiajs/inertia-react": "^0.8.1",
         "@inertiajs/react": "^2.0.11",
         "@number-flow/react": "^0.5.9",
         "@radix-ui/react-dialog": "^1.1.14",
@@ -33,8 +32,8 @@
         "embla-carousel-react": "^8.6.0",
         "framer-motion": "^12.15.0",
         "lucide-react": "^0.511.0",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "react-icons": "^5.5.0",
         "react-router-dom": "^7.6.0",
         "shadcn": "^2.5.0",
@@ -47,6 +46,10 @@
     "main": "vite.config.js",
     "directories": {
         "test": "tests"
+    },
+    "engines": {
+        "node": "18.x",
+        "npm": "9.x"
     },
     "keywords": [],
     "author": "",

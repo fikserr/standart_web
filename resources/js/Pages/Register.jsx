@@ -1,5 +1,5 @@
 // src/Pages/Register.jsx
-import { useForm } from '@inertiajs/inertia-react';
+import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 import { Inertia } from '@inertiajs/inertia';

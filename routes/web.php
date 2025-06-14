@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Wotz\VerificationCode\Models\VerificationCode;
 
 // Foydalanuvchini tekshirish va asosiy sahifaga yo‘naltirish
 Route::get('/', function () {
@@ -53,3 +54,7 @@ Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
 Route::post('/request-register', [UserController::class, 'register']);
 Route::post('/verify-register', [UserController::class, 'verifyAndRegister']);
+
+Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
+Route::post('/request-register', [UserController::class, 'requestRegister']);
+Route::post('/verify-register', [UserController::class, 'verifyRegister']);

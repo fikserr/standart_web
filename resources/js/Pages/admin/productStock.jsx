@@ -24,7 +24,7 @@ const ProductStock = ({ products }) => {
     };
     const [currentProductId, setCurrentProductId] = useState(null);
     const [currentPhotos, setCurrentPhotos] = useState([]);
-    const [search,setSearch] = useState('')
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -75,14 +75,12 @@ const ProductStock = ({ products }) => {
         }
     };
     useEffect(() => {
-
         const delayDebounceFn = setTimeout(() => {
             router.get('/admin-productStock', { search }, { preserveState: true });
         }, 500); // 500ms kutadi, foydalanuvchi yozishni to‘xtatguncha
 
         return () => clearTimeout(delayDebounceFn);
-    }, [search]);
-    console.log(products);
+    }, [search]);;
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>

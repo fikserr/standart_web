@@ -55,4 +55,15 @@
       0 => 'Pest\\Laravel\\PestServiceProvider',
     ),
   ),
+  'wotz/laravel-verification-code' => 
+  array (
+    'aliases' => 
+    array (
+      'VerificationCode' => 'Wotz\\VerificationCode\\VerificationCode',
+    ),
+    'providers' => 
+    array (
+      0 => 'Wotz\\VerificationCode\\VerificationCodeServiceProvider',
+    ),
+  ),
 );
