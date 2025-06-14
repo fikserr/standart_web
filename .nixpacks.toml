@@ -1,5 +1,0 @@
-[phases.setup]
-nixpkgs = ["nodejs_18", "npm"]
-
-[variables]
-NODE_ENV = "production"
