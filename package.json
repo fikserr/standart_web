@@ -48,6 +48,10 @@
     "directories": {
         "test": "tests"
     },
+    "engines": {
+        "node": "18.x",
+        "npm": "9.x"
+    },
     "keywords": [],
     "author": "",
     "license": "ISC"
