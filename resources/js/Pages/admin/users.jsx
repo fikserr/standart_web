@@ -40,7 +40,7 @@ const AddProductForm = ({ users }) => {
 
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
-      <h1 className="text-3xl font-bold mb-6">User List</h1>
+      <h1 className="text-3xl font-bold mb-6">User Lists</h1>
       <div className="mb-4">
         <Input
           placeholder="Search product name"
