@@ -1,15 +1,29 @@
-import React from 'react'
 import { Link } from '@inertiajs/react';
+import { useState } from 'react'
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
-import { ImStarEmpty } from "react-icons/im";
+import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { HeroImg, HeroImg2, iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
+import { homeCard } from '@/components/shared/lists';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Navigation } from 'swiper/modules';
 
 const Home = () => {
+  const [starredCards, setStarredCards] = useState({});
+
+  const handleClick = (event, id) => {
+    event.preventDefault();
+    setStarredCards((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  }
   return (
     <div>
       <div className='p-5 relative w-full mt-20 2xl:px-20'>
         <img className='w-full md:hidden' src={HeroImg} alt="HeroImg" />
-        <img className='w-full xl:h-[600px] object-cover hidden md:block' src={HeroImg2} alt="HeroImg" />
+        <img className='w-full xl:h-[600px] object-cover rounded-lg hidden md:block' src={HeroImg2} alt="HeroImg" />
         <div
           style={{ fontFamily: 'Oswald' }}
           className='flex flex-col justify-between h-[80%]  lg:h-[90%] md992:p-10 absolute top-10 sm500:top-16 md:top-10 left-10 2xl:left-28 md992:left-14 md992:w-4/5 w-3/5 md:w-4/5'
@@ -21,19 +35,18 @@ const Home = () => {
             Mashhur brendlarning kiyimlari bizning katalogimizda. Faqat sifatli buyumlar
           </p>
           <button
-            className='bg-black text-white flex justify-center items-center gap-2 p-4 rounded-lg w-4/5 sm500:w-1/2 xl:text-2xl hover:bg-[rgb(218,226,234)] hover:text-black duration-500'
+            className='bg-black text-white flex justify-center items-center gap-2 p-4 rounded-lg w-4/5 sm500:w-1/2 xl:text-2xl hover:bg-[rgb(73,208,255)] hover:text-black duration-500'
             style={{ fontFamily: 'OswaldLight' }}
           >
             Katalogga o'ting <HiOutlineChevronRight />
           </button>
           <div className='flex gap-3 relative bottom-0 left-0'>
-            <button className='w-[70px] h-[70px] sm500:w-[100px] sm500:h-[100px] flex justify-center items-center rounded-[50%] bg-slate-50 hover:bg-[rgb(218,226,234)] duration-300'><HiOutlineChevronLeft /></button>
-            <button className='w-[70px] h-[70px] sm500:w-[100px] sm500:h-[100px] flex justify-center items-center rounded-[50%] bg-slate-50 hover:bg-[rgb(218,226,234)] duration-300'><HiOutlineChevronRight /></button>
+            <button className='w-[70px] h-[70px] sm500:w-[100px] sm500:h-[100px] flex justify-center items-center rounded-[50%] bg-slate-50 hover:bg-[rgb(73,208,255)] duration-300'><HiOutlineChevronLeft /></button>
+            <button className='w-[70px] h-[70px] sm500:w-[100px] sm500:h-[100px] flex justify-center items-center rounded-[50%] bg-slate-50 hover:bg-[rgb(73,208,255)] duration-300'><HiOutlineChevronRight /></button>
           </div>
         </div>
       </div>
       {/* oyoq kiyimlar */}
-
       <div className='px-5 xl:px-20'>
         <div className='flex items-center justify-between'>
           <h3 style={{ fontFamily: 'Oswald' }}
@@ -50,46 +63,47 @@ const Home = () => {
             <HiOutlineChevronRight />
           </h4>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md992:grid-cols-4 gap-2 my-4'>
-          <Link href={'/detail'} className='border-2 rounded-lg flex flex-col'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2 text-left'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </Link>
-          <Link href={'/detail'} className='border-2 h-[250px] xl:h-[350px] rounded-lg flex flex-col'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2 text-left'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </Link>
-          <Link href={'/detail'} className='border-2 sm:flex flex-col h-[250px] xl:h-[350px] hidden rounded-lg'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2 text-left'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </Link>
-          <Link href={'/detail'} className='border-2 h-[250px] xl:h-[350px] hidden md992:flex flex-col rounded-lg'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2 text-left'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </Link>
-        </div>
-      </div>
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={10}
+          slidesPerView={2}
+          navigation
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            992: {
+              slidesPerView: 4,
+            },
+          }}
+        >
+          {
+            homeCard.slice(0, 8).map((item, index) => (
+              <SwiperSlide key={index}>
+                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
+                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
+                    <button onClick={(e) => handleClick(e, item.id)}>
+                      {starredCards[item.id] ? (
+                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
+                      ) : (
+                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
+                      )}
+                    </button>
+                  </div>
+                  <div className='p-2'>
+                    <p>{item.title}</p>
+                    <p>{item.price}</p>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))
+          }
+        </Swiper>
 
+      </div>
       {/* kiyimlar */}
       <div className='px-5 xl:px-20'>
         <div className='flex items-center justify-between'>
@@ -107,44 +121,45 @@ const Home = () => {
             <HiOutlineChevronRight />
           </h4>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md992:grid-cols-4 gap-2 my-4'>
-          <div className='border-2 rounded-lg'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px]'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px] hidden sm:block'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px] hidden md992:block'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-        </div>
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={10}
+          slidesPerView={2}
+          navigation
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            992: {
+              slidesPerView: 4,
+            },
+          }}
+        >
+          {
+            homeCard.slice(4, 12).map((item, index) => (
+              <SwiperSlide key={index}>
+                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
+                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
+                    <button onClick={(e) => handleClick(e, item.id)}>
+                      {starredCards[item.id] ? (
+                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
+                      ) : (
+                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
+                      )}
+                    </button>
+                  </div>
+                  <div className='p-2'>
+                    <p>{item.title}</p>
+                    <p>{item.price}</p>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))
+          }
+        </Swiper>
       </div>
       {/* aksesuarlar */}
       <div className='px-5 xl:px-20'>
@@ -163,44 +178,46 @@ const Home = () => {
             <HiOutlineChevronRight />
           </h4>
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md992:grid-cols-4 gap-2 my-4'>
-          <div className='border-2 rounded-lg'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px]'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px] hidden sm:block'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-          <div className='border-2 rounded-lg h-[250px] xl:h-[350px] hidden md992:block'>
-            <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-              <button><ImStarEmpty className='absolute top-4 right-4' /></button>
-            </div>
-            <div className='p-2'>
-              <p>Product nomi</p>
-              <p>Product narxi</p>
-            </div>
-          </div>
-        </div>
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={10}
+          slidesPerView={2}
+          navigation
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            992: {
+              slidesPerView: 4,
+            },
+          }}
+        >
+          {
+            homeCard.slice(8, 12).map((item, index) => (
+              <SwiperSlide key={index}>
+                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
+                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
+                    <button onClick={(e) => handleClick(e, item.id)}>
+                      {starredCards[item.id] ? (
+                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
+                      ) : (
+                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
+                      )}
+                    </button>
+                  </div>
+                  <div className='p-2'>
+                    <p>{item.title}</p>
+                    <p>{item.price}</p>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))
+          }
+        </Swiper>
+
       </div>
 
       <div className='px-5 xl:px-20 my-14 text-white'>
@@ -344,7 +361,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 
