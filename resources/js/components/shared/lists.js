@@ -148,3 +148,18 @@ export const productStock = [
         colors: ["#1E3A8A", "#000000", "#B91C1C"]
     }
 ];
+
+export const homeCard = [
+    { id: 1, title: "Product nomi", price: "Product narxi" },
+    { id: 2, title: "Product nomi", price: "Product narxi" },
+    { id: 3, title: "Product nomi", price: "Product narxi" },
+    { id: 4, title: "Product nomi", price: "Product narxi" },
+    { id: 5, title: "Product nomi", price: "Product narxi" },
+    { id: 6, title: "Product nomi", price: "Product narxi" },
+    { id: 7, title: "Product nomi", price: "Product narxi" },
+    { id: 8, title: "Product nomi", price: "Product narxi" },
+    { id: 9, title: "Product nomi", price: "Product narxi" },
+    { id: 10, title: "Product nomi", price: "Product narxi" },
+    { id: 11, title: "Product nomi", price: "Product narxi" },
+    { id: 12, title: "Product nomi", price: "Product narxi" },
+  ]
