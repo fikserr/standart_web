@@ -101,7 +101,7 @@ const Footer = () => {
                 </div>
                 <div className='flex justify-between items-center px-3 border-b-2'>
                     <input type="text" placeholder='Email pochtangiz' className='bg-[rgb(18,18,20)] w-full outline-none p-2 text-white my-3' />
-                    <p className='w-[40px] h-[35px] sm:h-[40px] md992:w-[45px] rounded-[50%] flex justify-center items-center bg-slate-100'>
+                    <p className='w-[40px] sm500:w-[45px] h-[35px] sm:h-[40px] md992:w-[45px] rounded-[50%] flex justify-center items-center bg-slate-100'>
                         <HiOutlineChevronRight />
                     </p>
                 </div>

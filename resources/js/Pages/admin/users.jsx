@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { router } from '@inertiajs/react'; // inertia router kerak
+import { router } from '@inertiajs/react';
+import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
 
 const AddProductForm = ({ users }) => {
@@ -40,6 +41,12 @@ const AddProductForm = ({ users }) => {
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
       <h1 className="text-3xl font-bold mb-6">User List</h1>
+      <div className="mb-4">
+        <Input
+          placeholder="Search product name"
+          className="max-w-sm"
+        />
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left">
           <thead>
