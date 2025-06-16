@@ -11,10 +11,11 @@ class CreateVerificationCodesTable extends Migration
         Schema::create('verification_codes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code');
-            $table->string('verifiable');
+            $table->morphs('verifiable');
             $table->timestamp('expires_at');
             $table->timestamps();
         });
+        
     }
 
     public function down() : void

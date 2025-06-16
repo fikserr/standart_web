@@ -25,7 +25,14 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     post('/request-register', {
-      onSuccess: () => setShowModal(true)
+      onSuccess: () => {
+        setShowModal(true);
+      },
+      preserveScroll: true,
+      preserveState: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
     });
   };
 

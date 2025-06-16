@@ -12,7 +12,7 @@ class VerifyCodeController extends Controller
         $user = $req->user();
         if (VerificationCode::verify($req->code, $user->email)) {
             $user->markEmailAsVerified();
-            return redirect()->route('dashboard');
+            return redirect()->route('register');
         }
         return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan']);
     }

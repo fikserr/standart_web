@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Notifications\SendVerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Wotz\VerificationCode\Models\VerificationCode;
 
@@ -34,47 +34,66 @@ class UserController extends Controller
     }
 
     // 🧾 RO‘YXATDAN O‘TISH – 1-qadam: kod yuborish
+    // 🧾 RO‘YXATDAN O‘TISH – 1-qadam: kod yuborish
     public function requestRegister(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
+        $request->validate([
+            'name' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|confirmed',
         ]);
 
-        $data['password'] = bcrypt($data['password']);
-
-        $user = User::create($data);
-
-        // Kod yaratish
-        $verification = VerificationCode::create([
-            'email' => $user->email,
+        // Foydalanuvchini yaratish
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        // Emailga yuborish
-        $user->notify(new SendVerificationCode($verification->code));
-        // Email tekshiruv modalini ko‘rsatish uchun
-        session(['pending_user_id' => $user->id]);
+        if ($user) {
+            // 🟢 Kod yaratish
+            $code = VerificationCode::create([
+                'verifiable_type' => get_class($user),
+                'verifiable_id' => $user->id,
+                'code' => random_int(100000, 999999),
+                'expires_at' => now()->addMinutes(10),
+            ]);
 
-        return response()->json(['message' => 'Tasdiqlash kodi yuborildi']);
+            // 🟡 Sessionga saqlaymiz
+            session(['pending_user_id' => $user->id]);
+
+            logger()->info("Yangi kod: {$code->code}");
+        }
+
+        return back()->with('success', 'Foydalanuvchi ro‘yxatdan o‘tdi, tasdiqlash kodi yuborildi.');
     }
 
     // ✅ RO‘YXATDAN O‘TISH – 2-qadam: kodni tasdiqlash
+
     public function verifyRegister(Request $request)
     {
         $request->validate([
             'code' => 'required|string',
         ]);
 
-        $user = User::findOrFail(session('pending_user_id'));
+        $userId = session('pending_user_id');
 
-        if (VerificationCode::verify($request->code, $user->email)) {
-            $user->markEmailAsVerified();
-            session()->forget('pending_user_id');
-            return response()->json(['message' => 'Email tasdiqlandi']);
+        if (!$userId) {
+            return back()->withErrors(['code' => 'Session yo‘qolgan.']);
         }
 
-        return response()->json(['errors' => ['code' => 'Kod noto‘g‘ri yoki eskirgan']], 422);
+        $user = User::find($userId);
+
+        if (!$user) {
+            return back()->withErrors(['code' => 'Foydalanuvchi topilmadi.']);
+        }
+
+        if (!VerificationCode::verify($request->code, $user)) {
+            return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan.']);
+        }
+
+        auth()->login($user);
+        return redirect()->route('home');
     }
 
     // 👥 Admin panel uchun barcha userlar

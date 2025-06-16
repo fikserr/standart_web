@@ -52,9 +52,5 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
-Route::post('/request-register', [UserController::class, 'register']);
-Route::post('/verify-register', [UserController::class, 'verifyAndRegister']);
-
-Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
 Route::post('/request-register', [UserController::class, 'requestRegister']);
 Route::post('/verify-register', [UserController::class, 'verifyRegister']);
