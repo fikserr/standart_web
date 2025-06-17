@@ -2,10 +2,15 @@ import { useState } from 'react';
 import { router } from '@inertiajs/react';
 import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
+import { HiOutlineSearch } from 'react-icons/hi';
 
 const AddProductForm = ({ users }) => {
   const [loadingId, setLoadingId] = useState(null);
   const { toast } = useToast()
+  const [search, setSearch] = useState('')
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const toggleAdmin = async (user) => {
     setLoadingId(user.id);
@@ -37,13 +42,14 @@ const AddProductForm = ({ users }) => {
     }
   };
 
-
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
       <h1 className="text-3xl font-bold mb-6">User Lists</h1>
       <div className="mb-4">
         <Input
-          placeholder="Search product name"
+          placeholder="🔍 Search product name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
       </div>
@@ -60,7 +66,7 @@ const AddProductForm = ({ users }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user.id} className="border-b border-gray-200">
                 <td className="px-4 py-3">{user.id}</td>
                 <td className="px-4 py-3 font-medium text-gray-900">{user.name}</td>

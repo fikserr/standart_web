@@ -16,53 +16,70 @@ const Login = () => {
   };
 
   return (
-    <div className='px-5 xl:px-32 flex justify-center items-center min-h-screen '>
-      <form onSubmit={handleSubmit} className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>
-        <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '24px' }}>Login</h2>
-        <div className='grid grid-cols-1 p-5 gap-5'>
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Elektron pochtangiz:</h3>
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff] perspective-1000 overflow-hidden relative font-sans">
+      <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_#a1f3ee_0%,_#e2f0ff_80%)] opacity-20"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-repeat opacity-[0.05]" />
+      </div>
+
+      <form
+        onSubmit={handleSubmit}
+        className="relative z-10 w-[90%] max-w-xl bg-white/70 rounded-xl backdrop-blur-xl border border-blue-800/30 p-10 shadow-[0_0_40px_#c0eaff60] animate-fadeIn"
+      >
+        <div className="absolute -inset-0.5 rounded-xl blur-xl bg-gradient-to-br from-cyan-200/30 via-blue-300/10 to-purple-200/20 animate-tilt z-[-1]" />
+
+        <h2 className="text-center text-4xl font-bold tracking-widest text-black mb-10 uppercase">
+          Kirish
+        </h2>
+
+        <div className="space-y-6">
+          <div>
+            <label className="text-black text-sm mb-1 block">Email</label>
             <input
               type="email"
               value={data.email}
               onChange={(e) => setData('email', e.target.value)}
-              placeholder='Elektron pochtangizni kiriting'
-              className='bg-transparent w-full outline-none'
+              placeholder="you@light.system"
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-gray-800"
             />
-            {errors.email && <div className="text-red-500 text-sm">{errors.email}</div>}
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
 
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Parol:</h3>
+          <div className="relative">
+            <label className="text-black text-sm mb-1 block">Parol</label>
             <input
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               value={data.password}
               onChange={(e) => setData('password', e.target.value)}
-              placeholder='Parolni kiriting'
-              className='bg-transparent w-full outline-none'
+              placeholder="********"
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-gray-800"
             />
             <span
               onClick={() => setShowPassword(prev => !prev)}
-              className='absolute cursor-pointer right-2 top-6 p-3 text-2xl'
+              className="absolute top-9 right-2 cursor-pointer text-black"
             >
               {showPassword ? <PiEye /> : <PiEyeClosed />}
             </span>
-            {errors.password && <div className="text-red-500 text-sm">{errors.password}</div>}
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
           </div>
         </div>
 
-        <div className='px-5 flex items-end justify-between'>
+        <div className="mt-10 flex justify-between items-center">
           <button
             type="submit"
             disabled={processing}
-            className='p-3 bg-black text-white w-[40%] sm:w-[20%] rounded-lg text-center'
+            className="px-6 py-2 bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 text-white font-bold rounded-full hover:scale-105 transition shadow-md hover:shadow-blue-400/40"
           >
             Kirish
           </button>
-          <Link href={"/register"} className='underline hover:text-blue-500 duration-300'>Ro'yhatdan o'tish</Link>
+          <Link href="/register" className="text-black underline hover:text-blue-800 text-sm transition">
+            Registratsiya
+          </Link>
         </div>
       </form>
     </div>
+
+
   );
 };
 

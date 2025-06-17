@@ -86,7 +86,7 @@ const ProductStock = ({ products }) => {
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
             <div className="mb-4">
                 <Input
-                    placeholder="Search product name"
+                    placeholder="🔍 Search product name"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="max-w-sm"
@@ -114,7 +114,7 @@ const ProductStock = ({ products }) => {
                                     <td className="py-2">
                                         <div className="relative w-24 h-24 flex items-center justify-center">
                                             <img
-                                                src={`/storage/${currentImage}`}
+                                                src={`/storage/${currentImage}?v=${Date.now()}`}
                                                 alt={product.product_name}
                                                 className="w-20 h-20 rounded object-cover cursor-zoom-in"
                                                 onClick={() => openImgModal(product.id, `/storage/${currentImage}`, photos)}
@@ -190,7 +190,7 @@ const ProductStock = ({ products }) => {
                         </div>
                     </div>
                 )}
-                <Pagination>
+                <Pagination className="mt-5">
                     <PaginationContent>
                         {products.links.map((item, i) => (
                             <PaginationItem key={i}>

@@ -1,6 +1,5 @@
-// src/Pages/Register.jsx
 import { useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 import { Inertia } from '@inertiajs/inertia';
 import VerifyCodeModal from '@shared/VerifyCodeModal';
@@ -15,7 +14,7 @@ const Register = () => {
     email: '',
     password: '',
     password_confirmation: '',
-    code: '' // bu modal orqali kiritiladi
+    code: ''
   });
 
   const handleChange = (e) => {
@@ -25,9 +24,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     post('/request-register', {
-      onSuccess: () => {
-        setShowModal(true);
-      },
+      onSuccess: () => setShowModal(true),
       preserveScroll: true,
       preserveState: true,
       headers: {
@@ -38,7 +35,6 @@ const Register = () => {
 
   const handleVerifyCode = (code) => {
     setData('code', code);
-
     post('/verify-register', {
       onSuccess: () => {
         setShowModal(false);
@@ -48,93 +44,93 @@ const Register = () => {
   };
 
   return (
-    <div className='px-5 xl:px-32 my-32 flex justify-center'>
-      <form onSubmit={handleSubmit} className='border rounded-lg p-5 w-[100%] sm:w-4/6 lg:w-3/6'>
-        <h2 className='col-span-3' style={{ fontFamily: 'Oswald', fontSize: '24px' }}>Register</h2>
-        <div className='grid grid-cols-1 p-5 gap-5'>
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Ismingiz:</h3>
+    <div className="min-h-screen flex items-center justify-center bg-[#ffffff] perspective-1000 overflow-hidden relative font-sans">
+      <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
+        <div className="w-full h-full bg-[radial-gradient(circle_at_center,_#00ffe0_0%,_#0a0f1c_80%)] opacity-10"></div>
+        <div className="absolute inset-0 bg-grid-pattern bg-repeat opacity-[0.04]" />
+      </div>
+
+      <form onSubmit={handleSubmit} className="relative z-10 w-[90%] max-w-2xl bg-white/70 rounded-xl backdrop-blur-2xl border border-cyan-800/30 p-10 shadow-[0_0_50px_#00ffe040] animate-fadeIn">
+        <div className="absolute -inset-0.5 rounded-xl blur-xl bg-gradient-to-br from-cyan-200/30 via-blue-300/10 to-purple-200/20 animate-tilt z-[-1]" />
+
+        <h2 className="text-center text-4xl font-bold tracking-widest text-black mb-10 uppercase">
+        Registratsiya
+        </h2>
+
+        <div className="space-y-6">
+          <div>
+            <label className="text-black text-sm mb-1 block">Ismingiz</label>
             <input
               type="text"
               name="name"
               value={data.name}
               onChange={handleChange}
               placeholder='Ismingizni kiriting'
-              className='bg-transparent w-full outline-none'
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-black"
             />
             {errors.name && <p className='text-red-500 text-sm'>{errors.name}</p>}
           </div>
 
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Elektron pochtangiz:</h3>
+          <div>
+            <label className="text-black text-sm mb-1 block">Email</label>
             <input
               type="email"
               name="email"
               value={data.email}
               onChange={handleChange}
-              placeholder='Emailni kiriting'
-              className='bg-transparent w-full outline-none'
+              placeholder='you@galaxy.space'
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-black"
             />
             {errors.email && <p className='text-red-500 text-sm'>{errors.email}</p>}
           </div>
 
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Parol:</h3>
+          <div className="relative">
+            <label className="text-black text-sm mb-1 block">Parol</label>
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               value={data.password}
               onChange={handleChange}
-              placeholder='Parol kiriting'
-              className='bg-transparent w-full outline-none'
+              placeholder='********'
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-black"
             />
-            <span
-              onClick={() => setShowPassword(prev => !prev)}
-              className='absolute cursor-pointer right-2 top-6 p-3 text-2xl'
-            >
+            <span onClick={() => setShowPassword(prev => !prev)} className="absolute top-9 right-2 cursor-pointer text-black">
               {showPassword ? <PiEye /> : <PiEyeClosed />}
             </span>
             {errors.password && <p className='text-red-500 text-sm'>{errors.password}</p>}
           </div>
 
-          <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Parolni takrorlang:</h3>
+          <div className="relative">
+            <label className="text-black text-sm mb-1 block">Parolni takrorlang</label>
             <input
               type={repeatPassword ? "text" : "password"}
               name="password_confirmation"
               value={data.password_confirmation}
               onChange={handleChange}
-              placeholder='Parolni takrorlang'
-              className='bg-transparent w-full outline-none'
+              placeholder='********'
+              className="w-full bg-transparent border-b border-black placeholder-slate-300 focus:outline-none py-2 text-black"
             />
-            <span
-              onClick={() => setRepeatPassword(prev => !prev)}
-              className='absolute cursor-pointer right-2 top-6 p-3 text-2xl'
-            >
+            <span onClick={() => setRepeatPassword(prev => !prev)} className="absolute top-9 right-2 cursor-pointer text-black">
               {repeatPassword ? <PiEye /> : <PiEyeClosed />}
             </span>
           </div>
         </div>
 
-        <div className='px-5 flex items-end justify-between'>
+        <div className="mt-10 flex justify-between items-center">
           <button
-            type='submit'
+            type="submit"
             disabled={processing}
-            className='p-3 bg-black text-white w-[40%] sm:w-[20%] rounded-lg text-center'
+            className="px-6 py-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 text-white font-bold rounded-full hover:scale-105 transition shadow-md hover:shadow-cyan-500/40"
           >
             Saqlash
           </button>
 
-          <a
-            href="/login"
-            className='underline hover:text-blue-500 duration-300'
-          >
+          <a href="/login" className="text-black underline hover:text-blue-800 text-sm transition">
             LogIn
           </a>
         </div>
       </form>
 
-      {/* Modal */}
       <VerifyCodeModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
