@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Wotz\VerificationCode\Models\VerificationCode;
-
 class VerifyCodeController extends Controller
 {
-    public function verify(Request $req)
+    public static function verify($inputCode, $user)
     {
-        $user = $req->user();
-        if (VerificationCode::verify($req->code, $user->email)) {
-            $user->markEmailAsVerified();
-            return redirect()->route('register');
-        }
-        return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan']);
+        $latest = self::where('verifiable_type', get_class($user))
+            ->where('verifiable_id', $user->id)
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->first();
+
+        return $latest && Hash::check($inputCode, $latest->code);
     }
+
 }

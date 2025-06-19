@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\SendVerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Mail;
 use Wotz\VerificationCode\Models\VerificationCode;
 
 class UserController extends Controller
@@ -37,6 +39,7 @@ class UserController extends Controller
     // 🧾 RO‘YXATDAN O‘TISH – 1-qadam: kod yuborish
     public function requestRegister(Request $request)
     {
+        $rawCode = random_int(100000, 999999);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -55,14 +58,17 @@ class UserController extends Controller
             $code = VerificationCode::create([
                 'verifiable_type' => get_class($user),
                 'verifiable_id' => $user->id,
-                'code' => random_int(100000, 999999),
+                'code' => bcrypt($rawCode),
                 'expires_at' => now()->addMinutes(10),
             ]);
-
+            // Mail::to($user->email)->send(new SendVerificationCode($rawCode));
             // 🟡 Sessionga saqlaymiz
             session(['pending_user_id' => $user->id]);
 
-            logger()->info("Yangi kod: {$code->code}");
+            logger()->info("Yangi kod: {$rawCode}");
+            Mail::raw("Sizning tasdiqlash kodingiz: {$rawCode}", function ($message) use ($user) {
+                $message->to($user->email)->subject('Tasdiqlash kodingiz');
+            });
         }
 
         return back()->with('success', 'Foydalanuvchi ro‘yxatdan o‘tdi, tasdiqlash kodi yuborildi.');
@@ -91,7 +97,8 @@ class UserController extends Controller
         if (!VerificationCode::verify($request->code, $user)) {
             return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan.']);
         }
-
+        
+        $user->markEmailAsVerified(); // ✅ ADD THIS
         auth()->login($user);
         return redirect()->route('home');
     }

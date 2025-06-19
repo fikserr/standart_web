@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifyCodeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Wotz\VerificationCode\Models\VerificationCode;
 
 // Foydalanuvchini tekshirish va asosiy sahifaga yo‘naltirish
 Route::get('/', function () {
@@ -56,3 +56,11 @@ Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
 Route::post('/request-register', [UserController::class, 'requestRegister']);
 Route::post('/verify-register', [UserController::class, 'verifyRegister']);
+Route::middleware('auth')->post('/verify-code', [VerifyCodeController::class, 'verify'])->name('verify.code');
+Route::get('/test-email', function () {
+    Mail::raw('Salom! Laraveldan test email.', function ($message) {
+        $message->to('fixprogram7897894@gmail.com')->subject('Laravel Test Email');
+    });
+
+    return '✅ Email yuborildi!';
+});

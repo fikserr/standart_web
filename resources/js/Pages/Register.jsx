@@ -37,12 +37,12 @@ const Register = () => {
   };
 
   const handleVerifyCode = (code) => {
-    setData('code', code);
+    setData('code', code); // form ma'lumotiga kodni qo‘shadi
 
     post('/verify-register', {
       onSuccess: () => {
-        setShowModal(false);
-        Inertia.visit('/login');
+        setShowModal(false);       // modalni yopadi
+        Inertia.visit('/login');   // yoki /home sahifaga o‘tkazadi
       }
     });
   };
@@ -138,8 +138,11 @@ const Register = () => {
       <VerifyCodeModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onSubmit={handleVerifyCode}
-        email={data.email}
+        onSubmit={(code) => {
+          handleVerifyCode(code); // 👉 bu chiqayaptimi?
+          // bu yerda tasdiqlash uchun so‘rov jo‘natilishi kerak
+        }}
+        email="user@example.com"
       />
     </div>
   );
