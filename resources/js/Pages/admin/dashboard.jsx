@@ -1,61 +1,19 @@
 import { AppSidebar } from '@/components/shared/app-sidebar';
-import { IoMdTrendingDown, IoMdTrendingUp } from "react-icons/io";
-import Group from '@images/groupIcon.svg';
-import Order from '@images/orderIcon.svg';
-import Sales from '@images/salesIcon.svg';
-import Pending from '@images/pendingIcon.svg';
 import CountUp from '@/components/shared/countUp';
-import { useCycle } from 'framer-motion';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { cards } from '@/components/shared/lists'
 
-const cards = [
-  {
-    title: "Total Users",
-    value: 40689,
-    diff: "8.5%",
-    icon: Group,
-    iconUp: <IoMdTrendingUp />,
-    iconStyle: "bg-[rgb(228,228,255)]",
-    info: "Up from yesterday",
-    isCurrency: false,
-    chartColor: "text-green-500",
-  },
-  {
-    title: "Total Order",
-    value: 10293,
-    diff: "1.3%",
-    icon: Order,
-    iconUp: <IoMdTrendingUp />,
-    iconStyle: "bg-[rgb(254,242,214)]",
-    info: "Up from last week",
-    isCurrency: false,
-    chartColor: "text-green-500",
-  },
-  {
-    title: "Total Sales",
-    value: 89000,
-    diff: "4.3%",
-    icon: Sales,
-    iconUp: <IoMdTrendingDown />,
-    iconStyle: "bg-[rgb(217,247,231)]",
-    info: "Down from yesterday",
-    isCurrency: true,
-    chartColor: "text-red-500",
-  },
-  {
-    title: "Total Products",
-    value: 2040,
-    diff: "1.8%",
-    icon: Pending,
-    iconUp: <IoMdTrendingUp />,
-    iconStyle: "bg-[rgb(255,222,210)]",
-    info: "Up from yesterday",
-    isCurrency: false,
-    chartColor: "text-green-500",
-  },
+const lineChartData = [
+  { name: 'Jan', sales: 2400 },
+  { name: 'Feb', sales: 1398 },
+  { name: 'Mar', sales: 9800 },
+  { name: 'Apr', sales: 3908 },
+  { name: 'May', sales: 4800 },
+  { name: 'Jun', sales: 3800 },
+  { name: 'Jul', sales: 4300 },
 ];
 
 const AdminDashboard = () => {
-  const [value, cycleValue] = useCycle(cards.value);
   return (
     <div className="px-5">
       <AppSidebar />
@@ -96,6 +54,18 @@ const AdminDashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <h2 className="text-2xl font-bold mt-10 mb-4 px-5">Sales Overview</h2>
+      <div className="w-full h-[300px] px-5">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={lineChartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="sales" stroke="#4F46E5" strokeWidth={2} />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
