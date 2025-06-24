@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyCodeMail;
 use App\Models\User;
 use App\Notifications\SendVerificationCode;
 use Illuminate\Http\Request;
@@ -66,6 +67,7 @@ class UserController extends Controller
             session(['pending_user_id' => $user->id]);
 
             logger()->info("Yangi kod: {$rawCode}");
+            // Mail::to($user->email)->send(new VerifyCodeMail($rawCode));
             Mail::raw("Sizning tasdiqlash kodingiz: {$rawCode}", function ($message) use ($user) {
                 $message->to($user->email)->subject('Tasdiqlash kodingiz');
             });

@@ -3,26 +3,24 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
 
 class VerifyCodeMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
 
-    public $code;
+    public $rawCode;
 
-    public function __construct($code)
+    public function __construct($rawCode)
     {
-        $this->code = $code;
+        $this->rawCode = $rawCode;
     }
 
     public function build()
     {
-        return $this->subject('Tasdiqlash kodingiz')
-                    ->view('emails.verify_code')
-                    ->with([
-                        'code' => $this->code,
-                    ]);
+        return $this->subject('Sizning tasdiqlash kodingiz')
+                    ->view('emails.verify-code')
+                    ->with(['code' => $this->rawCode]);
     }
 }
