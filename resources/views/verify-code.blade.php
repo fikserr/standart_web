@@ -13,9 +13,9 @@
             padding: 15px;
             border-radius: 5px;
             text-align: center;">
-            {{ $rawCode }}
+            {{ $code }}
         </div>
-        <p>Ushbu kod <strong>10 daqiqa</strong> davomida amal qiladi. Iltimos, uni boshqa hech kim bilan ulashmang!</p>
+        <p>Ushbu kod <strong>3 daqiqa</strong> davomida amal qiladi. Iltimos, uni boshqa hech kim bilan ulashmang!</p>
         <p>Rahmat, <br> <strong>{{ config('app.name') }}</strong></p>
     </div>
 </body>

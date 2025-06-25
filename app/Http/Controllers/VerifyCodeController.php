@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Hash;
+
 class VerifyCodeController extends Controller
 {
     public static function verify($inputCode, $user)

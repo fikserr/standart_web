@@ -6,11 +6,7 @@ import { Link, router } from "@inertiajs/react";
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
 } from "@ui/pagination"
 
 
@@ -81,6 +77,7 @@ const ProductStock = ({ products }) => {
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);;
+    console.log(products);
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
@@ -190,7 +187,7 @@ const ProductStock = ({ products }) => {
                         </div>
                     </div>
                 )}
-                <Pagination className="mt-5">
+                {products.total ? ( <Pagination className="mt-5">
                     <PaginationContent>
                         {products.links.map((item, i) => (
                             <PaginationItem key={i}>
@@ -210,7 +207,7 @@ const ProductStock = ({ products }) => {
                             </PaginationItem>
                         ))}
                     </PaginationContent>
-                </Pagination>
+                </Pagination>) : ("")}
 
             </div>
         </div>

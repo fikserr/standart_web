@@ -10,17 +10,17 @@ class VerifyCodeMail extends Mailable
 {
     use Queueable;
 
-    public $rawCode;
+    public $code;
 
-    public function __construct($rawCode)
+    public function __construct($code)
     {
-        $this->rawCode = $rawCode;
+        $this->code = $code;
     }
 
     public function build()
     {
         return $this->subject('Sizning tasdiqlash kodingiz')
-                    ->view('emails.verify-code')
-                    ->with(['code' => $this->rawCode]);
+                    ->view('verify-code')
+                    ->with(['code' => $this->code]);
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\VerifyCodeMail;
 use App\Models\User;
-use App\Notifications\SendVerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -60,17 +59,17 @@ class UserController extends Controller
                 'verifiable_type' => get_class($user),
                 'verifiable_id' => $user->id,
                 'code' => bcrypt($rawCode),
-                'expires_at' => now()->addMinutes(10),
+                'expires_at' => now()->addMinutes(3),
             ]);
             // Mail::to($user->email)->send(new SendVerificationCode($rawCode));
             // 🟡 Sessionga saqlaymiz
             session(['pending_user_id' => $user->id]);
 
             logger()->info("Yangi kod: {$rawCode}");
-            // Mail::to($user->email)->send(new VerifyCodeMail($rawCode));
-            Mail::raw("Sizning tasdiqlash kodingiz: {$rawCode}", function ($message) use ($user) {
-                $message->to($user->email)->subject('Tasdiqlash kodingiz');
-            });
+            Mail::to($user->email)->send(new VerifyCodeMail($rawCode));
+            // Mail::raw("Sizning tasdiqlash kodingiz: {$rawCode}", function ($message) use ($user) {
+            //     $message->to($user->email)->subject('Tasdiqlash kodingiz');
+            // });
         }
 
         return back()->with('success', 'Foydalanuvchi ro‘yxatdan o‘tdi, tasdiqlash kodi yuborildi.');
@@ -99,17 +98,30 @@ class UserController extends Controller
         if (!VerificationCode::verify($request->code, $user)) {
             return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan.']);
         }
-        
+
         $user->markEmailAsVerified(); // ✅ ADD THIS
         auth()->login($user);
         return redirect()->route('home');
     }
 
     // 👥 Admin panel uchun barcha userlar
-    public function adminUsers()
+    public function adminUsers(Request $request)
     {
-        $users = User::all();
-        return Inertia::render('admin/users', ['users' => $users]);
+        $search = $request->input('search');
+
+        $users = User::query()
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return Inertia::render('admin/users', [
+            'users' => $users,
+            'search' => $search,
+        ]);
     }
 
     // 🧾 Ro‘yxat sahifasi

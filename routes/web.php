@@ -37,8 +37,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
     Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
     Route::get('/admin-products', fn() => inertia('admin/products'));
-    Route::get('/admin-productStock', [ProductController::class, 'index'])->name('admin.products.index');
-    Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('users');
+    Route::get('/admin-productStock', action: [ProductController::class, 'index'])->name('admin.products.index');
+    Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('admin.users');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::get('/admin-add-product', [ProductController::class, 'create'])->name('admin.products.create');
     Route::post('/admin-add-store', [ProductController::class, 'store'])->name('admin.products.store');

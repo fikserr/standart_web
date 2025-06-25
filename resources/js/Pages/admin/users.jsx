@@ -1,23 +1,26 @@
 import { useState } from 'react';
-import { router } from '@inertiajs/react';
+import { router, Link } from '@inertiajs/react';
 import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
-import { HiOutlineSearch } from 'react-icons/hi';
+import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 
-const AddProductForm = ({ users }) => {
+const AddProductForm = ({ users, search: initialSearch }) => {
   const [loadingId, setLoadingId] = useState(null);
-  const { toast } = useToast()
-  const [search, setSearch] = useState('')
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const [search, setSearch] = useState(initialSearch || '');
+  const { toast } = useToast();
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    // Laravel route bilan sozlanishi kerak: route('admin.users')
+    router.get('/admin-users', { search: value }, { preserveState: true });
+  };
 
   const toggleAdmin = async (user) => {
     setLoadingId(user.id);
-
     try {
       await router.put(
-        `/admin/users/${user.id}`,
+        route('admin.users.update', user.id),
         { is_admin: !user.is_admin },
         {
           preserveScroll: true,
@@ -41,19 +44,19 @@ const AddProductForm = ({ users }) => {
       });
     }
   };
-
+  
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
       <h1 className="text-3xl font-bold mb-6">User Lists</h1>
       <div className="mb-4">
         <Input
-          placeholder="🔍 Search product name"
+          placeholder="🔍 Ism yoki email bilan izlash..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearchChange}
           className="max-w-sm"
         />
       </div>
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full text-sm text-left">
           <thead>
             <tr className="bg-gray-100 text-gray-700">
@@ -66,7 +69,7 @@ const AddProductForm = ({ users }) => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+            {users.data.map((user) => (
               <tr key={user.id} className="border-b border-gray-200">
                 <td className="px-4 py-3">{user.id}</td>
                 <td className="px-4 py-3 font-medium text-gray-900">{user.name}</td>
@@ -95,11 +98,32 @@ const AddProductForm = ({ users }) => {
                     </span>
                   </label>
                 </td>
-
               </tr>
             ))}
           </tbody>
         </table>
+        {users.total > 0 && (
+          <Pagination className="mt-5">
+            <PaginationContent>
+              {users.links.map((item, i) => (
+                <PaginationItem key={i}>
+                  {item.url ? (
+                    <Link
+                      href={item.url}
+                      className={`px-3 py-1 rounded hover:bg-gray-200 ${item.active ? "bg-gray-300 font-bold" : ""}`}
+                      dangerouslySetInnerHTML={{ __html: item.label }}
+                    />
+                  ) : (
+                    <span
+                      className="px-3 py-1 text-gray-400"
+                      dangerouslySetInnerHTML={{ __html: item.label }}
+                    />
+                  )}
+                </PaginationItem>
+              ))}
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </div>
   );

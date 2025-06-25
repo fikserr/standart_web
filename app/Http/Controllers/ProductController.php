@@ -103,16 +103,17 @@ class ProductController extends Controller
 
     public function deleteProduct(Product $product)
     {
-        // Rasmlarni fayldan o'chirish
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
-            \Storage::disk('public')->delete($product->$photoKey);
+            if (!empty($product->$photoKey) && \Storage::disk('public')->exists($product->$photoKey)) {
+                \Storage::disk('public')->delete($product->$photoKey);
+            }
         }
 
-        // Ma'lumotlar bazasidan productni butunlay o'chirish
         $product->delete();
 
         return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi']);
     }
+
     public function deletePhoto($id, $key)
     {
         $product = Product::findOrFail($id);
