@@ -16,6 +16,13 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+    public function userProduct()
+    {
+        $products = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        return Inertia::render('Home', [
+            'products' => $products,
+        ]);
+    }
     public function create()
     {
         return Inertia::render('admin/addProducts');

@@ -90,9 +90,6 @@ const AddProductForm = ({ users }) => {
                     />
                     <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition duration-300 ease-in-out group-hover:scale-105"></div>
                     <div className="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full transition-all duration-300 ease-in-out peer-checked:translate-x-5 peer-disabled:bg-gray-200 peer-disabled:cursor-not-allowed"></div>
-                    <span className="ml-3 text-sm font-medium text-gray-900 select-none">
-                      {user.is_admin ? "Admin" : "User"}
-                    </span>
                   </label>
                 </td>
 

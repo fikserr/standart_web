@@ -16,7 +16,7 @@ Route::get('/', function () {
 
 // User sahifalari
 Route::middleware('auth')->group(function () {
-    Route::get('/', fn() => Inertia::render('Home'))->name('home');
+    Route::get('/', [ProductController::class, 'userProduct'])->name('home');
     Route::get('/shoes', fn() => inertia('Shoes'));
     Route::get('/profile', fn() => inertia('Profile'));
     Route::get('/history-order', fn() => inertia('HistoryOrders'));

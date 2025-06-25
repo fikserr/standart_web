@@ -28,7 +28,7 @@ const Index = () => {
                 </div>
                 <div className='my-5'>
                     <h1 style={{ fontFamily: "Oswald", fontSize: "22px" }} className='hidden sm:block'>Product nomi</h1>
-                    <h2 className="font-semibold mb-2" style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>EU размеры:</h2>
+                    <h2 className="font-semibold mb-2" style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>EU o'lchamlar:</h2>
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-2">
                         {['36', '37', '38', '39', '40', '41', '42', '43', '44'].map(size => (
                             <button
@@ -62,10 +62,6 @@ const Index = () => {
                         </div>
                         <div className='space-y-2'>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                                <h3 style={{ fontSize: "20px" }}>Maqola</h3>
-                                <p className='text-slate-600'>46765753</p>
-                            </div>
-                            <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
                                 <button className='text-slate-600 flex items-center'>Oyoq kiyimlar <HiOutlineChevronRight /></button>
                             </div>
@@ -74,16 +70,8 @@ const Index = () => {
                                 <button className='text-slate-600 flex items-center'>Nike <HiOutlineChevronRight /></button>
                             </div>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                                <h3 style={{ fontSize: "20px" }}>Model</h3>
-                                <button className='text-slate-600 flex items-center'>Nike Air Force <HiOutlineChevronRight /></button>
-                            </div>
-                            <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Rangi</h3>
                                 <button className='text-slate-600 flex items-center'>Havorang <HiOutlineChevronRight /></button>
-                            </div>
-                            <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                                <h3 style={{ fontSize: "20px" }}>Hamkorlik</h3>
-                                <button className='text-slate-600 flex items-center'>Nike X OFF-WHITE <HiOutlineChevronRight /></button>
                             </div>
                         </div>
                     </div>
