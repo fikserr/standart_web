@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from '@inertiajs/react';
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { BiUser, BiSolidPencil, BiSolidTrash } from "react-icons/bi";
@@ -76,10 +75,10 @@ const Address = () => {
                                 <p className='xl:text-xl'>yavasyaivanov@gmail.com</p>
                             </div>
                             <div className='flex items-center absolute bottom-0 left-0 bg-slate-50 rounded-tr-lg rounded-bl-lg gap-5 p-3 border'>
-                                <button onClick={() => navigate('/edit-address')} className='flex items-center gap-2'>
+                                <Link href={'/edit-address'} className='flex items-center gap-2'>
                                     <BiSolidPencil />
                                     <p>Tahrirlash</p>
-                                </button>
+                                </Link>
                                 <button className='flex items-center gap-2'>
                                     <BiSolidTrash />
                                     <p>O'chirish</p>
@@ -101,10 +100,10 @@ const Address = () => {
                                 <p className='xl:text-xl'>yavasyaivanov@gmail.com</p>
                             </div>
                             <div className='flex items-center absolute bottom-0 left-0 bg-slate-50 rounded-tr-lg rounded-bl-lg gap-5 p-3 border'>
-                                <button onClick={() => navigate('/edit-address')} className='flex items-center gap-2'>
+                                <Link href={'/edit-address'} className='flex items-center gap-2'>
                                     <BiSolidPencil />
                                     <p>Tahrirlash</p>
-                                </button>
+                                </Link>
                                 <button className='flex items-center gap-2'>
                                     <BiSolidTrash />
                                     <p>O'chirish</p>
