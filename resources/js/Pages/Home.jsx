@@ -48,7 +48,7 @@ const Home = () => {
       </div>
       {/* oyoq kiyimlar */}
       <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between my-3'>
           <h3 style={{ fontFamily: 'Oswald' }}
             className='font-bold text-2xl'
           >
@@ -106,7 +106,7 @@ const Home = () => {
       </div>
       {/* kiyimlar */}
       <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between my-3'>
           <h3 style={{ fontFamily: 'Oswald' }}
             className='font-bold text-2xl'
           >
@@ -163,7 +163,7 @@ const Home = () => {
       </div>
       {/* aksesuarlar */}
       <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between my-3'>
           <h3 style={{ fontFamily: 'Oswald' }}
             className='font-bold text-2xl'
           >
@@ -222,10 +222,10 @@ const Home = () => {
 
       <div className='px-5 xl:px-20 my-14 text-white'>
         <div className='w-full p-5 sm:p-8 xl:p-16 bg-[rgb(22,156,248)] rounded-lg flex flex-col gap-3 relative'>
-          <div className='grid lg:grid-cols-2'>
-            <div>
-              <div className='grid sm:grid-cols-3 gap-10'>
-                <div className='flex flex-col sm:mb-10 lg:mb-0 gap-8 col-span-3'>
+          <div className='grid lg:grid-cols-5 md:grid-cols-4'>
+            <div className='col-span-3'>
+              <div className='grid sm:grid-cols-3 gap-10 '>
+                <div className='flex flex-col sm:mb-2 lg:mb-10 gap-10 col-span-3'>
                   <h2
                     style={{ fontFamily: "Oswald" }}
                     className='text-center text-5xl lg:text-7xl'
@@ -239,11 +239,11 @@ const Home = () => {
                     Agar siz qidirayotgan narsangizni topa olmasangiz, har doim Poizon bozorida buyurtma narxini avtomatik hisoblash, shu jumladan xizmat komissiyasi va yetkazib berishdan foydalanishingiz mumkin
                   </p>
                 </div>
-                <div className='hidden sm:block absolute bottom-80 md:bottom-60 right-5 lg:hidden '>
+                <div className='hidden md:block absolute md:bottom-32 right-5 lg:hidden '>
                   <img src={iphone12} alt="Iphone" />
                 </div>
               </div>
-              <div className='grid md:grid-cols-2 md:mt-8 lg:grid-cols-1'>
+              <div>
                 <div className='flex items-center gap-4'>
                   <div>
                     <span className='w-[50px] h-[50px] sm:w-[80px] sm:h-[80px] rounded-[50%] flex justify-center items-center border'>

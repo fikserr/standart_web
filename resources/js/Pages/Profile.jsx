@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { BiUser } from "react-icons/bi";
 import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
 import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
@@ -9,6 +9,9 @@ import { ImStarEmpty } from "react-icons/im";
 
 
 const Profile = () => {
+    const handleLogOut = () => {
+        router.post("/logout");
+    }
     return (
         <div className='my-24 px-5 xl:px-32'>
             <Link href={"/"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1></Link>
@@ -34,10 +37,10 @@ const Profile = () => {
                         <RxLockOpen2 />
                         <span>Parol</span>
                     </Link>
-                    <Link href={"/"} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
+                    <button onClick={handleLogOut} className='flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full text-slate-400' style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                         <RiLogoutBoxRLine />
                         <span>Chiqish</span>
-                    </Link>
+                    </button>
                 </div>
                 <div className='col-span-4 lg:col-span-3 my-3'>
                     <h2 style={{ fontFamily: 'Oswald', fontSize: "32px" }}>Salom, Mehmon!</h2>
@@ -70,10 +73,10 @@ const Profile = () => {
                             <p className='flex justify-center text-3xl'><RxLockOpen2 /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Parol</p>
                         </Link>
-                        <Link href={"/"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
+                        <button onClick={handleLogOut} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><RiLogoutBoxRLine /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Chiqish</p>
-                        </Link>
+                        </button>
                     </div>
                 </div>
             </div>
