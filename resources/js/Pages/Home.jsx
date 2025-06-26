@@ -1,24 +1,19 @@
-import { Link } from '@inertiajs/react';
-import { useState } from 'react'
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
-import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { HeroImg, HeroImg2, iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
-import { homeCard } from '@/components/shared/lists';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import { Navigation } from 'swiper/modules';
+import HomeProduct from '@/components/shared/homeProducts';
 
-const Home = () => {
-  const [starredCards, setStarredCards] = useState({});
+const Home = ({products}) => {
+  // const [starredCards, setStarredCards] = useState({});
 
-  const handleClick = (event, id) => {
-    event.preventDefault();
-    setStarredCards((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  }
+  // const handleClick = (event, id) => {
+  //   event.preventDefault();
+  //   setStarredCards((prev) => ({
+  //     ...prev,
+  //     [id]: !prev[id],
+  //   }));
+  // }
+
+  console.log(products, "salom");
   return (
     <div>
       <div className='p-5 relative w-full mt-20 2xl:px-20'>
@@ -46,180 +41,9 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {/* oyoq kiyimlar */}
-      <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }}
-            className='font-bold text-2xl'
-          >
-            Oyoq kiyimlar
-          </h3>
-          <h4
-            style={{ fontFamily: 'Oswald' }}
-            className='border-b-2 border-black text-xl flex items-center p-1'
-          >
-            <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={10}
-          slidesPerView={2}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            992: {
-              slidesPerView: 4,
-            },
-          }}
-        >
-          {
-            homeCard.slice(0, 8).map((item, index) => (
-              <SwiperSlide key={index}>
-                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
-                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-                    <button onClick={(e) => handleClick(e, item.id)}>
-                      {starredCards[item.id] ? (
-                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
-                      ) : (
-                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
-                      )}
-                    </button>
-                  </div>
-                  <div className='p-2'>
-                    <p>{item.title}</p>
-                    <p>{item.price}</p>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            ))
-          }
-        </Swiper>
-
+      <div>
+        <HomeProduct data={products}/>
       </div>
-      {/* kiyimlar */}
-      <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }}
-            className='font-bold text-2xl'
-          >
-            Kiyimlar
-          </h3>
-          <h4
-            style={{ fontFamily: 'Oswald' }}
-            className='border-b-2 border-black text-xl flex items-center p-1'
-          >
-            <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={10}
-          slidesPerView={2}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            992: {
-              slidesPerView: 4,
-            },
-          }}
-        >
-          {
-            homeCard.slice(4, 12).map((item, index) => (
-              <SwiperSlide key={index}>
-                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
-                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-                    <button onClick={(e) => handleClick(e, item.id)}>
-                      {starredCards[item.id] ? (
-                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
-                      ) : (
-                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
-                      )}
-                    </button>
-                  </div>
-                  <div className='p-2'>
-                    <p>{item.title}</p>
-                    <p>{item.price}</p>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            ))
-          }
-        </Swiper>
-      </div>
-      {/* aksesuarlar */}
-      <div className='px-5 xl:px-20'>
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }}
-            className='font-bold text-2xl'
-          >
-            Aksesuarlar
-          </h3>
-          <h4
-            style={{ fontFamily: 'Oswald' }}
-            className='border-b-2 border-black text-xl flex items-center p-1'
-          >
-            <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <Swiper
-          modules={[Navigation]}
-          spaceBetween={10}
-          slidesPerView={2}
-          navigation
-          breakpoints={{
-            640: {
-              slidesPerView: 2,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            992: {
-              slidesPerView: 4,
-            },
-          }}
-        >
-          {
-            homeCard.slice(8, 12).map((item, index) => (
-              <SwiperSlide key={index}>
-                <Link href={'/detail'} className='border-2 rounded-lg flex flex-col h-80'>
-                  <div className='bg-green-500 flex justify-end h-[75%] relative rounded-t-lg'>
-                    <button onClick={(e) => handleClick(e, item.id)}>
-                      {starredCards[item.id] ? (
-                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
-                      ) : (
-                        <ImStarEmpty className="absolute top-4 right-4 text-2xl" />
-                      )}
-                    </button>
-                  </div>
-                  <div className='p-2'>
-                    <p>{item.title}</p>
-                    <p>{item.price}</p>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            ))
-          }
-        </Swiper>
-
-      </div>
-
       <div className='px-5 xl:px-20 my-14 text-white'>
         <div className='w-full p-5 sm:p-8 xl:p-16 bg-[rgb(22,156,248)] rounded-lg flex flex-col gap-3 relative'>
           <div className='grid lg:grid-cols-5 md:grid-cols-4'>
