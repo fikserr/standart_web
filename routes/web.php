@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/favorites', fn() => inertia('favorites'));
     Route::get('/basket', fn() => inertia('basket'));
+    Route::post('/update-password', [UserController::class, 'updatePassword'])->middleware('auth');
+    Route::post('/verify-password-code', [UserController::class, 'verifyPasswordCode'])->middleware('auth');
 });
 
 // Admin sahifalari (faqat adminlar uchun)
