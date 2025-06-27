@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { router, Link } from '@inertiajs/react';
-import { Input } from "@/components/ui/input";
 import { useToast } from '@/hooks/use-toast';
+import { HiOutlineSearch } from 'react-icons/hi';
 import { Pagination, PaginationContent, PaginationItem } from '@/components/ui/pagination';
 
 const AddProductForm = ({ users, search: initialSearch }) => {
@@ -20,7 +20,7 @@ const AddProductForm = ({ users, search: initialSearch }) => {
     setLoadingId(user.id);
     try {
       await router.put(
-        route('admin.users.update', user.id),
+        (`/admin/users/${user.id}`),
         { is_admin: !user.is_admin },
         {
           preserveScroll: true,
@@ -48,13 +48,14 @@ const AddProductForm = ({ users, search: initialSearch }) => {
   return (
     <div className="p-6 mx-5 min-h-screen w-[1200px]">
       <h1 className="text-3xl font-bold mb-6">User Lists</h1>
-      <div className="mb-4">
-        <Input
-          placeholder="🔍 Ism yoki email bilan izlash..."
+      <div className="mb-4 flex items-center border max-w-sm rounded-lg px-3">
+        <input
+          placeholder="Ism yoki email bilan izlash..."
           value={search}
           onChange={handleSearchChange}
-          className="max-w-sm"
+          className="w-full border-none outline-none p-1"
         />
+        <HiOutlineSearch style={{fontSize: "22px"}}/>
       </div>
       <div className="">
         <table className="min-w-full text-sm text-left">

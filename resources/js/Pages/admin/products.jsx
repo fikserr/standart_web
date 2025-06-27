@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { products } from "@/components/shared/lists";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@inertiajs/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -9,20 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@ui/carousel";
-import { Star } from "lucide-react";
-
-const stars = (rating) => {
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-  return (
-    <>
-      {"★".repeat(fullStars)}
-      {halfStar && "☆"}
-      {"☆".repeat(emptyStars)}
-    </>
-  );
-};
 
 export default function ProductsUI() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -46,15 +31,18 @@ export default function ProductsUI() {
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
-    }, 3000); // 3000 ms = 3 seconds
+    }, 3000);
 
-    return () => clearInterval(intervalRef.current); // Cleanup on component unmount
+    return () => clearInterval(intervalRef.current);
   }, [banners.length]);
 
   return (
-    <div className="p-6 min-h-screen font-sans xl:w-[1200px] mx-auto">
+    <div className='p-6 min-h-screen font-sans mx-auto'>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold">Products</h2>
+        <Link href={'/admin-banner'} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+          Add Banner
+        </Link>
       </div>
 
       {/* Banner */}
@@ -98,54 +86,6 @@ export default function ProductsUI() {
             ›
           </CarouselNext>
         </Carousel>
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {products.map((p) => (
-          <div
-            key={p.id}
-            className="bg-white rounded-lg shadow p-4 flex flex-col items-center"
-          >
-            <div className="relative w-40 h-40 mb-4">
-              <img
-                src={p.image}
-                alt={p.title}
-                className="object-contain w-full h-full"
-              />
-              <button className="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full w-6 h-6 flex items-center justify-center text-gray-700">
-                ‹
-              </button>
-              <button className="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-80 rounded-full w-6 h-6 flex items-center justify-center text-gray-700">
-                ›
-              </button>
-            </div>
-            <div className="w-full flex justify-between items-center mb-1">
-              <div>
-                <h4 className="text-sm font-medium">{p.title}</h4>
-                <p className="text-blue-600 font-semibold">${p.price.toFixed(2)}</p>
-                <div className="text-orange-400 text-xs flex items-center">
-                  <span>{stars(p.rating)}</span>
-                  <span className="ml-1 text-gray-500 text-[10px]">
-                    ({p.reviews})
-                  </span>
-                </div>
-              </div>
-              <button
-                aria-label="Add to favorites"
-                className="p-1 rounded-full hover:bg-gray-200"
-              >
-                <Star className="w-5 h-5" />
-              </button>
-            </div>
-            <Link
-              href={`/products/${p.id}`}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs rounded px-3 py-1"
-            >
-              Edit Product
-            </Link>
-          </div>
-        ))}
       </div>
     </div>
   );
