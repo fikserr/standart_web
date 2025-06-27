@@ -103,7 +103,6 @@ const UserNavbar = () => {
                     </Link>
                     <Link href="/basket" className="text-white flex items-end">
                         <HiOutlineShoppingBag style={{ fontSize: '25px' }} />
-                        <span className="text-slate-400 text-sm hidden md:block">11 899 ₽</span>
                     </Link>
                     {auth.user ? (
                         <Link href="/profile">

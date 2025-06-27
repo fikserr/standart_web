@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Pencil, Trash2 } from "lucide-react";
 import { Link, router } from "@inertiajs/react";
 import {
@@ -8,6 +7,7 @@ import {
     PaginationContent,
     PaginationItem,
 } from "@ui/pagination"
+import { HiOutlineSearch } from 'react-icons/hi';
 
 
 const ProductStock = ({ products }) => {
@@ -40,6 +40,12 @@ const ProductStock = ({ products }) => {
 
     const closeModal = () => {
         setModalImage(null);
+    };
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+        // Laravel route bilan sozlanishi kerak: route('admin.users')
+        router.get('/admin-users', { search: value }, { preserveState: true });
     };
 
     const handlePhotoDelete = async (productId, photoKeys) => {
@@ -81,13 +87,14 @@ const ProductStock = ({ products }) => {
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>
-            <div className="mb-4">
-                <Input
-                    placeholder="🔍 Search product name"
+            <div className="mb-4 flex items-center border max-w-sm rounded-lg px-3">
+                <input
+                    placeholder="Tovarlar nomi bilan izlash..."
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="max-w-sm"
+                    onChange={handleSearchChange}
+                    className="w-full border-none outline-none p-1"
                 />
+                <HiOutlineSearch style={{ fontSize: "22px" }} />
             </div>
             <div className="">
                 <table className="w-full text-sm">
@@ -187,7 +194,7 @@ const ProductStock = ({ products }) => {
                         </div>
                     </div>
                 )}
-                {products.total ? ( <Pagination className="mt-5">
+                {products.total ? (<Pagination className="mt-5">
                     <PaginationContent>
                         {products.links.map((item, i) => (
                             <PaginationItem key={i}>
