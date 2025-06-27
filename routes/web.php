@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyCodeController;
@@ -63,4 +65,12 @@ Route::get('/test-email', function () {
     });
 
     return '✅ Email yuborildi!';
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/address-add', fn() => inertia('AddAddress'))->name('address.add');
+    Route::get('/address-show', [AddressController::class, 'show'])->name('address.show');
+    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/favorites/{product}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
 });

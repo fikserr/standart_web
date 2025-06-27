@@ -13,11 +13,12 @@ class FavoriteController extends Controller
     public function index()
     {
         $favorites = Auth::user()->favorites;
-
-        return Inertia::render('favorites', [
+        return inertia('Favorite', [
             'favorites' => $favorites,
         ]);
+        
     }
+
     public function store(Request $request)
     {
         $user = $request->user();
@@ -25,7 +26,7 @@ class FavoriteController extends Controller
 
         $user->favorites()->syncWithoutDetaching([$productId]);
 
-        return response()->json(['message' => 'Sevimlilarga qo‘shildi']);
+        return response()->json(['status' => 'ok']);
     }
 
     public function destroy(Request $request, Product $product)

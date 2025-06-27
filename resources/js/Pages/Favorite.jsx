@@ -1,6 +1,7 @@
 import React from "react";
 
-const EmptyFavorites = () => {
+const EmptyFavorites = ({favorites}) => {
+    console.log(favorites);
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-8">SEVIMLILAR</h1>
