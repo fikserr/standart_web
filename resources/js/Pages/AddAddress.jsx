@@ -28,38 +28,17 @@ const AddAddress = ({ address }) => {
     <div className='my-24 px-5 xl:px-32'>
       <div className='flex items-center gap-2'>
         <HiOutlineChevronLeft className='text-2xl' />
-        <Link href={"/profile"}>
-          <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1>
+        <Link href={"/address"}>
+          <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
         </Link>
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
-        {/* Sidebar */}
-        <div className='border rounded-md max-w-xs p-5 my-5 space-y-3 text-xl hidden lg:block'>
-          <SidebarLink href="/profile" icon={<BiUser />} label="Profil" />
-          <SidebarLink href="/profile-edit" icon={<RiUserSettingsLine />} label="Profilni tahrirlash" />
-          <SidebarLink href="/history-order" icon={<RxHamburgerMenu />} label="Tarix" />
-          <SidebarLink href="/address" icon={<VscLocation />} label="Joylashuv" active />
-          <SidebarLink href="/edit-password" icon={<RxLockOpen2 />} label="Parol" />
-          <SidebarLink href="/" icon={<RiLogoutBoxRLine />} label="Chiqish" />
-        </div>
 
         {/* Main form */}
-        <div className='col-span-3 my-5'>
-          <div className='grid grid-cols-4 items-center'>
-            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Profilni tahrirlash</h2>
-            <DropdownMenu>
-              <DropdownMenuTrigger className='lg:hidden'>Open</DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-white space-y-1 pb-3 flex flex-col">
-                <DropdownMenuLabel>Buyurtmalar</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownItem href="/profile">Profil</DropdownItem>
-                <DropdownItem href="/history-order">Buyurtmalar</DropdownItem>
-                <DropdownItem href="/address">Joylashuv</DropdownItem>
-                <DropdownItem href="/edit-password">Parol</DropdownItem>
-                <DropdownItem href="/">Chiqish</DropdownItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+        <div className='col-span-4 my-5 px-10'>
+          <div className='grid grid-cols-4 items-center pl-6'>
+            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Joylashuv qo'shish</h2>
           </div>
 
           <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
@@ -71,8 +50,8 @@ const AddAddress = ({ address }) => {
             <InputBlock label="Viloyat / tuman:" value={data.region} onChange={(e) => setData('region', e.target.value)} />
             <InputBlock label="Telefon raqamingiz:" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
 
-            <div className='px-5'>
-              <button type="submit" disabled={processing} className='p-3 bg-black text-white w-[40%] sm:w-[20%] rounded-lg text-center'>
+            <div>
+              <button type="submit" disabled={processing} className='p-3 bg-black text-white w-[40%] sm:w-[35%] rounded-lg text-center'>
                 Saqlash
               </button>
             </div>
