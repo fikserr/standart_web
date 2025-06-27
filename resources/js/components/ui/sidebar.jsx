@@ -121,7 +121,7 @@ const SidebarProvider = React.forwardRef((
             }
           }
           className={cn(
-            "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+            "group/sidebar-wrapper flex min-h-svh w-full justify-center has-[[data-variant=inset]]:bg-sidebar",
             className
           )}
           ref={ref}
@@ -236,7 +236,7 @@ const SidebarTrigger = React.forwardRef(({ className, onClick, ...props }, ref) 
         data-sidebar="trigger"
         variant="ghost"
         size="icon"
-        className={cn("h-7 w-7", className)}
+        className={cn("h-7 w-7 absolute top-0 left-0 z-10", className )}
         onClick={(event) => {
           onClick?.(event)
           toggleSidebar()
@@ -590,7 +590,7 @@ const SidebarMenuSubButton = React.forwardRef(
         data-sidebar="menu-sub-button"
         data-size={size}
         data-active={isActive}
-        className={cn(
+        className={cn( 
           "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
           "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
           size === "sm" && "text-xs",
