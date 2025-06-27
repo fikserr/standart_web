@@ -49,8 +49,6 @@ const items = [
 ];
 
 export function AppSidebar() {
-  const currentPath = window.location.pathname;
-  const { auth } = usePage().props;
 
   const handleLogout = () => {
     router.post("/logout");
