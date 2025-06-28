@@ -2,10 +2,9 @@ import { Link } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import ProfileSidebar from '@/components/shared/profile-sidebar';
 import { BiUser } from "react-icons/bi";
-import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import { RxLockOpen2 } from "react-icons/rx";
 import { VscChecklist, VscLocation } from "react-icons/vsc";
-import { GrMapLocation } from "react-icons/gr";
 import { ImStarEmpty } from "react-icons/im";
 
 
