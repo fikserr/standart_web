@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -40,10 +41,12 @@ Route::middleware('auth')->group(function () {
 
 // Admin sahifalari (faqat adminlar uchun)
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
+    Route::post('/banners', [BannerController::class, 'store'])->name('banners.store');
+    Route::delete('/banners/{id}', [BannerController::class, 'destroy'])->name('banners.destroy');
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
     Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
-    Route::get('/admin-products', fn() => inertia('admin/products'));
+    Route::get('/admin-products', [BannerController::class, 'index'])->name('banners.index');
     Route::get('/admin-productStock', action: [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('admin.users');
     Route::get('/admin-banner', fn() => inertia('admin/admin-banner'));

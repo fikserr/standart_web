@@ -9,33 +9,20 @@ import {
   CarouselPrevious,
 } from "@ui/carousel";
 
-export default function ProductsUI() {
+export default function ProductsUI({banners}) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef(null);
 
-  const banners = [
-    {
-      id: 1,
-      date: "September 12-22",
-      title: "Enjoy free home delivery this summer",
-      subtitle: "Designer Dresses - Pick from trendy Designer Dresses.",
-    },
-    {
-      id: 2,
-      date: "October 1-10",
-      title: "Big Sale on Electronics",
-      subtitle: "Save up to 50% on selected gadgets.",
-    },
-  ];
+
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % banners?.length);
     }, 3000);
 
     return () => clearInterval(intervalRef.current);
-  }, [banners.length]);
-
+  }, [banners?.length]);
+console.log(banners);
   return (
     <div className='p-6 min-h-screen font-sans mx-auto'>
       <div className="flex justify-between items-center mb-4">
@@ -53,7 +40,7 @@ export default function ProductsUI() {
         >
           <CarouselContent >
             <AnimatePresence>
-              {banners.map((banner) => (
+              {banners?.map((banner) => (
                 <CarouselItem key={banner.id}>
                   <motion.div
                     className="inset-0 flex"
@@ -63,11 +50,11 @@ export default function ProductsUI() {
                     }}
                   >
                     <div className="max-w-xl h-[380px] flex flex-col gap-5 px-24 pt-16">
-                      <p className="text-sm opacity-70 top-1 left-5">{banner.date}</p>
+                      <p className="text-sm opacity-70 top-1 left-5">{banner.name}</p>
                       <h3 className="text-3xl font-bold leading-snug mb-2">
-                        {banner.title}
+                        {banner.name}
                       </h3>
-                      <p className="opacity-80 mb-4">{banner.subtitle}</p>
+                      <p className="opacity-80 mb-4">{banner.name}</p>
                       <button className="bg-orange-500 w-[35%] hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-semibold">
                         Get Started
                       </button>
