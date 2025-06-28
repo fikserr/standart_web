@@ -95,12 +95,12 @@ const EditPass = () => {
             </div>
 
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
+                        <ProfileSidebar />
                 <div className='col-span-3 my-3'>
                     <div className='grid grid-cols-4 items-center'>
                         <h2 className='col-span-3 text-2xl font-bold' style={{ fontFamily: 'Oswald' }}>
                             Parolni tahrirlash
                         </h2>
-                        <ProfileSidebar />
                         <ProfileDropdown />
                     </div>
 
