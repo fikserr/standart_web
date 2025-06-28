@@ -29,23 +29,15 @@ const Profile = () => {
                             <p className='flex justify-center text-3xl'><VscChecklist /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Buyurtmalar</p>
                         </Link>
-                        <Link href={"/address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
-                            <p className='flex justify-center text-3xl'><VscLocation /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Bizning manzil</p>
-                        </Link>
-                        <Link href={"/profile-edit"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
-                            <p className='flex justify-center text-3xl'><RiUserSettingsLine /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Profilni tahrirlash</p>
-                        </Link>
                         <Link href={"/favorites"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><ImStarEmpty /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Tanlangan mahsulotlar</p>
                         </Link>
-                        <Link href={"/edit-address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg lg:hidden'>
-                            <p className='flex justify-center text-3xl'><GrMapLocation /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Joylashuvni tahrirlash</p>
+                        <Link href={"/address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
+                            <p className='flex justify-center text-3xl'><VscLocation /></p>
+                            <p style={{ fontFamily: 'OswaldLight' }}>Bizning manzil</p>
                         </Link>
-                        <Link href={"/edit-password"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg lg:hidden'>
+                        <Link href={"/edit-password"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><RxLockOpen2 /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Parol</p>
                         </Link>

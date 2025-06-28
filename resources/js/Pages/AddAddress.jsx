@@ -88,7 +88,6 @@ const AddAddress = ({ address }) => {
           <div className='grid grid-cols-4 items-center pl-6'>
             <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Joylashuv qo'shish</h2>
           </div>
-
           <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
             <InputBlock label="Ismingiz:" name="first_name" value={formData.first_name} onChange={setFormData} error={errors.first_name} />
             <InputBlock label="Familiyangiz:" name="last_name" value={formData.last_name} onChange={setFormData} error={errors.last_name} />
