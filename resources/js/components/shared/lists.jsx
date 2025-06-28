@@ -1,5 +1,6 @@
 import Watch from '@images/appleWatch.svg'
 import { IoMdTrendingDown, IoMdTrendingUp } from "react-icons/io";
+import { ImStarEmpty } from "react-icons/im";
 import Group from '@images/groupIcon.svg';
 import Order from '@images/orderIcon.svg';
 import Sales from '@images/salesIcon.svg';
@@ -215,3 +216,32 @@ export const cards = [
         chartColor: "text-green-500",
     },
 ];
+
+export const shoes = [
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+    { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
+]
