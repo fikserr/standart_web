@@ -1,7 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import { BiSolidPencil, BiSolidTrash } from "react-icons/bi";
-import { VscLocation } from "react-icons/vsc";
 import ProfileSidebar from '@/components/shared/profile-sidebar';
 import ProfileDropdown from '@/components/shared/profile-dropdown';
 import { toast } from '@/hooks/use-toast'; // toast ishlatmoqchi bo‘lsang
@@ -19,7 +18,7 @@ const Address = ({ address }) => {
             },
         });
     };
-    
+
 
     return (
         <div className='my-24 px-5 xl:px-32'>
@@ -34,32 +33,33 @@ const Address = ({ address }) => {
                 <ProfileSidebar />
 
                 <div className='col-span-3'>
-                    <div className='flex flex-col sm500:flex-row items-center justify-between gap-4'>
+                    <div className='flex items-end justify-between gap-4'>
                         <h2 className='text-3xl sm500:text-4xl' style={{ fontFamily: 'Oswald' }}>Manzil</h2>
-                        <div className='flex items-center gap-4'>
-                            <ProfileDropdown className='hidden lg:block' />
-                            <Link href='/address-add' className='bg-slate-100 px-5 py-2 rounded-lg flex items-center gap-2'>
-                                <VscLocation className='text-xl' />
-                                <span style={{ fontFamily: 'OswaldLight' }}>Manzil qo'shish</span>
-                            </Link>
-                        </div>
+                        <ProfileDropdown />
                     </div>
 
                     <div className='grid sm:grid-cols-2 gap-5 my-6'>
                         {address.map((item) => (
-                            <div className='border p-5 rounded-lg relative' key={item.id}>
+                            <div className='border p-5 rounded-lg relative h-[300px]' key={item.id}>
                                 <div className='absolute top-0 right-0 bg-slate-50 p-3 rounded-bl-lg border'>
                                     <h3 style={{ fontFamily: 'OswaldLight' }}>Manzil #{item.id}</h3>
                                 </div>
-
-                                <h2 className='mt-3 text-2xl' style={{ fontFamily: 'Oswald' }}>
-                                    {item.first_name} {item.last_name}
-                                </h2>
-                                <p className='xl:text-xl'>{`${item.region}, ${item.city}, ${item.street} ${item.house_number}`}</p>
-
-                                <div className='my-3'>
-                                    <p className='text-slate-500 text-md' style={{ fontFamily: 'OswaldLight' }}>Telefon</p>
-                                    <p className='xl:text-xl'>{item.phone}</p>
+                                <div className='space-y-2'>
+                                    <h2 className='mt-3 text-2xl' style={{ fontFamily: 'Oswald' }}>
+                                        {item.first_name} {item.last_name}
+                                    </h2>
+                                    <div>
+                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'OswaldLight' }}>Viloyat/Tuman</p>
+                                        <p className='xl:text-md' style={{ fontFamily: 'Oswald' }}>{`${item.region},${item.city}`}</p>
+                                    </div>
+                                    <div>
+                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'OswaldLight' }}>Ko'cha/xonadon</p>
+                                        <p className='xl:text-md' style={{ fontFamily: 'Oswald' }}>{`${item.street}, ${item.house_number}`}</p>
+                                    </div>
+                                    <div className='my-3'>
+                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'OswaldLight' }}>Telefon</p>
+                                        <p className='xl:text-md' style={{ fontFamily: 'Oswald' }}>{item.phone}</p>
+                                    </div>
                                 </div>
 
                                 <div className='absolute bottom-0 left-0 bg-slate-50 rounded-tr-lg rounded-bl-lg flex items-center gap-5 p-3 border w-full'>

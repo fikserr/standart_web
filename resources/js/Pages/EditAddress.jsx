@@ -65,107 +65,46 @@ const EditAddress = () => {
         </Link>
       </div>
 
-      <div className='max-w-3xl mx-auto bg-white p-8 rounded-lg shadow'>
-        <h2 className='text-2xl font-bold mb-6'>Joylashuvni tahrirlash</h2>
-
-        <form onSubmit={handleSubmit} className='space-y-5'>
-          <div>
-            <label>Ism</label>
-            <input
-              type="text"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.first_name && <p className='text-red-500 text-sm'>{errors.first_name}</p>}
+      <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
+        <div className='col-span-4 my-5 px-10'>
+          <div className='grid grid-cols-4 items-center pl-6'>
+            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Joylashuvni tahrirlash</h2>
           </div>
 
-          <div>
-            <label>Familiya</label>
-            <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.last_name && <p className='text-red-500 text-sm'>{errors.last_name}</p>}
-          </div>
-
-          <div>
-            <label>Ko‘cha</label>
-            <input
-              type="text"
-              name="street"
-              value={formData.street}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.street && <p className='text-red-500 text-sm'>{errors.street}</p>}
-          </div>
-
-          <div>
-            <label>Shahar</label>
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.city && <p className='text-red-500 text-sm'>{errors.city}</p>}
-          </div>
-
-          <div>
-            <label>Uy raqami</label>
-            <input
-              type="text"
-              name="house_number"
-              value={formData.house_number}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.house_number && <p className='text-red-500 text-sm'>{errors.house_number}</p>}
-          </div>
-
-          <div>
-            <label>Viloyat</label>
-            <input
-              type="text"
-              name="region"
-              value={formData.region}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.region && <p className='text-red-500 text-sm'>{errors.region}</p>}
-          </div>
-
-          <div>
-            <label>Telefon raqam</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className='w-full border rounded px-3 py-2'
-            />
-            {errors.phone && <p className='text-red-500 text-sm'>{errors.phone}</p>}
-          </div>
-
-          <div className='flex gap-4 pt-4'>
-            <button
-              type="submit"
-              disabled={processing}
-              className='bg-black text-white px-6 py-2 rounded'
-            >
-              Saqlash
-            </button>
-          </div>
-        </form>
+          <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
+            <InputBlock label="Ismingiz:" name="first_name" value={formData.first_name} onChange={setFormData} error={errors.first_name} />
+            <InputBlock label="Familiyangiz:" name="last_name" value={formData.last_name} onChange={setFormData} error={errors.last_name} />
+            <InputBlock label="Ko'changiz:" name="street" value={formData.street} onChange={setFormData} className="sm:col-span-2" error={errors.street} />
+            <InputBlock label="Shahar:" name="city" value={formData.city} onChange={setFormData} error={errors.city} />
+            <InputBlock label="Uy raqami / xonadon:" name="house_number" value={formData.house_number} onChange={setFormData} error={errors.house_number} />
+            <InputBlock label="Viloyat / tuman:" name="region" value={formData.region} onChange={setFormData} error={errors.region} />
+            <InputBlock label="Telefon raqamingiz:" name="phone" value={formData.phone} onChange={setFormData} error={errors.phone} />
+            <div className='flex gap-4 pt-4'>
+              <button
+                type="submit"
+                disabled={processing}
+                className='bg-black text-white px-6 py-2 rounded'>
+                Saqlash
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
 };
+const InputBlock = ({ label, name, value, onChange, className = '', error }) => (
+  <div className={`bg-slate-100 p-3 rounded-lg space-y-2 ${className}`}>
+    <h3 style={{ fontFamily: 'Oswald' }}>{label}</h3>
+    <input
+      type="text"
+      value={value}
+      onChange={e => onChange(prev => ({ ...prev, [name]: e.target.value }))}
+      placeholder={`${label}ni kiriting`}
+      className='bg-transparent w-full outline-none'
+    />
+    {error && <p className="text-red-500 text-sm">{error}</p>}
+  </div>
+);
 
 export default EditAddress;
