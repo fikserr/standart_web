@@ -1,78 +1,72 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@inertiajs/react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@ui/carousel";
 
-export default function ProductsUI({banners}) {
+export default function ProductsUI({ banners }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef(null);
 
-
-
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % banners?.length);
-    }, 3000);
-
+    if (banners?.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % banners.length);
+      }, 5000);
+    }
     return () => clearInterval(intervalRef.current);
   }, [banners?.length]);
-console.log(banners);
+
   return (
     <div className='p-6 min-h-screen font-sans mx-auto'>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-3xl font-bold">Products</h2>
-        <Link href={'/admin-banner'} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+        <Link
+          href={'/admin-banner'}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+        >
           Add Banner
         </Link>
       </div>
 
       {/* Banner */}
-      <div className="relative bg-blue-500 h-[400px] text-white rounded-xl p-8 mb-8 flex items-center overflow-hidden">
-        <Carousel
-          opts={{ loop: true, align: "start" }}
-          className="w-full"
+      <div className="relative h-[400px] w-[1200px] text-white rounded-xl p-8 mb-8 overflow-hidden">
+        <AnimatePresence>
+          {banners?.[currentIndex] && (
+            <motion.div
+              key={banners[currentIndex].id}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 w-full h-full"
+            >
+              <img
+                src={`/storage/${banners[currentIndex].image}`}
+                alt={banners[currentIndex].name}
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Optional: Previous/Next buttons */}
+        <button
+          onClick={() =>
+            setCurrentIndex((prev) =>
+              prev === 0 ? banners.length - 1 : prev - 1
+            )
+          }
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl z-10"
         >
-          <CarouselContent >
-            <AnimatePresence>
-              {banners?.map((banner) => (
-                <CarouselItem key={banner.id}>
-                  <motion.div
-                    className="inset-0 flex"
-                    style={{
-                      transform: `translateX(-${currentIndex * 100}%)`,
-                      transition: "transform 0.5s ease-in-out",
-                    }}
-                  >
-                    <div className="max-w-xl h-[380px] flex flex-col gap-5 px-24 pt-16">
-                      <p className="text-sm opacity-70 top-1 left-5">{banner.name}</p>
-                      <h3 className="text-3xl font-bold leading-snug mb-2">
-                        {banner.name}
-                      </h3>
-                      <p className="opacity-80 mb-4">{banner.name}</p>
-                      <button className="bg-orange-500 w-[35%] hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-semibold">
-                        Get Started
-                      </button>
-                    </div>
-                    {/* <div className={`transition-opacity duration-1000 ${currentIndex === index ? "opacity-100" : "opacity-0"}`}>
-                  </div> */}
-                  </motion.div>
-                </CarouselItem>
-              ))}
-            </AnimatePresence>
-          </CarouselContent>
-          <CarouselPrevious className="absolute left-1 top-1/2 transform -translate-y-1/2 text-black">
-            ‹
-          </CarouselPrevious >
-          <CarouselNext className="absolute right-1 top-1/2 transform -translate-y-1/2 text-black">
-            ›
-          </CarouselNext>
-        </Carousel>
+          ‹
+        </button>
+        <button
+          onClick={() =>
+            setCurrentIndex((prev) => (prev + 1) % banners.length)
+          }
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl z-10"
+        >
+          ›
+        </button>
       </div>
     </div>
   );
