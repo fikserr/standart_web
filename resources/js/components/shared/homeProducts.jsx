@@ -94,7 +94,7 @@ const HomeProducts = ({ data }) => {
                                     />
                                     <button onClick={(e) => handleClick(e, item.id)}>
                                         {starredCards[item.id] ? (
-                                            <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
+                                            <ImStarFull className="absolute top-4 right-4 text-2xl text-white" />
                                         ) : (
                                             <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
                                         )}
