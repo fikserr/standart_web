@@ -11,6 +11,7 @@ import 'swiper/css/navigation';
 import { useToast } from '@/hooks/use-toast';
 
 const HomeProducts = ({ data }) => {
+    console.log(data, "data");
     const [starredCards, setStarredCards] = useState(
         data.reduce((acc, id) => {
             acc[id] = true;
