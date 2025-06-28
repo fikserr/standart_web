@@ -1,15 +1,11 @@
-import React from 'react';
-import { useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Link } from '@inertiajs/react';
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import { BiUser } from "react-icons/bi";
-import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
-import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
-import { VscLocation } from "react-icons/vsc";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/hooks/use-toast';
 
 const AddAddress = ({ address }) => {
-  const { data, setData, post, processing } = useForm({
+  const [formData, setFormData] = useState({
     first_name: address?.first_name || '',
     last_name: address?.last_name || '',
     street: address?.street || '',
@@ -19,10 +15,64 @@ const AddAddress = ({ address }) => {
     phone: address?.phone || '',
   });
 
-  const handleSubmit = (e) => {
+  const [processing, setProcessing] = useState(false);
+  const [errors, setErrors] = useState({});
+  const { toast } = useToast();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    post(route('address.store'));
+    setProcessing(true);
+    setErrors({});
+
+    try {
+      const response = await axios.post('/address-create', formData);
+      toast({
+        title: "Muvaffaqiyatli",
+        description: "✅ Manzil saqlandi!",
+      });
+      alert('');
+      setFormData({
+        first_name: '',
+        last_name: '',
+        street: '',
+        city: '',
+        house_number: '',
+        region: '',
+        phone: '',
+      })
+    } catch (error) {
+      if (error.response) {
+
+        if (error.response.status === 422) {
+          setErrors(error.response.data.errors);
+        } else if (error.response.status === 401) {
+          toast({
+            title: "ERROR",
+            description: "Avval login qiling!",
+          });
+        } else {
+          toast({
+            title: "ERROR",
+            description: "Xatolik: " + error.response.statusText,
+          });
+
+        }
+
+      } else if (error.request) {
+        toast({
+          title: "ERROR",
+          description: "Serverdan javob kelmadi",
+        });
+      } else {
+        toast({
+          title: "ERROR",
+          description: "So‘rov yuborishda xatolik: " + error.message,
+        });
+      }
+    } finally {
+      setProcessing(false);
+    }
   };
+
 
   return (
     <div className='my-24 px-5 xl:px-32'>
@@ -34,27 +84,23 @@ const AddAddress = ({ address }) => {
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
-
-        {/* Main form */}
         <div className='col-span-4 my-5 px-10'>
           <div className='grid grid-cols-4 items-center pl-6'>
             <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Joylashuv qo'shish</h2>
           </div>
 
           <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
-            <InputBlock label="Ismingiz:" value={data.first_name} onChange={(e) => setData('first_name', e.target.value)} />
-            <InputBlock label="Familiyangiz:" value={data.last_name} onChange={(e) => setData('last_name', e.target.value)} />
-            <InputBlock label="Ko'changiz:" value={data.street} onChange={(e) => setData('street', e.target.value)} className="sm:col-span-2" />
-            <InputBlock label="Shahar:" value={data.city} onChange={(e) => setData('city', e.target.value)} />
-            <InputBlock label="Uy raqami / xonadon:" value={data.house_number} onChange={(e) => setData('house_number', e.target.value)} />
-            <InputBlock label="Viloyat / tuman:" value={data.region} onChange={(e) => setData('region', e.target.value)} />
-            <InputBlock label="Telefon raqamingiz:" value={data.phone} onChange={(e) => setData('phone', e.target.value)} />
+            <InputBlock label="Ismingiz:" name="first_name" value={formData.first_name} onChange={setFormData} error={errors.first_name} />
+            <InputBlock label="Familiyangiz:" name="last_name" value={formData.last_name} onChange={setFormData} error={errors.last_name} />
+            <InputBlock label="Ko'changiz:" name="street" value={formData.street} onChange={setFormData} className="sm:col-span-2" error={errors.street} />
+            <InputBlock label="Shahar:" name="city" value={formData.city} onChange={setFormData} error={errors.city} />
+            <InputBlock label="Uy raqami / xonadon:" name="house_number" value={formData.house_number} onChange={setFormData} error={errors.house_number} />
+            <InputBlock label="Viloyat / tuman:" name="region" value={formData.region} onChange={setFormData} error={errors.region} />
+            <InputBlock label="Telefon raqamingiz:" name="phone" value={formData.phone} onChange={setFormData} error={errors.phone} />
 
-            <div>
-              <button type="submit" disabled={processing} className='p-3 bg-black text-white w-[40%] sm:w-[35%] rounded-lg text-center'>
-                Saqlash
-              </button>
-            </div>
+            <button type="submit" disabled={processing} className='p-3 bg-black text-white w-[40%] sm:w-[35%] rounded-lg text-center'>
+              Saqlash
+            </button>
           </form>
         </div>
       </div>
@@ -62,33 +108,17 @@ const AddAddress = ({ address }) => {
   );
 };
 
-const SidebarLink = ({ href, icon, label, active = false }) => (
-  <Link
-    href={href}
-    className={`flex items-center gap-3 hover:bg-black hover:text-white duration-500 rounded-lg p-2 w-full ${active ? 'font-bold' : 'text-slate-400'}`}
-    style={{ fontFamily: "OswaldLight" }}
-  >
-    {icon}
-    <span>{label}</span>
-  </Link>
-);
-
-const DropdownItem = ({ href, children }) => (
-  <Link href={href}>
-    <DropdownMenuItem>{children}</DropdownMenuItem>
-  </Link>
-);
-
-const InputBlock = ({ label, value, onChange, className = '' }) => (
+const InputBlock = ({ label, name, value, onChange, className = '', error }) => (
   <div className={`bg-slate-100 p-3 rounded-lg space-y-2 ${className}`}>
     <h3 style={{ fontFamily: 'Oswald' }}>{label}</h3>
     <input
       type="text"
       value={value}
-      onChange={onChange}
+      onChange={e => onChange(prev => ({ ...prev, [name]: e.target.value }))}
       placeholder={`${label}ni kiriting`}
       className='bg-transparent w-full outline-none'
     />
+    {error && <p className="text-red-500 text-sm">{error}</p>}
   </div>
 );
 

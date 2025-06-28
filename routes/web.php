@@ -24,13 +24,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/history-order', fn() => inertia('HistoryOrders'));
     Route::get('/profile-edit', fn() => inertia('EditProfile'));
     Route::get('/edit-password', fn() => inertia('EditPass'));
-    Route::get('/edit-address', fn() => inertia('EditAddress'));
+    Route::get('/edit-address/{id}', [AddressController::class, 'edit'])->name('address.edit');
+    Route::post('/address-create', [AddressController::class, 'store'])->name('address.store');
+    Route::put('/address-update/{address}', [AddressController::class, 'update'])->name('address.update');
+    Route::delete('/address-delete/{id}', [AddressController::class, 'destroy'])->name('address.destroy');
     Route::get('/clothes', fn() => inertia('Clothes'));
-    Route::get('/address', fn() => inertia('Address'));
+    Route::get('/address', [AddressController::class, 'show'])->name('address.show');
     Route::get('/accessory', fn() => inertia('Accessory'));
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/favorites', fn() => inertia('favorites'));
     Route::get('/basket', fn() => inertia('basket'));
+    Route::post('/update-password', [UserController::class, 'updatePassword'])->middleware('auth');
+    Route::post('/verify-password-code', [UserController::class, 'verifyPasswordCode'])->middleware('auth');
 });
 
 // Admin sahifalari (faqat adminlar uchun)
@@ -70,7 +75,6 @@ Route::get('/test-email', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/address-add', fn() => inertia('AddAddress'))->name('address.add');
     Route::get('/address-show', [AddressController::class, 'show'])->name('address.show');
-    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{product}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');

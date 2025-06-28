@@ -160,4 +160,53 @@ class UserController extends Controller
         $users = User::all();
         return inertia('Login', ['users' => $users]);
     }
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|confirmed|min:6',
+        ]);
+    
+        $user = auth()->user();
+    
+        if (!Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'errors' => [
+                    'current_password' => ['Joriy parol noto‘g‘ri.']
+                ]
+            ], 422);
+        }
+    
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+    
+        // 🔐 Email tasdiqlash uchun kod yuborish
+        $code = random_int(100000, 999999);
+        VerificationCode::create([
+            'verifiable_type' => get_class($user),
+            'verifiable_id' => $user->id,
+            'code' => bcrypt($code),
+            'expires_at' => now()->addMinutes(3),
+        ]);
+    
+        Mail::to($user->email)->send(new VerifyCodeMail($code));
+    
+        return response()->json(['message' => 'Kod yuborildi']); // ✅ onSuccess ishlaydi
+    }
+    
+    public function verifyPasswordCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ]);
+
+        $user = Auth::user(); // Hozirgi userni olamiz
+
+        if (!$user || !VerificationCode::verify($request->code, $user)) {
+            return response()->json(['message' => 'Kod noto‘g‘ri yoki muddati tugagan.'], 422);
+        }
+
+        return response()->json(['message' => 'Tasdiqlandi!']); // ✅ BU ON_SUCCESS ISHLAYDI
+    }
+
 }
