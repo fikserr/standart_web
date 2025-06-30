@@ -37,29 +37,30 @@ const AddCategory = () => {
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Yangi kategoriya qo‘shish</h1>
+    <div className="p-6 min-h-screen font-sans xl:w-[1200px] my-10">
+      <h1 className="text-3xl font-bold mb-4">Yangi kategoriya qo‘shish</h1>
+      <div className='flex flex-col'>
+        <form onSubmit={handleSubmit} className="space-y-4 flex flex-col">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Kategoriya nomi (masalan: Telefon)"
+            className="max-w-xl border px-4 py-2 rounded"
+          />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Kategoriya nomi (masalan: Telefon)"
-          className="w-full border px-4 py-2 rounded"
-        />
-        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`bg-blue-600 text-white px-6 py-2 rounded max-w-xs hover:bg-blue-700 ${loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+          >
+            {loading ? 'Yuklanmoqda...' : 'Saqlash'}
+          </button>
+        </form>
+      </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={`bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          {loading ? 'Yuklanmoqda...' : 'Saqlash'}
-        </button>
-      </form>
     </div>
   );
 };

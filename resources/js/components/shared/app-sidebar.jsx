@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 
-import { MdDashboard, MdAllInbox, MdLogout, MdCreateNewFolder } from "react-icons/md";
+import { MdDashboard, MdAllInbox, MdCategory, MdCreateNewFolder } from "react-icons/md";
 import { ImUsers } from "react-icons/im";
 import { BsClipboard2CheckFill, BsCollectionFill } from "react-icons/bs";
 import { Link, usePage, router } from "@inertiajs/react";
@@ -17,34 +17,39 @@ import { Button } from "../ui/button";
 
 const items = [
   {
-    title: "Dashboard",
+    title: "Asboblar paneli",
     url: "/admin-dashboard",
     icon: MdDashboard,
   },
   {
-    title: "Products",
+    title: "Tovarlar",
     url: "/admin-products",
     icon: MdAllInbox,
   },
   {
-    title: "Add Product",
+    title: "Tovar Qo'shish",
     url: "/admin-add-product",
     icon: MdCreateNewFolder,
   },
   {
-    title: "Order Lists",
+    title: "Buyurtmalar ro'yxati",
     url: "/admin-order-lists",
     icon: BsClipboard2CheckFill,
   },
   {
-    title: "Product Stock",
+    title: "Tovar zaxirasi",
     url: "/admin-productStock",
     icon: BsCollectionFill,
   },
   {
-    title: "Users",
+    title: "Foydalanuvchilar",
     url: "/admin-users",
     icon: ImUsers,
+  },
+  {
+    title: "Katogoriya yaratish",
+    url: "/admin/categories/create",
+    icon: MdCategory,
   },
 ];
 
