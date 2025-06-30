@@ -19,9 +19,11 @@ class ProductController extends Controller
     }
     public function userProduct()
     {
+        $banners = \App\Models\Banner::latest()->get();
         $products = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         return Inertia::render('Home', [
             'products' => $products,
+            'banners' => $banners,
         ]);
     }
 
