@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,10 @@ Route::middleware('auth')->group(function () {
 
 // Admin sahifalari (faqat adminlar uchun)
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function () {
+
+    Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/admin/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::post('/banners', [BannerController::class, 'store'])->name('banners.store');
     Route::delete('/banners/{id}', [BannerController::class, 'destroy'])->name('banners.destroy');
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');

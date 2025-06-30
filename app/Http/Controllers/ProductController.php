@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,7 +12,7 @@ class ProductController extends Controller
 {
     public function showProduct()
     {
-        $products = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        $products = Product::with('category')->latest()->paginate(5);
         return Inertia::render('admin/productStock', [
             'products' => $products,
         ]);
@@ -23,16 +24,21 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function create()
     {
-        return Inertia::render('admin/addProducts');
+        $categories = Category::select('id', 'name')->get();
+
+        return Inertia::render('admin/addProducts', [
+            'categories' => $categories,
+        ]);
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'product_name' => 'required|string',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'sizes' => 'nullable|array',
             'price' => 'required|numeric',
             'colors' => 'nullable|string',
@@ -54,35 +60,11 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
 
-    public function index(Request $request)
-    {
-        $search = $request->input('search');
-
-        $products = Product::when($search, function ($query, $search) {
-            $query->where('product_name', 'like', "%{$search}%")
-                ->orWhere('category', 'like', "%{$search}%");
-        })->latest()->paginate(5);
-
-        return Inertia::render('admin/productStock', [
-            'products' => $products,
-            'filters' => [
-                'search' => $search,
-            ],
-        ]);
-    }
-
-    public function edit(Product $product)
-    {
-        return Inertia::render('admin/editProducts', [
-            'product' => $product,
-        ]);
-    }
-
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
             'product_name' => 'required|string',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             'sizes' => 'nullable|array',
             'price' => 'required|numeric',
             'colors' => 'nullable|string',
@@ -101,11 +83,40 @@ class ProductController extends Controller
             }
         }
 
-        \Log::info('Product update data:', ['data' => $data, 'product_id' => $product->id]);
-
         $product->update($data);
 
         return back()->with('success', 'Mahsulot yangilandi');
+    }
+
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+
+        $products = Product::with('category') // 👈 category obyekti yuklanadi
+            ->when($search, function ($query, $search) {
+                $query->where('product_name', 'like', "%{$search}%")
+                    ->orWhereHas('category', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%"); // 👈 category.name bo‘yicha qidiruv
+                    });
+            })
+            ->latest()
+            ->paginate(5);
+
+        return Inertia::render('admin/productStock', [
+            'products' => $products,
+            'filters' => [
+                'search' => $search,
+            ],
+        ]);
+    }
+
+    public function edit(Product $product)
+    {
+        $categories = Category::all();
+        return Inertia::render('admin/editProducts', [
+            'product' => $product,
+            'categories' => $categories,
+        ]);
     }
 
     public function deleteProduct(Product $product)

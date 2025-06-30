@@ -126,7 +126,7 @@ const ProductStock = ({ products }) => {
                                         </div>
                                     </td>
                                     <td>{product.product_name}</td>
-                                    <td>{product.category}</td>
+                                    <td>{product.category?.name || '—'}</td>
                                     <td>{product.price}</td>
                                     <td>{product.brend}</td>
                                     <td>{product.colors}</td>

@@ -1,7 +1,6 @@
 <?php
 
 // app/Models/Product.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +10,7 @@ class Product extends Model
 {
     protected $fillable = [
         'product_name',
-        'category',
+        'category_id', // ⬅️ bu muhim
         'sizes',
         'price',
         'colors',
@@ -38,5 +37,10 @@ class Product extends Model
     public function getPhotoUrl3Attribute()
     {
         return $this->photo3 ? Storage::url($this->photo3) : null;
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 
-const EditProduct = ({ product }) => {
+const EditProduct = ({ product, categories }) => {
   const [previewImages, setPreviewImages] = useState({
     photo1: product.photo1 || null,
     photo2: product.photo2 || null,
@@ -11,7 +11,7 @@ const EditProduct = ({ product }) => {
 
   const { data, setData, errors, processing, post } = useForm({
     product_name: product.product_name || '',
-    category: product.category || '',
+    category_id: product.category_id || '',
     sizes: Array.isArray(product.sizes)
       ? product.sizes
       : (typeof product.sizes === 'string'
@@ -20,9 +20,7 @@ const EditProduct = ({ product }) => {
     price: product.price || '',
     colors: product.colors || '',
     brend: product.brend || '',
-    // photo1: null,
-    // photo2: null,
-    // photo3: null,
+    // photo1/2/3: file o‘rniga handleFileChange ishlatiladi
   });
 
   const handleInputChange = (e) => {
@@ -48,7 +46,7 @@ const EditProduct = ({ product }) => {
       }));
     };
     reader.readAsDataURL(file);
-    e.target.value = ''; // reset file input
+    e.target.value = '';
   };
 
   const handlePhotoDelete = (key) => {
@@ -61,7 +59,7 @@ const EditProduct = ({ product }) => {
 
     const formData = new FormData();
     formData.append('product_name', data.product_name);
-    formData.append('category', data.category);
+    formData.append('category_id', data.category_id);
     formData.append('price', data.price);
     formData.append('colors', data.colors);
     formData.append('brend', data.brend);
@@ -129,6 +127,7 @@ const EditProduct = ({ product }) => {
             );
           })}
         </div>
+
         <div className='grid grid-cols-2 gap-5'>
           <input
             name="product_name"
@@ -139,14 +138,20 @@ const EditProduct = ({ product }) => {
           />
           {errors.product_name && <p className="text-red-500">{errors.product_name}</p>}
 
-          <input
-            name="category"
-            value={data.category}
+          <select
+            name="category_id"
+            value={data.category_id}
             onChange={handleInputChange}
-            placeholder="Kategoriya"
             className="w-full border p-5 rounded-lg outline-none"
-          />
-          {errors.category && <p className="text-red-500">{errors.category}</p>}
+          >
+            <option value="">Kategoriya tanlang</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          {errors.category_id && <p className="text-red-500">{errors.category_id}</p>}
 
           <input
             name="sizes"
@@ -185,6 +190,7 @@ const EditProduct = ({ product }) => {
           />
           {errors.brend && <p className="text-red-500">{errors.brend}</p>}
         </div>
+
         <button
           type="submit"
           disabled={processing}

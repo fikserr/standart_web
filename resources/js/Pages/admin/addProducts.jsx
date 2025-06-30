@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 
-const AddProductForm = () => {
+const AddProductForm = ({ categories }) => {
   const [previewImages, setPreviewImages] = useState({
     photo1: null,
     photo2: null,
@@ -96,13 +96,19 @@ const AddProductForm = () => {
           />
           {errors.product_name && <div className="text-red-600">{errors.product_name}</div>}
 
-          <input
-            name="category"
-            value={data.category}
+          <select
+            name="category_id"
+            value={data.category_id}
             onChange={handleChange}
-            placeholder="Category"
             className="w-full border p-5 rounded-lg outline-none"
-          />
+          >
+            <option value="">Kategoriya tanlang</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
           {errors.category && <div className="text-red-600">{errors.category}</div>}
 
           <input
