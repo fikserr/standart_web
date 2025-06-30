@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@inertiajs/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaTrashCan } from "react-icons/fa6";
 
 export default function ProductsUI({ banners }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,7 +29,7 @@ export default function ProductsUI({ banners }) {
       </div>
 
       {/* Banner */}
-      <div className="relative h-[400px] w-[1200px] text-white rounded-xl p-8 mb-8 overflow-hidden">
+      <div className="relative h-[500px] w-[1200px] text-white rounded-xl p-8 mb-8 overflow-hidden">
         <AnimatePresence>
           {banners?.[currentIndex] && (
             <motion.div
@@ -67,6 +68,7 @@ export default function ProductsUI({ banners }) {
         >
           ›
         </button>
+        <button className="absolute bottom-4 right-4 text-xl"><FaTrashCan/></button>
       </div>
     </div>
   );
