@@ -22,7 +22,7 @@ const items = [
     icon: MdDashboard,
   },
   {
-    title: "Tovarlar",
+    title: "Banner",
     url: "/admin-products",
     icon: MdAllInbox,
   },
@@ -37,7 +37,7 @@ const items = [
     icon: BsClipboard2CheckFill,
   },
   {
-    title: "Tovar zaxirasi",
+    title: "Tovarlar",
     url: "/admin-productStock",
     icon: BsCollectionFill,
   },
