@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "@inertiajs/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrashCan } from "react-icons/fa6";
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem
+} from "@/components/ui/carousel"
 
 export default function ProductsUI({ banners }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,47 +40,35 @@ export default function ProductsUI({ banners }) {
       </div>
 
       {/* Banner */}
-      <div className="relative h-[500px] w-[1200px] text-white rounded-xl p-8 mb-8 overflow-hidden">
-        <AnimatePresence>
-          {banners?.[currentIndex] && (
-            <motion.div
-              key={banners[currentIndex].id}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
-              className="absolute inset-0 w-full h-full"
-            >
-              <img
-                src={`/storage/${banners[currentIndex].image}`}
-                alt={banners[currentIndex].name}
-                className="w-full h-full object-cover rounded-xl"
-              />
-            </motion.div>
+      <div className="relative h-[700px] w-[1200px] text-white rounded-xl p-8 mb-8 overflow-hidden">
+        <div className="border h-[500px] rounded-xl overflow-hidden">
+          <Carousel>
+            <CarouselContent>
+              {
+                banners.map((banner, index) => (
+                  <CarouselItem
+                    key={banner.id}
+                    className={`w-full ${index === currentIndex ? 'block' : 'hidden'}`}
+                  >
+                    <div className="">
+                      <Card>
+                        <CardContent className="flex items-center justify-center p-0">
+                          <img
+                            src={`/storage/${banner.image}`}
+                            alt={banner.name}
+                            className="w-full rounded-xl"
+                          />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))
+              }
+            </CarouselContent>
            
-          )}
-        </AnimatePresence>
-
-        {/* Optional: Previous/Next buttons */}
-        <button
-          onClick={() =>
-            setCurrentIndex((prev) =>
-              prev === 0 ? banners.length - 1 : prev - 1
-            )
-          }
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-3xl z-10"
-        >
-          ‹
-        </button>
-        <button
-          onClick={() =>
-            setCurrentIndex((prev) => (prev + 1) % banners.length)
-          }
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white text-3xl z-10"
-        >
-          ›
-        </button>
-        <button   onClick={() => handleDelete(banners.id)} className="absolute bottom-4 right-4 text-xl"><FaTrashCan /></button>
+          </Carousel>
+        </div>
+        <button   onClick={() => handleDelete(banners.id)} className="absolute bottom-48 right-16 text-xl"><FaTrashCan /></button>
       </div>
     </div>
   );

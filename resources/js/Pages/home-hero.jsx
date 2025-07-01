@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card"
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem
+} from "@/components/ui/carousel"
 
 const HomeHero = ({ banner }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,25 +22,31 @@ const HomeHero = ({ banner }) => {
     return (
         <div>
             <div className='p-5 relative w-full mt-20 2xl:px-20'>
-                <div className='h-[400px] xl:h-[600px]'>
-                    <AnimatePresence>
-                        {banner?.[currentIndex] && (
-                            <motion.div
-                                key={banner[currentIndex].id}
-                                initial={{ opacity: 0, x: 100 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -100 }}
-                                transition={{ duration: 0.5 }}
-                                className="absolute inset-0 w-full h-full flex justify-center items-center"
-                            >
-                                <img
-                                    src={`/storage/${banner[currentIndex].image}`}
-                                    alt={banner[currentIndex].name}
-                                    className="w-[90%] h-full object-cover rounded-xl"
-                                />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                <div className='h-[180px] sm500:h-[240px] sm:h-[280px] md:h-[350px] md992:h-[450px] xl:h-[500px] 2xl:h-[600px] overflow-hidden rounded-xl'>
+                    <Carousel>
+                        <CarouselContent>
+                            {
+                                banner.map((banner, index) => (
+                                    <CarouselItem
+                                        key={banner.id}
+                                        className={`w-full ${index === currentIndex ? 'block' : 'hidden'}`}
+                                    >
+                                        <div className="">
+                                            <Card>
+                                                <CardContent className="flex items-center justify-center p-0">
+                                                    <img
+                                                        src={`/storage/${banner.image}`}
+                                                        alt={banner.name}
+                                                        className="w-full rounded-xl"
+                                                    />
+                                                </CardContent>
+                                            </Card>
+                                        </div>
+                                    </CarouselItem>
+                                ))
+                            }
+                        </CarouselContent>
+                    </Carousel>
                 </div>
             </div>
         </div>
