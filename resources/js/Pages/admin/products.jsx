@@ -6,7 +6,12 @@ import { FaTrashCan } from "react-icons/fa6";
 export default function ProductsUI({ banners }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const intervalRef = useRef(null);
-
+  const handleDelete = (id) => {
+    router.delete(route('banners.destroy', id), {
+      onSuccess: () => toast.success('Banner o‘chirildi!'),
+      onError: () => toast.error('Xatolik yuz berdi!'),
+    });
+  };
   useEffect(() => {
     if (banners?.length > 1) {
       intervalRef.current = setInterval(() => {
@@ -46,6 +51,7 @@ export default function ProductsUI({ banners }) {
                 className="w-full h-full object-cover rounded-xl"
               />
             </motion.div>
+           
           )}
         </AnimatePresence>
 
@@ -68,7 +74,7 @@ export default function ProductsUI({ banners }) {
         >
           ›
         </button>
-        <button className="absolute bottom-4 right-4 text-xl"><FaTrashCan/></button>
+        <button   onClick={() => handleDelete(banners.id)} className="absolute bottom-4 right-4 text-xl"><FaTrashCan /></button>
       </div>
     </div>
   );
