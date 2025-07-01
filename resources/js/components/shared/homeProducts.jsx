@@ -10,14 +10,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { useToast } from '@/hooks/use-toast';
 
-const HomeProducts = ({ data }) => {
-    console.log(data, "data");
-    const [starredCards, setStarredCards] = useState(
-        data.reduce((acc, id) => {
-            acc[id] = true;
-            return acc;
-        }, {})
-    );
+const HomeProducts = ({ data, favorites }) => {
+    const [starredCards, setStarredCards] = useState(() => {
+        const initialStars = {};
+        favorites.forEach((item) => {
+            initialStars[item.id] = true;
+        });
+        return initialStars;
+    });
     const { toast } = useToast();
     const handleClick = async (event, id) => {
         event.preventDefault();
@@ -26,7 +26,7 @@ const HomeProducts = ({ data }) => {
             try {
                 await axios.delete(`/favorites/${id}`);
                 setStarredCards((prev) => ({ ...prev, [id]: false }));
-    
+
                 toast({
                     title: "Sevimlilardan o'chirildi",
                     description: "✅ Mahsulot o'chirildi",
@@ -42,7 +42,7 @@ const HomeProducts = ({ data }) => {
                     product_id: id,
                 });
                 setStarredCards((prev) => ({ ...prev, [id]: true }));
-    
+
                 toast({
                     title: "Sevimlilarga qo'shildi",
                     description: "✅ Mahsulot qo'shildi",
@@ -53,8 +53,6 @@ const HomeProducts = ({ data }) => {
             }
         }
     };
-    
-    
     return (
         <div>
             {/* Oyoq kiyimlar */}
@@ -94,7 +92,7 @@ const HomeProducts = ({ data }) => {
                                     />
                                     <button onClick={(e) => handleClick(e, item.id)}>
                                         {starredCards[item.id] ? (
-                                            <ImStarFull className="absolute top-4 right-4 text-2xl text-white" />
+                                            <ImStarFull className="absolute top-4 right-4 text-2xl text-yellow-400" />
                                         ) : (
                                             <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
                                         )}

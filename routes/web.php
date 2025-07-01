@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/accessory', fn() => inertia('Accessory'));
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/favorites', fn() => inertia('favorites'));
+    Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
     Route::get('/basket', fn() => inertia('basket'));
     Route::post('/update-password', [UserController::class, 'updatePassword'])->middleware('auth');
     Route::post('/verify-password-code', [UserController::class, 'verifyPasswordCode'])->middleware('auth');

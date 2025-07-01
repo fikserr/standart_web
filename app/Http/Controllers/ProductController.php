@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Storage;
@@ -19,14 +20,30 @@ class ProductController extends Controller
     }
     public function userProduct()
     {
+
         $banners = \App\Models\Banner::latest()->get();
         $products = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        $favorites = Auth::user()->favorites;
         return Inertia::render('Home', [
             'products' => $products,
             'banners' => $banners,
+            'favorites' => $favorites,
+
         ]);
     }
+    public function show($id)
+    {
+        // 1. Mahsulotni ID bo‘yicha olish
+        // $product = Product::findOrFail($id); // faqat products jadvalidan
 
+        // 2. Agar category, sizes va boshqa bog‘lamalar bo‘lsa:
+        $product = Product::with(['category',])->findOrFail($id);
+
+        // 3. Inertia orqali Detail sahifaga yuborish
+        return Inertia::render('detail', [
+            'detail' => $product,
+        ]);
+    }
     public function create()
     {
         $categories = Category::select('id', 'name')->get();

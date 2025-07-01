@@ -9,9 +9,10 @@ const card = [
     { title: "Product nomi", price: "Product narxi", star: <ImStarEmpty /> },
 ]
 
-const Index = () => {
+const Index = ({detail}) => {
     const [activeTab, setActiveTab] = useState('Tafsilotlar');
     const tabs = ['Tafsilotlar'];
+    console.log(detail, "detail");
     return (
         <div className='my-20 px-5 xl:px-32'>
             <h1 style={{ fontFamily: "Oswald", fontSize: "22px" }} className='sm:hidden'>Product nomi</h1>

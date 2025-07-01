@@ -3,7 +3,7 @@ import { HeroImg, HeroImg2, iphone12, iphone13, inbox, user, check, Blog1, Blog2
 import HomeProduct from '@/components/shared/homeProducts';
 import HomeHero from "@/Pages/home-hero";
 
-const Home = ({products,banners}) => {
+const Home = ({products, banners,favorites}) => {
   // const [starredCards, setStarredCards] = useState({});
 
   // const handleClick = (event, id) => {
@@ -19,7 +19,7 @@ const Home = ({products,banners}) => {
     <div>
       <HomeHero banner={banners}/>
       <div>
-        <HomeProduct data={products}/>
+        <HomeProduct data={products} favorites={favorites}/>
       </div>
       <div className='px-5 xl:px-20 my-14 text-white'>
         <div className='w-full p-5 sm:p-8 xl:p-16 bg-[rgb(22,156,248)] rounded-lg flex flex-col gap-3 relative'>
