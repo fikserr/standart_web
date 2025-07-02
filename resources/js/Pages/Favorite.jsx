@@ -50,29 +50,31 @@ const EmptyFavorites = ({ favorites }) => {
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">SEVIMLILAR</h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {favorites.map((item) => (
-                        <Link href={`/detail/${item.id}`} className='border-2 rounded-lg flex flex-col h-80'>
-                            <div className='flex justify-end h-[75%] relative rounded-t-lg'>
-                                <img
-                                    src={`/storage/${item.photo1}?v=${Date.now()}`}
-                                    alt={item.product_name}
-                                    className="w-full h-full object-cover rounded-t-lg"
-                                    onError={(e) => {
-                                        e.target.src = '/path/to/fallback-image.jpg';
-                                    }}
-                                />
-                                <button onClick={(e) => handleClick(e, item.id)}>
-                                    {starredCards[item.id] ? (
-                                        <ImStarFull className="absolute top-4 right-4 text-2xl text-red-800" />
-                                    ) : (
-                                        <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
-                                    )}
-                                </button>
-                            </div>
-                            <div className='p-2'>
-                                <p>{item.product_name}</p>
-                                <p>${item.price}</p>
-                            </div>
-                        </Link>
+                        <div key={item.id}>
+                            <Link href={`/detail/${item.id}`} className='border-2 rounded-lg flex flex-col h-80'>
+                                <div className='flex justify-end h-[75%] relative rounded-t-lg'>
+                                    <img
+                                        src={`/storage/${item.photo1}?v=${Date.now()}`}
+                                        alt={item.product_name}
+                                        className="w-full h-full object-cover rounded-t-lg"
+                                        onError={(e) => {
+                                            e.target.src = '/path/to/fallback-image.jpg';
+                                        }}
+                                    />
+                                    <button onClick={(e) => handleClick(e, item.id)}>
+                                        {starredCards[item.id] ? (
+                                            <ImStarFull className="absolute top-4 right-4 text-2xl text-yellow-400" />
+                                        ) : (
+                                            <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
+                                        )}
+                                    </button>
+                                </div>
+                                <div className='p-2'>
+                                    <p>{item.product_name}</p>
+                                    <p>${item.price}</p>
+                                </div>
+                            </Link>
+                        </div>
                     ))}
                 </div>
             </div>

@@ -1,56 +1,52 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import {
     Carousel,
     CarouselContent,
-    CarouselItem
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "@/components/ui/carousel"
 
 const HomeHero = ({ banner }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const intervalRef = useRef(null);
-    console.log(banner, "banners in home hero");
+    const carouselRef = useRef(null);
 
     useEffect(() => {
-        if (banner?.length > 1) {
-            intervalRef.current = setInterval(() => {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % banner.length);
+        if (banner?.length > 1 && carouselRef.current) {
+            const interval = setInterval(() => {
+                const nextButton = carouselRef.current.querySelector('[data-carousel-next]');
+                if (nextButton) nextButton.click();
             }, 5000);
+
+            return () => clearInterval(interval);
         }
-        return () => clearInterval(intervalRef.current);
-    }, [banner?.length]);
+    }, [banner]);
+
     return (
-        <div>
-            <div className='p-5 relative w-full mt-20 2xl:px-20'>
-                <div className='h-[180px] sm500:h-[240px] sm:h-[280px] md:h-[350px] md992:h-[450px] xl:h-[500px] 2xl:h-[600px] overflow-hidden rounded-xl'>
-                    <Carousel>
-                        <CarouselContent>
-                            {
-                                banner.map((banner, index) => (
-                                    <CarouselItem
-                                        key={banner.id}
-                                        className={`w-full ${index === currentIndex ? 'block' : 'hidden'}`}
-                                    >
-                                        <div className="">
-                                            <Card>
-                                                <CardContent className="flex items-center justify-center p-0">
-                                                    <img
-                                                        src={`/storage/${banner.image}`}
-                                                        alt={banner.name}
-                                                        className="w-full rounded-xl"
-                                                    />
-                                                </CardContent>
-                                            </Card>
-                                        </div>
-                                    </CarouselItem>
-                                ))
-                            }
-                        </CarouselContent>
-                    </Carousel>
-                </div>
+        <div className='p-5 relative w-full mt-20 2xl:px-20'>
+            <div className='h-[180px] sm500:h-[250px] sm:h-[300px] md:h-[400px] md992:h-[650px] xl:h-[700px] 2xl:h-[700px] overflow-hidden rounded-xl'>
+                <Carousel ref={carouselRef}>
+                    <CarouselContent>
+                        {banner.map((item) => (
+                            <CarouselItem key={item.id} className="w-full">
+                                <Card>
+                                    <CardContent className="flex items-center justify-center p-0">
+                                        <img
+                                            src={`/storage/${item.image}`}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover rounded-xl"
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious data-carousel-prev />
+                    <CarouselNext data-carousel-next />
+                </Carousel>
             </div>
         </div>
     )
 }
 
-export default HomeHero
+export default HomeHero;
