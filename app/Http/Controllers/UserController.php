@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Mail\VerifyCodeMail;
 use App\Models\User;
+use App\Models\VerificationCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Mail;
-use Wotz\VerificationCode\Models\VerificationCode;
 
 class UserController extends Controller
 {
