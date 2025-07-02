@@ -1,35 +1,37 @@
 import { useState } from 'react'
 import { HiOutlineChevronRight } from "react-icons/hi";
 
-const Index = ({ detail = [] }) => {
+const Index = ({ detail }) => {
     const [activeTab, setActiveTab] = useState('Tafsilotlar');
+    const [mainPhoto, setMainPhoto] = useState(detail?.photo1);
     const tabs = ['Tafsilotlar'];
-    console.log(detail, "detail");
     return (
         <div className='my-20 px-5 xl:px-32'>
-            <h1 style={{ fontFamily: "Oswald", fontSize: "22px" }} className='sm:hidden'>Product nomi</h1>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
                 <div className='border-b-blue-300 grid gap-4 border-b-2'>
-                    {detail && detail.photo1 && (
+                    {mainPhoto && (
                         <div>
                             <img
-                                src={`/storage/${detail.photo1}?v=${Date.now()}`}
+                                src={`/storage/${mainPhoto}?v=${Date.now()}`}
                                 alt={detail.product_name || 'Product image'}
-                                className="w-full h-[400px] rounded-2xl object-cover rounded-t-lg"
+                                className="w-full h-[350px] rounded-2xl object-cover rounded-t-lg"
                                 onError={(e) => {
-                                    e.target.src = '/path/to/fallback-image.jpg'; // fallback rasm
+                                    e.target.src = '/path/to/fallback-image.jpg';
                                 }}
                             />
                         </div>
                     )}
-                    <div className='grid grid-cols-2 gap-3 mb-3'>
-                        {[detail.photo2, detail.photo3].map((photo, index) => (
+
+                    <div className='grid grid-cols-3 gap-3 mb-3'>
+                        {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
                             photo && (
                                 <div key={index}>
                                     <img
                                         src={`/storage/${photo}?v=${Date.now()}`}
-                                        alt={`Product image ${index + 2}`} // photo2 = img 2, photo3 = img 3
-                                        className="w-full h-[150px] object-cover rounded-lg"
+                                        alt={`Product image ${index + 1}`}
+                                        className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo ? 'ring-2 ring-blue-400' : ''
+                                            }`}
+                                        onClick={() => setMainPhoto(photo)}
                                         onError={(e) => {
                                             e.target.src = '/path/to/fallback-image.jpg';
                                         }}
@@ -40,7 +42,22 @@ const Index = ({ detail = [] }) => {
                     </div>
                 </div>
                 <div className='my-5'>
-                    <h1 style={{ fontFamily: "Oswald", fontSize: "22px" }} className='hidden sm:block'>Product nomi</h1>
+                    <div className='sm:hidden'>
+                        <h1 style={{ fontFamily: "Oswald", fontSize: "22px" }}>Product nomi</h1>
+                        {
+                            detail && detail.product_name && (
+                                <h1 className='text-2xl font-bold mb-5' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>
+                            )
+                        }
+                    </div>
+                    <div className='hidden sm:block'>
+                        <h1 style={{ fontFamily: "Oswald", fontSize: "24px" }} >Product nomi</h1>
+                        {
+                            detail && detail.product_name && (
+                                <h1 className='text-2xl font-bold mb-5' style={{ fontFamily: "OswaldLight" }}>{detail.product_name}</h1>
+                            )
+                        }
+                    </div>
                     <h2 className="font-semibold mb-2" style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>EU o'lchamlar:</h2>
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-2">
                         {Array.isArray(detail.sizes) && detail.sizes.map((size, index) => (
@@ -73,6 +90,21 @@ const Index = ({ detail = [] }) => {
                                 ))}
                             </div>
                         </div>
+                    </div>
+                    <div className='hidden sm:block max-w-md'>
+                        <div className='my-5 px-2 pt-2'>
+                            <div className='flex justify-between text-slate-500'>
+                                {tabs.map((tab) => (
+                                    <p
+                                        key={tab}
+                                        onClick={() => setActiveTab(tab)}
+                                        className={`cursor-pointer ${activeTab === tab ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
+                                    >
+                                        {tab}
+                                    </p>
+                                ))}
+                            </div>
+                        </div>
                         <div className='space-y-2'>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
@@ -90,52 +122,23 @@ const Index = ({ detail = [] }) => {
                     </div>
                 </div>
             </div>
-            <div className='hidden sm:block max-w-md xl:hidden'>
-                <div className='my-5 px-2 pt-2'>
-                    <div className='flex justify-between text-slate-500'>
-                        {tabs.map((tab) => (
-                            <p
-                                key={tab}
-                                onClick={() => setActiveTab(tab)}
-                                className={`cursor-pointer ${activeTab === tab ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
-                            >
-                                {tab}
-                            </p>
-                        ))}
-                    </div>
+            <div className='space-y-2 sm:hidden'>
+                <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
+                    <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
+                    <button className='text-slate-600 flex items-center'>Oyoq kiyimlar <HiOutlineChevronRight /></button>
                 </div>
-                <div className='space-y-2'>
-                    <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                        <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
-                        <button className='text-slate-600 flex items-center'>Oyoq kiyimlar <HiOutlineChevronRight /></button>
-                    </div>
-                    <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                        <h3 style={{ fontSize: "20px" }}>Brend</h3>
-                        <button className='text-slate-600 flex items-center'>Nike <HiOutlineChevronRight /></button>
-                    </div>
-                    <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
-                        <h3 style={{ fontSize: "20px" }}>Rangi</h3>
-                        <button className='text-slate-600 flex items-center'>Havorang <HiOutlineChevronRight /></button>
-                    </div>
+                <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
+                    <h3 style={{ fontSize: "20px" }}>Brend</h3>
+                    <button className='text-slate-600 flex items-center'>Nike <HiOutlineChevronRight /></button>
+                </div>
+                <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
+                    <h3 style={{ fontSize: "20px" }}>Rangi</h3>
+                    <button className='text-slate-600 flex items-center'>Havorang <HiOutlineChevronRight /></button>
                 </div>
             </div>
             <div className='my-10'>
                 <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
-                {/* <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 my-5'>
-                    {
-                        card.map((item, index) => (
-                            <button onClick={() => navigate('/shoes/detail')} className='border-2 h-[250px] xl:h-[250px]'>
-                                <div key={index} className='bg-green-500 flex justify-end h-[75%] relative'>
-                                    <button className='absolute top-4 right-4'>{item.star}</button>
-                                </div>
-                                <div className='p-2'>
-                                    <p>{item.title}</p>
-                                    <p>{item.price}</p>
-                                </div>
-                            </button>
-                        ))
-                    }
-                </div> */}
+                {/* Top tovarlar bu yerga <-  Abdumalik tomonidan yozildi ChatGPT emas 😂 */}
             </div>
         </div>
     )
