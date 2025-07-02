@@ -12,13 +12,13 @@ import Logo from '@images/Logo1.webp';
 
 const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
-    const [searchInput, setSearchInput] = useState(false);
+    const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const { auth } = usePage().props;
 
     const toggleSearch = () => setSearchInputVisible(prev => !prev);
-    const toggleMobileSearch = () => setSearchInput(prev => !prev);
+    const toggleMobileSearch = () => setIsMobileSearchOpen(prev => !prev);
 
     return (
         <div className="py-5 px-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]">
@@ -34,7 +34,7 @@ const UserNavbar = () => {
                             onClick={toggleMobileSearch}
                         />
                         <div
-                            className={`absolute top-10 left-0 transition-all duration-500 ease-in-out transform origin-top ${searchInput ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+                            className={`absolute top-14 left-0 transition-all duration-200 ease-in transform origin-top ${isMobileSearchOpen ? 'scale-y-100 opacity-100' : 'scale-y-10 opacity-0'
                                 }`}
                         >
                             <div className="flex items-center px-3 py-1 rounded-2xl bg-gray-800">
@@ -48,7 +48,7 @@ const UserNavbar = () => {
                                     onClick={toggleMobileSearch}
                                 />
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div>
                 <div
@@ -64,12 +64,12 @@ const UserNavbar = () => {
                         </button>
                     </div>
                     <div className="space-y-2 mt-10">
-                        <SidebarButton label="Kiyimlar" />
-                        <SidebarButton label="Oyoq kiyimlar" />
-                        <SidebarButton label="Aksesuarlar" />
-                        <SidebarButton label="Brendlar" />
-                        <SidebarButton label="Xarajatlarni hisoblash" />
+                        <Link href={'/clothes'}><SidebarButton label="Kiyimlar" /></Link>
+                        <Link href={'/shoes'}><SidebarButton label="Oyoq kiyimlar" /></Link>
+                        <Link href={'/accessory'}><SidebarButton label="Aksesuarlar" /></Link>
                         <SidebarButton label="Ma'lumot" />
+                        <Link href={'/profile'}><SidebarButton label="Profile" /></Link>
+                        <Link href={'/favorites'}><SidebarButton label="Favorites" /></Link>
                     </div>
                 </div>
                 <div className="flex items-center gap-10">
@@ -82,13 +82,11 @@ const UserNavbar = () => {
                         <img src={Logo} alt="Company Logo" />
                     </Link>
                 </div>
-                <div className="w-4/6 hidden xl:flex justify-around">
+                <div className="w-4/6 hidden xl:flex justify-start">
                     <ul className="flex gap-5 2xl:gap-10">
                         <NavItem href="/clothes" label="Kiyimlar" />
                         <NavItem href="/shoes" label="Oyoq kiyimlar" />
                         <NavItem href="/accessory" label="Aksessuarlar" />
-                        <NavItem href="/" label="Brendlar" />
-                        <NavItem href="/" label="Xarajatlarni hisoblash" />
                         <NavItem href="/" label="Ma'lumot" />
                     </ul>
                 </div>
@@ -98,14 +96,14 @@ const UserNavbar = () => {
                         style={{ color: 'white', fontSize: '25px', cursor: 'pointer' }}
                         onClick={toggleSearch}
                     />
-                    <Link href="/favorites">
+                    <Link href="/favorites" className='hidden md:block'>
                         <ImStarEmpty style={{ color: 'white', fontSize: '25px' }} />
                     </Link>
                     <Link href="/basket" className="text-white flex items-end">
                         <HiOutlineShoppingBag style={{ fontSize: '25px' }} />
                     </Link>
                     {auth.user ? (
-                        <Link href="/profile">
+                        <Link href="/profile" className='hidden md:block'>
                             <BiUser style={{ color: 'white', fontSize: '25px' }} />
                         </Link>
                     ) : (
@@ -114,14 +112,14 @@ const UserNavbar = () => {
                         </Link>
                     )}
                     <div
-                        className={`absolute top-10 right-0 transition-all duration-500 ease-in-out transform origin-top ${searchInputVisible ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
+                        className={`absolute -inset-2top-0 right-[135px] transition-all duration-200 ease-in transform origin-top ${searchInputVisible ? 'scale-y-10 opacity-100' : 'scale-y-10 opacity-0'
                             }`}
                     >
-                        <div className="flex items-center px-3 py-1 rounded-2xl bg-gray-800">
+                        <div className="md:flex items-center px-3 py-1 rounded-2xl bg-gray-800 hidden">
                             <input
                                 type="text"
                                 placeholder="Search..."
-                                className="bg-transparent text-white px-3 py-1 outline-none w-72"
+                                className="bg-transparent text-white px-3 py-1 outline-none md:w-64 md992:w-80 xl:w-96"
                             />
                             <HiOutlineSearch
                                 style={{ color: 'white', fontSize: '25px', cursor: 'pointer' }}
