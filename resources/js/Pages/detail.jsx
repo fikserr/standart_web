@@ -1,10 +1,10 @@
+import { Link } from '@inertiajs/react';
 import { useState } from 'react'
 import { HiOutlineChevronRight } from "react-icons/hi";
 
 const Index = ({ detail }) => {
-    const [activeTab, setActiveTab] = useState('Tafsilotlar');
     const [mainPhoto, setMainPhoto] = useState(detail?.photo1);
-    const tabs = ['Tafsilotlar'];
+    console.log(detail);
     return (
         <div className='my-20 px-5 xl:px-32'>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
@@ -70,53 +70,46 @@ const Index = ({ detail }) => {
                         ))}
                     </div>
                     <div className='flex items-center justify-between'>
-                        <div>
-                            <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>Hajmi - 40</p>
-                            <p className='text-slate-500'>4 699 ₽</p>
-                        </div>
-                        <button className='bg-black p-2 text-white rounded-md'>Savatga Qo'shish</button>
+                        <button className='bg-black p-2 text-white rounded-md my-3'>Savatga Qo'shish</button>
                     </div>
-                    <div className='sm:hidden xl:block'>
+                    <div className='max-w-md'>
                         <div className='my-5 px-2 pt-2'>
                             <div className='flex justify-between text-slate-500'>
-                                {tabs.map((tab) => (
-                                    <p
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`cursor-pointer ${activeTab === tab ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
-                                    >
-                                        {tab}
-                                    </p>
-                                ))}
+                                <h3 style={{ fontFamily: "Oswald", fontSize: "22px" }} className='text-black border-b-blue-700 border-b-2 pb-2'>
+                                    Tavfsilotlar
+                                </h3>
                             </div>
                         </div>
-                    </div>
-                    <div className='hidden sm:block max-w-md'>
-                        <div className='my-5 px-2 pt-2'>
-                            <div className='flex justify-between text-slate-500'>
-                                {tabs.map((tab) => (
-                                    <p
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`cursor-pointer ${activeTab === tab ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
-                                    >
-                                        {tab}
-                                    </p>
-                                ))}
-                            </div>
-                        </div>
-                        <div className='space-y-2'>
+                        <div className='space-y-2 hidden sm:block cursor-default'>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
-                                <button className='text-slate-600 flex items-center'>Oyoq kiyimlar <HiOutlineChevronRight /></button>
+                                {[detail.category].map((category) => (
+                                    category && (
+                                        <div key={category.id}>
+                                            {category.name}
+                                        </div>
+                                    )
+                                ))}
                             </div>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Brend</h3>
-                                <button className='text-slate-600 flex items-center'>Nike <HiOutlineChevronRight /></button>
+                                {[detail.brend].map((item, index) => (
+                                    item && (
+                                        <div key={index}>
+                                            {item}
+                                        </div>
+                                    )
+                                ))}
                             </div>
                             <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                                 <h3 style={{ fontSize: "20px" }}>Rangi</h3>
-                                <button className='text-slate-600 flex items-center'>Havorang <HiOutlineChevronRight /></button>
+                                {[detail.colors].map((color, index) => (
+                                    color && (
+                                        <div key={index}>
+                                            {color}
+                                        </div>
+                                    )
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -125,15 +118,33 @@ const Index = ({ detail }) => {
             <div className='space-y-2 sm:hidden'>
                 <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                     <h3 style={{ fontSize: "20px" }}>Kategoriya</h3>
-                    <button className='text-slate-600 flex items-center'>Oyoq kiyimlar <HiOutlineChevronRight /></button>
+                    {[detail.category].map((category) => (
+                        category && (
+                            <div key={category.id}>
+                                {category.name}
+                            </div>
+                        )
+                    ))}
                 </div>
                 <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                     <h3 style={{ fontSize: "20px" }}>Brend</h3>
-                    <button className='text-slate-600 flex items-center'>Nike <HiOutlineChevronRight /></button>
+                    {[detail.brend].map((item, index) => (
+                        item && (
+                            <div key={index}>
+                                {item}
+                            </div>
+                        )
+                    ))}
                 </div>
                 <div style={{ fontFamily: 'OswaldLight' }} className='flex items-center justify-between'>
                     <h3 style={{ fontSize: "20px" }}>Rangi</h3>
-                    <button className='text-slate-600 flex items-center'>Havorang <HiOutlineChevronRight /></button>
+                    {[detail.colors].map((color, index) => (
+                        color && (
+                            <div key={index}>
+                                {color}
+                            </div>
+                        )
+                    ))}
                 </div>
             </div>
             <div className='my-10'>
