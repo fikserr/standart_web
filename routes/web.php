@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyCodeController;
@@ -34,11 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/address', [AddressController::class, 'show'])->name('address.show');
     Route::get('/accessory', fn() => inertia('Accessory'));
     Route::get('/detail', fn() => inertia('detail'));
-    Route::get('/favorites', fn() => inertia('favorites'));
+    Route::get('/favorites', fn() => inertia('Favorite'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
-    Route::get('/basket', fn() => inertia('basket'));
     Route::post('/update-password', [UserController::class, 'updatePassword'])->middleware('auth');
     Route::post('/verify-password-code', [UserController::class, 'verifyPasswordCode'])->middleware('auth');
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/basket', [CartController::class, 'showCart'])->name('cart.index');
+    Route::delete('/cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::post('/place-order', [OrderController::class, 'placeOrder'])->middleware('auth')->name('order.place');
+    Route::get('/order-success', [OrderController::class, 'success'])->name('order.success');
 });
 
 // Admin sahifalari (faqat adminlar uchun)
