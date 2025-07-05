@@ -1,5 +1,5 @@
 // src/Shared/VerifyCodeModal.jsx
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
 import {
   InputOTP,
@@ -8,12 +8,36 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 
-
 const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
   const [code, setCode] = useState('');
+  const [timeLeft, setTimeLeft] = useState(180); // 3 daqiqa = 180 soniya
+
+  useEffect(() => {
+    let timer;
+    if (isOpen) {
+      setTimeLeft(180); // Har safar ochilganda qaytadan 3 daqiqa o'rnatiladi
+      timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(timer); // Modal yopilganda tozalash
+  }, [isOpen]);
 
   const handleVerify = () => {
     onSubmit(code);
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
   if (!isOpen) return null;
@@ -21,14 +45,17 @@ const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-xl shadow-md w-[90%] sm:w-[400px]">
-        <h2 className="text-xl font-semibold mb-4">Tasdiqlash kodi</h2>
-        <p className="mb-2 text-sm text-gray-600">Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong></p>
+        <h2 className="text-xl font-semibold mb-2">Tasdiqlash kodi</h2>
+        <p className="mb-1 text-sm text-gray-600">
+          Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong>
+        </p>
+        <p className="text-sm text-gray-500 mb-3">Kod muddati tugash vaqti: <strong>{formatTime(timeLeft)}</strong></p>
+
         <InputOTP
           maxLength={6}
           value={code}
           onChange={(value) => setCode(value)}
           pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-
         >
           <InputOTPGroup className="w-full p-2 rounded mb-3 outline-none flex justify-center">
             <InputOTPSlot index={0} />
@@ -49,7 +76,9 @@ const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
           </button>
           <button
             onClick={handleVerify}
-            className="px-4 py-2 bg-black text-white rounded"
+            disabled={timeLeft === 0}
+            className={`px-4 py-2 rounded text-white ${timeLeft === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black'
+              }`}
           >
             Tasdiqlash
           </button>

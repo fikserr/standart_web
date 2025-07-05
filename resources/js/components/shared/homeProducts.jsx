@@ -10,6 +10,7 @@ import 'swiper/css/navigation';
 import { useToast } from '@/hooks/use-toast';
 
 const HomeProducts = ({ data, favorites }) => {
+    console.log(favorites, "data");
     const [starredCards, setStarredCards] = useState(() => {
         const initialStars = {};
         favorites.forEach((item) => {
@@ -54,7 +55,6 @@ const HomeProducts = ({ data, favorites }) => {
     };
     return (
         <div>
-            {/* Oyoq kiyimlar */}
             <Swiper
                 modules={[Navigation]}
                 spaceBetween={10}
@@ -82,89 +82,7 @@ const HomeProducts = ({ data, favorites }) => {
                                     {starredCards[item.id] ? (
                                         <ImStarFull className="absolute top-4 right-4 text-2xl text-yellow-400" />
                                     ) : (
-                                        <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
-                                    )}
-                                </button>
-                            </div>
-                            <div className='p-2'>
-                                <p>{item.product_name}</p>
-                                <p>${item.price}</p>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-
-            {/* Kiyimlar */}
-            <Swiper
-                modules={[Navigation]}
-                spaceBetween={10}
-                slidesPerView={2}
-                navigation
-                breakpoints={{
-                    640: { slidesPerView: 2 },
-                    768: { slidesPerView: 3 },
-                    992: { slidesPerView: 4 },
-                }}
-            >
-                {data.slice(4, 12).map((item) => (
-                    <SwiperSlide key={item.id}>
-                        <Link href={`/detail/${item.id}`} className='border-2 rounded-lg flex flex-col h-80'>
-                            <div className='flex justify-end h-[75%] relative rounded-t-lg'>
-                                <img
-                                    src={`/storage/${item.photo1}?v=${Date.now()}`}
-                                    alt={item.product_name}
-                                    className="w-full h-full object-cover rounded-t-lg"
-                                    onError={(e) => {
-                                        e.target.src = '/path/to/fallback-image.jpg';
-                                    }}
-                                />
-                                <button onClick={(e) => handleClick(e, item.id)}>
-                                    {starredCards[item.id] ? (
-                                        <ImStarFull className="absolute top-4 right-4 text-2xl text-yellow-400" />
-                                    ) : (
-                                        <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
-                                    )}
-                                </button>
-                            </div>
-                            <div className='p-2'>
-                                <p>{item.product_name}</p>
-                                <p>${item.price}</p>
-                            </div>
-                        </Link>
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-
-            {/* Aksesuarlar */}
-            <Swiper
-                modules={[Navigation]}
-                spaceBetween={10}
-                slidesPerView={2}
-                navigation
-                breakpoints={{
-                    640: { slidesPerView: 2 },
-                    768: { slidesPerView: 3 },
-                    992: { slidesPerView: 4 },
-                }}
-            >
-                {data.slice(8, 12).map((item) => (
-                    <SwiperSlide key={item.id}>
-                        <Link href={`/detail/${item.id}`} className='border-2 rounded-lg flex flex-col h-80'>
-                            <div className='flex justify-end h-[75%] relative rounded-t-lg'>
-                                <img
-                                    src={`/storage/${item.photo1}?v=${Date.now()}`}
-                                    alt={item.product_name}
-                                    className="w-full h-full object-cover rounded-t-lg"
-                                    onError={(e) => {
-                                        e.target.src = '/path/to/fallback-image.jpg';
-                                    }}
-                                />
-                                <button onClick={(e) => handleClick(e, item.id)}>
-                                    {starredCards[item.id] ? (
-                                        <ImStarFull className="absolute top-4 right-4 text-2xl text-yellow-400" />
-                                    ) : (
-                                        <ImStarEmpty className="absolute top-4 right-4 text-2xl text-white" />
+                                        <ImStarEmpty className="absolute top-4 right-4 text-2xl text-black" />
                                     )}
                                 </button>
                             </div>

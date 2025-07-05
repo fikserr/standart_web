@@ -1,5 +1,5 @@
 import { HiOutlineChevronRight, HiOutlineChevronLeft } from "react-icons/hi";
-import { HeroImg, HeroImg2, iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
+import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
 import HomeProduct from '@/components/shared/homeProducts';
 import HomeHero from "@/Pages/home-hero";
