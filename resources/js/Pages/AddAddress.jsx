@@ -29,7 +29,6 @@ const AddAddress = ({ address }) => {
         title: "Muvaffaqiyatli",
         description: "✅ Manzil saqlandi!",
       });
-      alert('');
       setFormData({
         first_name: '',
         last_name: '',
@@ -39,6 +38,7 @@ const AddAddress = ({ address }) => {
         region: '',
         phone: '',
       })
+      window.location.href = '/address';
     } catch (error) {
       if (error.response) {
 
@@ -76,12 +76,10 @@ const AddAddress = ({ address }) => {
 
   return (
     <div className='my-24 px-5 xl:px-32'>
-      <div className='flex items-center gap-2'>
+      <Link href={"/address"} className='flex items-center gap-2'>
         <HiOutlineChevronLeft className='text-2xl' />
-        <Link href={"/address"}>
-          <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
-        </Link>
-      </div>
+        <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
+      </Link>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
         <div className='col-span-4 my-5 px-10'>

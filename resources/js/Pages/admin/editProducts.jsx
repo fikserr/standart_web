@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Inertia } from '@inertiajs/inertia';
+import { useToast } from '@/hooks/use-toast';
 
 const EditProduct = ({ product, categories }) => {
   const [previewImages, setPreviewImages] = useState({
@@ -8,6 +8,7 @@ const EditProduct = ({ product, categories }) => {
     photo2: product.photo2 || null,
     photo3: product.photo3 || null,
   });
+  const { toast } = useToast();
 
   const { data, setData, errors, processing, post } = useForm({
     product_name: product.product_name || '',
@@ -56,31 +57,62 @@ const EditProduct = ({ product, categories }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    try {
+      toast({
+        title: "Saqlash",
+        description: "Mahsulot ma'lumotlari saqlanmoqda... ✅",
+      });
+      const formData = new FormData();
+      formData.append('product_name', data.product_name);
+      formData.append('category_id', data.category_id);
+      formData.append('price', data.price);
+      formData.append('colors', data.colors);
+      formData.append('brend', data.brend);
 
-    const formData = new FormData();
-    formData.append('product_name', data.product_name);
-    formData.append('category_id', data.category_id);
-    formData.append('price', data.price);
-    formData.append('colors', data.colors);
-    formData.append('brend', data.brend);
+      if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
+      if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
+      if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
 
-    if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
-    if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
-    if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
+      data.sizes.forEach((size, i) => {
+        formData.append(`sizes[${i}]`, size);
+      });
 
-    data.sizes.forEach((size, i) => {
-      formData.append(`sizes[${i}]`, size);
-    });
-
-    post(`/admin-products/${product.id}`, {
-      method: 'post',
-      data: formData,
-      headers: {
-        'X-HTTP-Method-Override': 'PUT',
-      },
-      onSuccess: () => alert('Mahsulot muvaffaqiyatli yangilandi!'),
-    });
-  };
+      post(`/admin-products/${product.id}`, {
+        method: 'post',
+        data: formData,
+        headers: {
+          'X-HTTP-Method-Override': 'PUT',
+        },
+      });
+      window.location.href = '/admin-productStock'
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 422) {
+          setErrors(error.response.data.errors);
+        } else if (error.response.status === 401) {
+          toast({
+            title: "Xatolik",
+            description: "Iltimos, avval tizimga kiring!",
+          });
+        } else {
+          toast({
+            title: "Xatolik",
+            description: `Xatolik: ${error.response.statusText}`,
+          });
+        }
+      } else if (error.request) {
+        toast({
+          title: "Xatolik",
+          description: "Serverdan javob kelmadi",
+        });
+      } else {
+        toast({
+          title: "Xatolik",
+          description: `Xatolik: ${error.message}`,
+        });
+      }
+    }
+  }
 
   return (
     <div className='px-5 w-[1200px]'>

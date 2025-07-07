@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "@inertiajs/react";
-import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import favoriteImg from '../../../storage/app/private/assets/favorite.png';
 import HomeProducts from "@/components/shared/homeProducts";
 

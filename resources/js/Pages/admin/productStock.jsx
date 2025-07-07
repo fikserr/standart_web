@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { Link, router } from "@inertiajs/react";
+import { useToast } from "@/hooks/use-toast";
 import {
     Pagination,
     PaginationContent,
@@ -11,8 +12,12 @@ import { HiOutlineSearch } from 'react-icons/hi';
 
 
 const ProductStock = ({ products }) => {
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState(null);
+    const [selectedPhotoKeys, setSelectedPhotoKeys] = useState([]);
     const [imageIndexes, setImageIndexes] = useState({});
     const [modalImage, setModalImage] = useState(null);
+    const { toast } = useToast();
     const openImgModal = (productId, imagePath, photos) => {
         setModalImage(imagePath);
         setCurrentProductId(productId);
@@ -21,6 +26,16 @@ const ProductStock = ({ products }) => {
     const [currentProductId, setCurrentProductId] = useState(null);
     const [currentPhotos, setCurrentPhotos] = useState([]);
     const [search, setSearch] = useState('')
+    const confirmPhotoDelete = (productId, photoKeys) => {
+        setSelectedProductId(productId);
+        setSelectedPhotoKeys(photoKeys);
+        setShowConfirmModal(true);
+    };
+    const closeConfirmModal = () => {
+        setShowConfirmModal(false);
+        setSelectedProductId(null);
+        setSelectedPhotoKeys([]);
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -49,8 +64,10 @@ const ProductStock = ({ products }) => {
     };
 
     const handlePhotoDelete = async (productId, photoKeys) => {
-        if (!confirm("Rostdan ham bu rasmlarni o‘chirmoqchimisiz?")) return;
-
+        if (selectedProductId && selectedPhotoKeys.length) {
+            handlePhotoDelete(selectedProductId, selectedPhotoKeys);
+            closeConfirmModal();
+        }
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
@@ -65,15 +82,15 @@ const ProductStock = ({ products }) => {
             });
 
             if (response.ok) {
-                alert("Rasmlar muvaffaqiyatli o‘chirildi");
+                toast({ title: "Rasmlar o‘chirildi 🗑️ ", description: "Rasmlar muvaffaqiyatli o‘chirildi ✅" });
                 window.location.reload();
             } else {
                 const data = await response.json();
-                alert("Xatolik: " + (data.message || "Noma'lum xatolik"));
+                toast({ title: "Xatolik", description: "Rasmlarni o‘chirishda xatolik yuz berdi." });
             }
         } catch (error) {
             console.error("Xatolik:", error);
-            alert("Serverda xatolik yuz berdi");
+            toast({ title: "Xatolik", description: "Rasmlarni o‘chirishda xatolik yuz berdi." });
         }
     };
     useEffect(() => {
@@ -141,7 +158,7 @@ const ProductStock = ({ products }) => {
                                                 size="icon"
                                                 variant="outline"
                                                 className="text-red-500"
-                                                onClick={() => handlePhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}
+                                                onClick={() => confirmPhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
@@ -191,6 +208,18 @@ const ProductStock = ({ products }) => {
                                     &#8250;
                                 </button>
                             )}
+                        </div>
+                    </div>
+                )}
+                {showConfirmModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
+                            <h2 className="text-xl font-semibold mb-4">Tovarni o‘chirishni tasdiqlang</h2>
+                            <p className="mb-6">Ushbu tovarni rostdan ham o‘chirib tashlamoqchimisiz?</p>
+                            <div className="flex justify-end gap-4">
+                                <Button variant="outline" onClick={closeConfirmModal}>Bekor qilish</Button>
+                                <Button variant="destructive" onClick={handlePhotoDelete}>O‘chirish</Button>
+                            </div>
                         </div>
                     </div>
                 )}
