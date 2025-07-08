@@ -33,9 +33,10 @@ class CartController extends Controller
     public function showCart()
     {
         $cartItems = Cart::with('product')->where('user_id', Auth::id())->get();
-
+        $address = Auth::user()?->address()->get();
         return Inertia::render('basket', [
             'cartItems' => $cartItems,
+            'address' => $address,
         ]);
     }
 

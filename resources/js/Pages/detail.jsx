@@ -30,8 +30,31 @@ const Index = ({ detail }) => {
     return (
         <div className='my-20 px-5 xl:px-32'>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
-                {/* Rasmlar va asosiy rasm */}
-                {/* ... bu qismi to‘g‘ri */}
+                <div className='border-b-blue-300 grid gap-4 border-b-2'>
+                    {/* Asosiy rasm */}
+                    {mainPhoto && (
+                        <img
+                            src={`/storage/${mainPhoto}?v=${Date.now()}`}
+                            alt={detail.product_name || 'Product image'}
+                            className="w-full h-[350px] rounded-2xl object-cover"
+                        />
+                    )}
+
+                    {/* Galereya rasmlari */}
+                    <div className='grid grid-cols-3 gap-3 mb-3'>
+                        {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
+                            photo && (
+                                <img
+                                    key={index}
+                                    src={`/storage/${photo}?v=${Date.now()}`}
+                                    alt={`Product ${index + 1}`}
+                                    className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo ? 'ring-2 ring-blue-400' : ''}`}
+                                    onClick={() => setMainPhoto(photo)}
+                                />
+                            )
+                        ))}
+                    </div>
+                </div>
 
                 <div className='my-5'>
                     <h1 className='text-2xl font-bold mb-2' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>

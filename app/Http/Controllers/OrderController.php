@@ -8,23 +8,35 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+    // OrderController.php
+    public function adminOrders()
+    {
+        $orders = Order::with(['user', 'items.product', 'address'])
+            ->latest()
+            ->get();
+
+        return Inertia::render('admin/orderLists', [
+            'orders' => $orders,
+        ]);
+    }
     public function placeOrder(Request $request)
     {
         $user = Auth::user();
 
-        // 1. Savatdagi barcha mahsulotlarni olish
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        $request->validate([
+            'address_id' => 'required|exists:addresses,id',
+        ]);
 
+        $cartItems = Cart::where('user_id', $user->id)->get();
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Savat bo‘sh!');
         }
 
-        // 2. Umumiy narxni hisoblash
         $totalPrice = 0;
-
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
             if ($product) {
@@ -32,14 +44,13 @@ class OrderController extends Controller
             }
         }
 
-        // 3. Order yaratish
         $order = Order::create([
             'user_id' => $user->id,
+            'address_id' => $request->address_id,
             'status' => 'pending',
             'total_price' => $totalPrice,
         ]);
 
-        // 4. Order itemlar yaratish
         foreach ($cartItems as $item) {
             $product = Product::find($item->product_id);
             if ($product) {
@@ -53,11 +64,9 @@ class OrderController extends Controller
             }
         }
 
-        // 5. Savatni tozalash
         Cart::where('user_id', $user->id)->delete();
 
-        // 6. Yuborish
-        return redirect()->route('order.success')->with('success', 'Buyurtma muvaffaqiyatli yuborildi!');
+        return redirect()->route('order.success')->with('success', 'Buyurtma yuborildi!');
     }
 
     // Buyurtma muvaffaqiyatli tugadi sahifasi
