@@ -11,7 +11,8 @@ const statusStyles = {
     "In Transit": "bg-indigo-100 text-indigo-700",
 };
 
-export default function OrderList() {
+export default function OrderList({orders}) {
+    console.log(orders);
     return (
         <div className="p-6 mx-5 min-h-screen w-[1200px]">
             <h1 className="text-3xl font-bold mb-6">Order Lists</h1>

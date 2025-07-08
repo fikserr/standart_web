@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/basket', [CartController::class, 'showCart'])->name('cart.index');
     Route::delete('/cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::post('/place-order', [OrderController::class, 'placeOrder'])->middleware('auth')->name('order.place');
+    Route::post('/place-order', [OrderController::class, 'placeOrder'])->middleware('auth');
     Route::get('/order-success', [OrderController::class, 'success'])->name('order.success');
 });
 
@@ -59,7 +59,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
     Route::delete('/banners/{id}', [BannerController::class, 'destroy'])->name('banners.destroy');
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
-    Route::get('/admin-order-lists', fn() => inertia('admin/orderLists'));
+    Route::get('/admin-order-lists', [OrderController::class, 'adminOrders'])->name('admin.orders');
     Route::get('/admin-products', [BannerController::class, 'index'])->name('banners.index');
     Route::get('/admin-productStock', action: [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('admin.users');

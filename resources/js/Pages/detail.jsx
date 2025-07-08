@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
+import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
+import OrderModal from '@/components/shared/orderModal';
 
 const Index = ({ detail }) => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [mainPhoto, setMainPhoto] = useState(detail?.photo1);
     const [activeSize, setActiveSize] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const { processing } = useForm();
+    const { toast } = useToast();
 
     const handleAddToCart = () => {
         if (!activeSize) {
-            alert("Iltimos, o‘lchamni tanlang");
+            toast({
+                title: 'Xatolik',
+                description: 'Iltimos, o‘lchamni tanlang',
+                variant: 'destructive',
+            });
             return;
         }
         axios.post('/add-to-cart', {
@@ -19,7 +27,11 @@ const Index = ({ detail }) => {
             quantity: quantity,
             size: activeSize
         }).then(() => {
-            alert('Qo‘shildi!');
+            toast({
+                title: 'Savatga qo‘shildi ✅',
+                description: `${detail.product_name} savatga muvaffaqiyatli qo‘shildi!`
+            });
+            setModalOpen(true);
         }).catch(err => {
             console.error(err.response?.data);
         });
@@ -30,8 +42,31 @@ const Index = ({ detail }) => {
     return (
         <div className='my-20 px-5 xl:px-32'>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
-                {/* Rasmlar va asosiy rasm */}
-                {/* ... bu qismi to‘g‘ri */}
+                <div className='border-b-blue-300 grid gap-4 border-b-2'>
+                    {/* Asosiy rasm */}
+                    {mainPhoto && (
+                        <img
+                            src={`/storage/${mainPhoto}?v=${Date.now()}`}
+                            alt={detail.product_name || 'Product image'}
+                            className="w-full h-[350px] rounded-2xl object-cover"
+                        />
+                    )}
+
+                    {/* Galereya rasmlari */}
+                    <div className='grid grid-cols-3 gap-3 mb-3'>
+                        {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
+                            photo && (
+                                <img
+                                    key={index}
+                                    src={`/storage/${photo}?v=${Date.now()}`}
+                                    alt={`Product ${index + 1}`}
+                                    className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo ? 'ring-2 ring-blue-400' : ''}`}
+                                    onClick={() => setMainPhoto(photo)}
+                                />
+                            )
+                        ))}
+                    </div>
+                </div>
 
                 <div className='my-5'>
                     <h1 className='text-2xl font-bold mb-2' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>
@@ -98,6 +133,7 @@ const Index = ({ detail }) => {
                 <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
                 {/* Top tovarlar bu yerga */}
             </div>
+            <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
     );
 };
