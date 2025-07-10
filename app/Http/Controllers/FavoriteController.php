@@ -12,9 +12,11 @@ class FavoriteController extends Controller
 {
     public function index()
     {
+        $products = Product::with('category')->latest()->paginate(5);
         $favorites = Auth::user()->favorites;
         return inertia('Favorite', [
             'favorites' => $favorites,
+            'products' => $products,
         ]);
         
     }

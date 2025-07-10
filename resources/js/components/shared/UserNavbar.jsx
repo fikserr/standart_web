@@ -67,7 +67,7 @@ const UserNavbar = () => {
                         <Link href={'/clothes'}><SidebarButton label="Kiyimlar" /></Link>
                         <Link href={'/shoes'}><SidebarButton label="Oyoq kiyimlar" /></Link>
                         <Link href={'/accessory'}><SidebarButton label="Aksesuarlar" /></Link>
-                        <SidebarButton label="Ma'lumot" />
+                        <Link href={'/policy'}><SidebarButton label="Ma'lumot"/></Link>
                         <Link href={'/profile'}><SidebarButton label="Profile" /></Link>
                         <Link href={'/favorites'}><SidebarButton label="Favorites" /></Link>
                     </div>
@@ -87,7 +87,7 @@ const UserNavbar = () => {
                         <NavItem href="/clothes" label="Kiyimlar" />
                         <NavItem href="/shoes" label="Oyoq kiyimlar" />
                         <NavItem href="/accessory" label="Aksessuarlar" />
-                        <NavItem href="/" label="Ma'lumot" />
+                        <NavItem href="/policy" label="Ma'lumot" />
                     </ul>
                 </div>
                 <div className="flex items-center gap-2 sm:gap-5 md:gap-6 relative">

@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/history-order', fn() => inertia('HistoryOrders'));
     Route::get('/profile-edit', fn() => inertia('EditProfile'));
     Route::get('/edit-password', fn() => inertia('EditPass'));
+    Route::get('/policy', fn() => inertia('Policy'));
+    Route::get('/pagenotfound', fn() => inertia('pageError'));
     Route::get('/edit-address/{id}', [AddressController::class, 'edit'])->name('address.edit');
     Route::post('/address-create', [AddressController::class, 'store'])->name('address.store');
     Route::put('/address-update/{address}', [AddressController::class, 'update'])->name('address.update');

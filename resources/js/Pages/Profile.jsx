@@ -4,8 +4,8 @@ import ProfileSidebar from '@/components/shared/profile-sidebar';
 import { BiUser } from "react-icons/bi";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { RxLockOpen2 } from "react-icons/rx";
-import { VscChecklist, VscLocation } from "react-icons/vsc";
-import { ImStarEmpty } from "react-icons/im";
+import { VscChecklist } from "react-icons/vsc";
+import { MdOutlineAddLocationAlt, MdOutlineLocationOn } from "react-icons/md";
 
 
 const Profile = () => {
@@ -28,13 +28,13 @@ const Profile = () => {
                             <p className='flex justify-center text-3xl'><VscChecklist /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Buyurtmalar</p>
                         </Link>
-                        <Link href={"/favorites"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
-                            <p className='flex justify-center text-3xl'><ImStarEmpty /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Tanlangan mahsulotlar</p>
-                        </Link>
                         <Link href={"/address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
-                            <p className='flex justify-center text-3xl'><VscLocation /></p>
+                            <p className='flex justify-center text-3xl'><MdOutlineLocationOn /></p>
                             <p style={{ fontFamily: 'OswaldLight' }}>Bizning manzil</p>
+                        </Link>
+                        <Link href={"/address-add"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
+                            <p className='flex justify-center text-3xl'><MdOutlineAddLocationAlt /></p>
+                            <p style={{ fontFamily: 'OswaldLight' }}>Manzil qo'shish</p>
                         </Link>
                         <Link href={"/edit-password"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><RxLockOpen2 /></p>

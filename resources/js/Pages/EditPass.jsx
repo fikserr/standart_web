@@ -2,21 +2,9 @@ import React, { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import { BiUser } from "react-icons/bi";
-import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
-import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
-import { VscLocation } from "react-icons/vsc";
 import { PiEyeClosed, PiEye } from "react-icons/pi";
 import VerifyCodeModal from '@shared/VerifyCodeModal';
 import { useToast } from '@/hooks/use-toast';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import ProfileDropdown from '@/components/shared/profile-dropdown';
 import ProfileSidebar from '@/components/shared/profile-sidebar';
 
@@ -87,12 +75,10 @@ const EditPass = () => {
 
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <div className='flex items-center gap-2'>
+            <Link href="/profile" className='flex items-center gap-2'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <Link href="/profile">
-                    <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1>
-                </Link>
-            </div>
+                <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1>
+            </Link>
 
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />
