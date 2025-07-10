@@ -22,12 +22,10 @@ const Address = ({ address }) => {
 
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <div className='flex items-center gap-2 mb-6'>
+            <Link href="/profile" className='flex items-center gap-2 mb-6'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <Link href="/profile">
-                    <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
-                </Link>
-            </div>
+                <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
+            </Link>
 
             <div className='grid lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />

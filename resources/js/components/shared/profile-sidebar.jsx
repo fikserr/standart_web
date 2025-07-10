@@ -27,7 +27,7 @@ const ProfileSidebar = () => {
                 </Link>
                 <Link href={"/history-order"} className={linkStyle("/history-order")} style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                     <RxHamburgerMenu />
-                    <span>Tarix</span>
+                    <span>Buyurtmalar tarixi</span>
                 </Link>
                 <Link href={"/address"} className={linkStyle('/address')} style={{ fontFamily: "OswaldLight", font: "extra bold" }}>
                     <MdOutlineLocationOn />

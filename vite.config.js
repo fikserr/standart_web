@@ -15,7 +15,7 @@ export default defineConfig({
         }),
         react(),
     ],
-    resolve: {  
+    resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
             '@images': path.resolve(__dirname, 'storage/app/private/assets/'),

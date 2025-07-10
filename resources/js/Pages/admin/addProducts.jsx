@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
+import { useToast } from '@/hooks/use-toast';
 
 const AddProductForm = ({ categories }) => {
+  const { toast } = useToast();
   const [previewImages, setPreviewImages] = useState({
     photo1: null,
     photo2: null,
@@ -42,14 +44,50 @@ const AddProductForm = ({ categories }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    post('/admin-add-store', {
-      forceFormData: true,
-      onSuccess: () => {
-        reset();
-        setPreviewImages({ photo1: null, photo2: null, photo3: null });
-      },
-    });
+    try {
+      toast({
+        title: "Saqlanmoqda...",
+        description: "Mahsulot qo'shilmoqda, iltimos kuting...",
+      });
+      e.preventDefault();
+      post('/admin-add-store', {
+        forceFormData: true,
+        onSuccess: () => {
+          reset();
+          setPreviewImages({ photo1: null, photo2: null, photo3: null });
+        },
+      });
+      window.location.href = '/admin-productStock'
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 422) {
+          toast({
+            title: "Xatolik",
+            description: "Iltimos, barcha maydonlarni to'ldiring.",
+          });
+        } else if (error.response.status === 401) {
+          toast({
+            title: "Xatolik",
+            description: "Avval tizimga kirishingiz kerak.",
+          });
+        } else {
+          toast({
+            title: "Xatolik",
+            description: `Xatolik yuz berdi: ${error.response.statusText}`,
+          });
+        }
+      } else if (error.request) {
+        toast({
+          title: "Xatolik",
+          description: "Serverga so'rov yuborishda xatolik.",
+        });
+      } else {
+        toast({
+          title: "Xatolik",
+          description: `Xatolik: ${error.message}`,
+        });
+      }
+    }
   };
 
   return (

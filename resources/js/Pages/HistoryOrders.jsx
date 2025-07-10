@@ -1,18 +1,6 @@
 import React from 'react'
 import { Link } from '@inertiajs/react';
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import { BiUser } from "react-icons/bi";
-import { RiUserSettingsLine, RiLogoutBoxRLine } from "react-icons/ri";
-import { RxHamburgerMenu, RxLockOpen2 } from "react-icons/rx";
-import { VscLocation } from "react-icons/vsc";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import ProfileSidebar from '@/components/shared/profile-sidebar';
 import ProfileDropdown from '@/components/shared/profile-dropdown';
 

@@ -11,9 +11,9 @@ const ProfileDropdown = () => {
                     <DropdownMenuLabel>Menu</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link href={"/profile"}><DropdownMenuItem>Profil</DropdownMenuItem></Link>
-                    <Link href={"/profile-edit"}><DropdownMenuItem>Profil tahrirlash</DropdownMenuItem></Link>
                     <Link href={"/history-order"}><DropdownMenuItem>Buyurtmalar</DropdownMenuItem></Link>
                     <Link href={"/address"}><DropdownMenuItem>Manzil</DropdownMenuItem></Link>
+                    <Link href={"/address-add"}><DropdownMenuItem>Manzil qo'shish</DropdownMenuItem></Link>
                     <Link href={"/edit-password"}><DropdownMenuItem>Parol</DropdownMenuItem></Link>
                     <Link href={"/"}><DropdownMenuItem>Chiqish</DropdownMenuItem></Link>
                 </DropdownMenuContent>

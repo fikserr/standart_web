@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import { Link, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
+import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
+import OrderModal from '@/components/shared/orderModal';
 
 const Index = ({ detail }) => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [mainPhoto, setMainPhoto] = useState(detail?.photo1);
     const [activeSize, setActiveSize] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const { processing } = useForm();
+    const { toast } = useToast();
 
     const handleAddToCart = () => {
         if (!activeSize) {
-            alert("Iltimos, o‘lchamni tanlang");
+            toast({
+                title: 'Xatolik',
+                description: 'Iltimos, o‘lchamni tanlang',
+                variant: 'destructive',
+            });
             return;
         }
         axios.post('/add-to-cart', {
@@ -19,7 +27,11 @@ const Index = ({ detail }) => {
             quantity: quantity,
             size: activeSize
         }).then(() => {
-            alert('Qo‘shildi!');
+            toast({
+                title: 'Savatga qo‘shildi ✅',
+                description: `${detail.product_name} savatga muvaffaqiyatli qo‘shildi!`
+            });
+            setModalOpen(true);
         }).catch(err => {
             console.error(err.response?.data);
         });
@@ -121,6 +133,7 @@ const Index = ({ detail }) => {
                 <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
                 {/* Top tovarlar bu yerga */}
             </div>
+            <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
     );
 };
