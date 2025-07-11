@@ -12,7 +12,6 @@ const Index = ({ detail }) => {
     const [quantity, setQuantity] = useState(1);
     const { processing } = useForm();
     const { toast } = useToast();
-
     const handleAddToCart = () => {
         if (!activeSize) {
             toast({
@@ -88,7 +87,18 @@ const Index = ({ detail }) => {
 
                     {/* Narxi va quantity control */}
                     {/* ... */}
-
+                         <div className='flex items-center justify-between mt-5'>
+                        <div>
+                            <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
+                                Narxi: {detail.price.toLocaleString()} ₽
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))} className='border px-2'>-</button>
+                            <span>{quantity}</span>
+                            <button onClick={() => setQuantity(prev => prev + 1)} className='border px-2'>+</button>
+                        </div>
+                    </div>
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
