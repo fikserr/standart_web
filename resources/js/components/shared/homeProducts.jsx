@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from '@inertiajs/react';
-import { HiOutlineChevronRight } from "react-icons/hi";
 import { Navigation } from 'swiper/modules';
 import { ImStarEmpty, ImStarFull } from "react-icons/im";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -31,6 +30,7 @@ const HomeProducts = ({ data, favorites }) => {
                     title: "Sevimlilardan o'chirildi",
                     description: "✅ Mahsulot o'chirildi",
                 });
+                window.location.reload();
             } catch (error) {
                 console.error(error);
                 alert("Sevimlilardan o'chirishda xatolik ❌");
