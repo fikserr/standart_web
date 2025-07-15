@@ -1,5 +1,7 @@
 import EmptyCart from "@/components/shared/EmptyCart";
-import React, { useState, useEffect } from "react";
+import { BiSolidTrash } from "react-icons/bi";
+import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 
 const CartPage = ({ cartItems, address }) => {
@@ -7,17 +9,13 @@ const CartPage = ({ cartItems, address }) => {
         return <EmptyCart cartItems={cartItems} />;
     }
     const [selectedAddressId, setSelectedAddressId] = useState(null);
-
+    const { toast } = useToast();
     // boshlanishida address bo‘lsa, default qilib birinchi addressni belgilash
     useEffect(() => {
         if (address && address.length > 0) {
             setSelectedAddressId(address[0].id);
         }
     }, [address]);
-
-    // agar savat bo‘sh bo‘lsa, EmptyCart componentini ko‘rsatish
-
-    // umumiy narxni hisoblash
     const calculateTotal = (items) => {
         return items.reduce((total, item) => {
             return total + (item.product?.price || 0) * item.quantity;
@@ -26,12 +24,23 @@ const CartPage = ({ cartItems, address }) => {
 
     // mahsulotni savatdan o‘chirish
     const handleDelete = (id) => {
-        axios
-            .delete(`/cart/${id}`)
-            .then(() => {
-                window.location.reload();
-            })
-            .catch((err) => console.error(err));
+        try {
+            axios
+                .delete(`/cart/${id}`)
+                .then(() => {
+                    toast({
+                        title: "Mahsulot o‘chirildi",
+                        description: "Sizning savatingizdan mahsulot o‘chirildi.",
+                    });
+                    window.location.reload(); // sahifani yangilash
+                })
+        } catch (error) {
+            console.error("Mahsulotni o'chirishda xatolik:", error);
+            toast({
+                title: "Xatolik",
+                description: "Mahsulotni o'chirishda xatolik yuz berdi.",
+            });
+        }
     };
 
     // buyurtmani yuborish
@@ -40,7 +49,6 @@ const CartPage = ({ cartItems, address }) => {
             alert("Iltimos, yetkazish manzilini tanlang!");
             return;
         }
-
         axios
             .post("/place-order", {
                 address_id: selectedAddressId,
@@ -54,79 +62,76 @@ const CartPage = ({ cartItems, address }) => {
     };
 
     return (
-        <div className="px-4 md:px-10 py-10">
-            <h1 className="text-3xl font-bold mb-6">Savat</h1>
-
-            <div className="space-y-4">
+        <div className="px-10 sm:px-10 md:px-20 lg:px-44 xl:px-64 py-10 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6 mt-16">Savat</h1>
+            <div className="grid lg:grid-cols-2 gap-3">
                 {cartItems.map((item) => (
                     <div
                         key={item.id}
-                        className="border rounded-lg p-4 flex items-center justify-between"
+                        className="border w-full rounded-lg p-4 flex items-center justify-between"
                     >
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-start gap-4">
                             <img
                                 src={`/storage/${item.product?.photo1}`}
                                 alt={item.product?.product_name}
-                                className="w-20 h-20 object-cover rounded"
+                                className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
                             />
-                            <div>
-                                <h2 className="font-semibold">
+                            <div className="sm:space-y-4 lg:space-y-1 xl:space-y-4">
+                                <h2 className="font-semibold text-xl sm500:text-3xl">
                                     {item.product?.product_name}
                                 </h2>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 sm:text-lg">
                                     Size: {item.size}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm sm:text-lg text-gray-500">
                                     Narxi: {item.product?.price} so‘m
                                 </p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                            <p>{item.quantity} dona</p>
+                        <div className="flex flex-col items-end justify-between h-full gap-4">
                             <button
-                                className="text-red-500 hover:text-red-700"
+                                className="text-red-500 hover:text-red-700 text-xl"
                                 onClick={() => handleDelete(item.id)}
                             >
-                                O‘chirish
+                                <BiSolidTrash />
                             </button>
+                            <p className="flex gap-2">{item.quantity} <span className="hidden sm500:block">dona</span></p>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* Manzil tanlash */}
-            <div className="my-6">
-                <label className="block text-gray-700 font-medium mb-2">
-                    Yetkazish manzili
-                </label>
-                <select
-                    value={selectedAddressId}
-                    onChange={(e) =>
-                        setSelectedAddressId(Number(e.target.value))
-                    } // 🛠️ int format
-                    className="border px-4 py-2 rounded w-full"
-                >
-                    {address?.map((address) => (
-                        <option key={address.id} value={address.id}>
-                            {address.region}, {address.street}, {address.house}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <div className='bg-slate-200 p-3 rounded-lg mt-5'>
+                <div className="my-6">
+                    <label className="block text-gray-700 font-medium mb-2">Yetkazish manzili</label>
+                    <select
+                        value={selectedAddressId}
+                        onChange={(e) => setSelectedAddressId(e.target.value)}
+                        className="border px-4 py-2 rounded w-full outline-none bg-slate-100 "
+                    >
+                        {address?.map(address => (
+                            <option key={address.id} value={address.id}>
+                                {address.region}, {address.street}, {address.house_number}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            {/* Umumiy narx va buyurtma tugmasi */}
-            <div className="mt-10 flex justify-between items-center border-t pt-6">
-                <h3 className="text-xl font-bold">
-                    Umumiy: {calculateTotal(cartItems)} so‘m
-                </h3>
-                <button
-                    className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
-                    onClick={handlePlaceOrder}
-                >
-                    Buyurtma berish
-                </button>
+                {/* Umumiy narx va buyurtma tugmasi */}
+                <div className="mt-10 flex justify-between items-center border-t pt-6">
+                    <h3 className="text-xl font-bold">
+                        Umumiy: {calculateTotal(cartItems)} so‘m
+                    </h3>
+                    <button
+                        className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
+                        onClick={handlePlaceOrder}
+                    >
+                        Buyurtma berish
+                    </button>
+                </div>
             </div>
-        </div>
+        </div >
     );
 };
 
