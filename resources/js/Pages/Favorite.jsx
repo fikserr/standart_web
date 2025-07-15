@@ -10,7 +10,7 @@ const EmptyFavorites = ({ favorites, products }) => {
 
     if (favorites && favorites.length > 0 && favoriteProducts.length > 0) {
         return (
-            <div className="w-full min-h-screen p-4 bg-white">
+            <div className="w-10/12 mx-auto min-h-screen p-4 bg-white">
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">SEVIMLILAR</h1>
                 <div className="grid grid-cols-1 gap-6">
                     <HomeProducts data={favoriteProducts} favorites={favorites} />
