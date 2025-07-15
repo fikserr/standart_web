@@ -24,13 +24,12 @@ class BannerController extends Controller
         ]);
 
         $path = $request->file('image')->store('banners', 'public');
-
         Banner::create([
             'name' => $request->name,
             'image' => $path,
         ]);
 
-        return redirect()->back()->with('success', 'Banner qo‘shildi');
+        return Inertia::location(route('banners.index'));
     }
     public function destroy($id)
     {

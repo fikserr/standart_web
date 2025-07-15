@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
@@ -45,9 +44,9 @@ class OrderController extends Controller
         }
 
         $order = Order::create([
-            'user_id' => $user->id,
-            'address_id' => $request->address_id,
-            'status' => 'pending',
+            'user_id'     => $user->id,
+            'address_id'  => $request->address_id,
+            'status'      => 'pending',
             'total_price' => $totalPrice,
         ]);
 
@@ -55,11 +54,11 @@ class OrderController extends Controller
             $product = Product::find($item->product_id);
             if ($product) {
                 OrderItem::create([
-                    'order_id' => $order->id,
+                    'order_id'   => $order->id,
                     'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'size' => $item->size,
-                    'price' => $product->price,
+                    'quantity'   => $item->quantity,
+                    'size'       => $item->size,
+                    'price'      => $product->price,
                 ]);
             }
         }
@@ -67,6 +66,16 @@ class OrderController extends Controller
         Cart::where('user_id', $user->id)->delete();
 
         return redirect()->route('order.success')->with('success', 'Buyurtma yuborildi!');
+    }
+    public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,success,cancelled',
+        ]);
+
+        $order->update(['status' => $request->status]);
+
+        return response()->json(['message' => 'Holat yangilandi'], 200);
     }
 
     // Buyurtma muvaffaqiyatli tugadi sahifasi
