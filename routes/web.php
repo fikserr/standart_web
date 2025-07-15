@@ -61,6 +61,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->group(function
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
     Route::get('/admin-order-lists', [OrderController::class, 'adminOrders'])->name('admin.orders');
+    Route::patch('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::get('/admin-products', [BannerController::class, 'index'])->name('banners.index');
     Route::get('/admin-productStock', action: [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('admin.users');

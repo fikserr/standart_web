@@ -1,22 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
-import { orders } from "@/components/shared/lists";
+import { useToast } from "@/hooks/use-toast";
 
 const statusStyles = {
-    Completed: "bg-emerald-100 text-emerald-700",
-    Processing: "bg-purple-100 text-purple-700",
-    Rejected: "bg-red-100 text-red-700",
-    "On Hold": "bg-yellow-100 text-yellow-700",
-    "In Transit": "bg-indigo-100 text-indigo-700",
+    pending: "bg-yellow-100 text-yellow-700",
+    confirmed: "bg-blue-100 text-blue-700",
+    success: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-700",
 };
 
 export default function OrderList({ orders }) {
-    console.log(orders);
+    const [statuses, setStatuses] = useState(
+        orders.reduce((acc, order) => {
+            acc[order.id] = order.status;
+            return acc;
+        }, {})
+    );
+    const { toast } = useToast();
+    const handleStatusChange = (orderId, newStatus) => {
+        axios
+            .patch(`/admin/orders/${orderId}/status`, { status: newStatus })
+            .then(() => {
+                setStatuses((prev) => ({ ...prev, [orderId]: newStatus }));
+                toast({
+                    title: "✅ Holat muvaffaqiyatli o‘zgartirildi",
+                    description: `Buyurtma #${orderId} endi "${newStatus}" holatida.`,
+                });
+            })
+            .catch(() => {
+                toast({
+                    variant: "destructive",
+                    title: "❌ Xatolik yuz berdi",
+                    description:
+                        "Buyurtma holatini o‘zgartirishda muammo yuz berdi.",
+                });
+            });
+    };
+
     return (
         <div className="p-6 mx-5 min-h-screen w-[1200px]">
             <h1 className="text-3xl font-bold mb-6">Order Lists</h1>
-            <div className=" mb-4 flex flex-wrap gap-4 items-center justify-between">
+
+            <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
                 <div className="flex gap-2">
                     <Button variant="outline">
                         <Filter className="mr-2 h-4 w-4" />
@@ -39,7 +66,6 @@ export default function OrderList({ orders }) {
                             <th className="px-4 py-2 font-medium">NAME</th>
                             <th className="px-4 py-2 font-medium">ADDRESS</th>
                             <th className="px-4 py-2 font-medium">DATE</th>
-                            <th className="px-4 py-2 font-medium">TYPE</th>
                             <th className="px-4 py-2 font-medium">STATUS</th>
                         </tr>
                     </thead>
@@ -51,9 +77,13 @@ export default function OrderList({ orders }) {
                             >
                                 <td className="px-4 py-3">{order.id}</td>
                                 <td className="px-4 py-3 font-medium text-gray-900">
-                                    {order.user.name}
+                                    {order.user?.name}
                                 </td>
-                                <td className="px-4 py-3">{`${order?.address?.city},${order?.address?.street},${order?.address?.house_number}`}</td>
+                                <td className="px-4 py-3">
+                                    {order.address
+                                        ? `${order.address.city}, ${order.address.street}, ${order.address.house_number}`
+                                        : "—"}
+                                </td>
                                 <td className="px-4 py-3">
                                     {new Date(
                                         order.created_at
@@ -65,15 +95,28 @@ export default function OrderList({ orders }) {
                                         minute: "2-digit",
                                     })}
                                 </td>
-                                <td className="px-4 py-3">{order.type}</td>
                                 <td className="px-4 py-3">
-                                    <span
+                                    <select
+                                        value={statuses[order.id]}
+                                        onChange={(e) =>
+                                            handleStatusChange(
+                                                order.id,
+                                                e.target.value
+                                            )
+                                        }
                                         className={`text-xs font-semibold px-2.5 py-0.5 rounded ${
-                                            statusStyles[order.status]
+                                            statusStyles[statuses[order.id]]
                                         }`}
                                     >
-                                        {order.status}
-                                    </span>
+                                        <option value="pending">Pending</option>
+                                        <option value="confirmed">
+                                            Confirmed
+                                        </option>
+                                        <option value="success">Success</option>
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>
+                                    </select>
                                 </td>
                             </tr>
                         ))}
