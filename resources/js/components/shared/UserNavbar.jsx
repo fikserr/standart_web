@@ -83,7 +83,7 @@ const UserNavbar = () => {
                     </Link>
                 </div>
                 <div className="w-4/6 hidden xl:flex justify-start">
-                    <ul className="flex gap-5 2xl:gap-10">
+                    <ul className="flex gap-5 2xl:gap-10 text-xl">
                         <NavItem href="/clothes" label="Kiyimlar" />
                         <NavItem href="/shoes" label="Oyoq kiyimlar" />
                         <NavItem href="/accessory" label="Aksessuarlar" />
