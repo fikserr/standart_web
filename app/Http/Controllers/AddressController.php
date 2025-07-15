@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Address;
@@ -28,31 +27,27 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'street' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
+            'first_name'   => 'required|string|max:255',
+            'last_name'    => 'required|string|max:255',
+            'street'       => 'required|string|max:255',
+            'city'         => 'required|string|max:255',
             'house_number' => 'required|string|max:255',
-            'region' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
+            'region'       => 'required|string|max:255',
+            'phone'        => 'required|string|max:20',
         ]);
 
         $user = Auth::user();
 
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'Foydalanuvchi topilmadi.'], 401);
         }
 
-        // create or update address
-        $user->address()->updateOrCreate(
-            ['user_id' => $user->id],
-            $validated
-        );
+        // Faqat yangi address yaratamiz — update emas
+        $user->address()->create($validated);
 
-        return response()->json([
-            'message' => 'Manzil muvaffaqiyatli saqlandi!',
-        ]);
+        return redirect()->route('address.show')->with('message', 'Manzil muvaffaqiyatli qo‘shildi!');
     }
+
     public function update(Request $request, Address $address)
     {
         if ($address->user_id !== Auth::id()) {
@@ -60,13 +55,13 @@ class AddressController extends Controller
         }
 
         $data = $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'street' => 'required',
-            'city' => 'required',
+            'first_name'   => 'required',
+            'last_name'    => 'required',
+            'street'       => 'required',
+            'city'         => 'required',
             'house_number' => 'required',
-            'region' => 'required',
-            'phone' => 'required',
+            'region'       => 'required',
+            'phone'        => 'required',
         ]);
 
         $address->update($data);

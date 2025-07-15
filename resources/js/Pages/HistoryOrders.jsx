@@ -5,7 +5,9 @@ import ProfileSidebar from '@/components/shared/profile-sidebar';
 import ProfileDropdown from '@/components/shared/profile-dropdown';
 
 
-const HistoryOrders = () => {
+const HistoryOrders = ({orders}) => {
+    console.log(orders);
+    
     return (
         <div className='my-24 px-5 xl:px-32'>
             <div className='flex items-center gap-2'>

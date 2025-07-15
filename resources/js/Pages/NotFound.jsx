@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
 
-const PageError = () => {
+const NotFound = () => {
     return (
         <div>
             <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -17,5 +17,6 @@ const PageError = () => {
         </div>
     )
 }
+NotFound.layout = null; // ❗ Bu yer eng muhim qism
 
-export default PageError
+export default NotFound

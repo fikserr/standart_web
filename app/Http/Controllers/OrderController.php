@@ -11,6 +11,20 @@ use Inertia\Inertia;
 
 class OrderController extends Controller
 {
+    public function userOrders()
+    {
+        $user = Auth::user();
+
+        $orders = Order::with(['items.product', 'address'])
+            ->where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return Inertia::render('HistoryOrders', [
+            'orders' => $orders,
+        ]);
+    }
+
     // OrderController.php
     public function adminOrders()
     {

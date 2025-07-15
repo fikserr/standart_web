@@ -10,7 +10,8 @@ import {
 const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
   const [code, setCode] = useState('');
   const [timeLeft, setTimeLeft] = useState(180); // 3 daqiqa = 180 soniya
-
+  console.log(code);
+  
   useEffect(() => {
     let timer;
     if (isOpen) {
