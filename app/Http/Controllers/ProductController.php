@@ -21,21 +21,21 @@ class ProductController extends Controller
     public function ClothesProducts()
     {
         $products = Product::with('category')->latest()->paginate(5);
-        return Inertia::render('admin/productStock', [
+        return Inertia::render('Clothes', [
             'products' => $products,
         ]);
     }
     public function ShoesProducts()
     {
         $products = Product::with('category')->latest()->paginate(5);
-        return Inertia::render('admin/productStock', [
+        return Inertia::render('Shoes', [
             'products' => $products,
         ]);
     }
     public function AccesProducts()
     {
         $products = Product::with('category')->latest()->paginate(5);
-        return Inertia::render('admin/productStock', [
+        return Inertia::render('Accessory', [
             'products' => $products,
         ]);
     }
