@@ -4,6 +4,7 @@ import LogoFooter from '@images/LogoFooter.webp'
 import telegram from '@images/telegram.webp'
 import whatsapp from '@images/whatsapp.webp'
 import vk from '@images/vk.webp'
+import { Link } from '@inertiajs/react';
 
 const Footer = () => {
     return (
@@ -11,7 +12,7 @@ const Footer = () => {
             <div className='flex justify-center py-5 md:hidden'>
                 <img src={LogoFooter} alt="" />
             </div>
-            <div style={{ fontFamily: "Oswald" }} className='md:hidden'>
+            <div style={{ fontFamily: "Oswald" }} className='md:hidden '>
                 <select className='bg-[rgb(18,18,20)] text-white border-b w-full text-lg'>
                     <option value="Ma'lumot">Ma'lumot</option>
                     <option value="Blog">Blog</option>
@@ -37,10 +38,9 @@ const Footer = () => {
                 <div className='flex justify-evenly'>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
                         <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Katalog</li>
-                        <li>Kiyimlar</li>
-                        <li>Oyoq kiyimlar</li>
-                        <li>Aksessuarlar</li>
-                        <li>Xarajatlarni hisoblash</li>
+                        <Link href={'/clothes'}><li>Kiyimlar</li></Link>
+                        <Link href={'/shoes'}><li>Oyoq kiyimlar</li></Link>
+                        <Link href={'/accessory'}><li>Aksessuarlar</li></Link>
                         <img src={LogoFooter} alt="" className='hidden xl:mt-10'/>
                     </ul>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
@@ -65,7 +65,7 @@ const Footer = () => {
                             <img src={vk} alt=""  className='w-[25px] h-[25px]'/>
                         </li>
                     </ul>
-                    <div className='hidden xl:block w-1/4'>
+                    {/* <div className='hidden xl:block w-1/4'>
                         <div className='text-white hidden md:block'>
                             <p style={{ fontFamily: "Oswald" }} className='text-2xl'>Yangiliklarga obuna bo'ling</p>
                             <p className='text-xs xl:text-base'>Chegirmalar va yangiliklardan xabardor bo'ling</p>
@@ -80,10 +80,10 @@ const Footer = () => {
                             <p className='text-slate-700 text-sm'>Axborot byulleteniga obuna bo'lish orqali siz shaxsiy ma'lumotlarni qayta ishlashga rozilik bildirasiz</p>
                             <p className='text-slate-700 text-sm mt-5'>Foydalanuvchi shartnomasi</p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            <div className='md:hidden'>
+            <div className='md:hidden pb-20'>
                 <div className='flex gap-2 justify-center py-5'>
                     <img src={telegram} alt="" />
                     <img src={whatsapp} alt="" />
@@ -92,18 +92,6 @@ const Footer = () => {
                 <div className='text-white text-center'>
                     <p style={{ fontFamily: "Oswald" }}>Yangiliklarga obuna bo'ling</p>
                     <p className='text-xs'>Chegirmalar va yangiliklardan xabardor bo'ling</p>
-                </div>
-            </div>
-            <div className='grid md:grid-cols-2 px-10 pb-5 items-center xl:hidden'>
-                <div className='text-white hidden md:block'>
-                    <p style={{ fontFamily: "Oswald" }}>Yangiliklarga obuna bo'ling</p>
-                    <p className='text-xs'>Chegirmalar va yangiliklardan xabardor bo'ling</p>
-                </div>
-                <div className='flex justify-between items-center px-3 border-b-2'>
-                    <input type="text" placeholder='Email pochtangiz' className='bg-[rgb(18,18,20)] w-full outline-none p-2 text-white my-3' />
-                    <p className='w-[40px] sm500:w-[45px] h-[35px] sm:h-[40px] md992:w-[45px] rounded-[50%] flex justify-center items-center bg-slate-100'>
-                        <HiOutlineChevronRight />
-                    </p>
                 </div>
             </div>
         </div>

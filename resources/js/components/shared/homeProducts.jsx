@@ -68,12 +68,12 @@ const HomeProducts = ({ data, favorites }) => {
             >
                 {data.slice(0, 8).map((item) => (
                     <SwiperSlide key={item.id}>
-                        <Link href={`/detail/${item.id}`} className='border-2 rounded-lg flex flex-col h-80'>
-                            <div className='flex justify-end h-[75%] relative rounded-t-lg'>
+                        <Link href={`/detail/${item.id}`} className='rounded-lg flex flex-col h-80'>
+                            <div className='flex justify-end h-[65%] relative rounded-t-lg'>
                                 <img
                                     src={`/storage/${item.photo1}?v=${Date.now()}`}
                                     alt={item.product_name}
-                                    className="w-full h-full object-cover rounded-t-lg"
+                                    className="w-full overflow-hidden object-cover rounded"
                                     onError={(e) => {
                                         e.target.src = '/path/to/fallback-image.jpg';
                                     }}
@@ -86,9 +86,23 @@ const HomeProducts = ({ data, favorites }) => {
                                     )}
                                 </button>
                             </div>
-                            <div className='p-2'>
-                                <p>{item.product_name}</p>
-                                <p>${item.price}</p>
+                            <div className='flex items-end justify-between'>
+                                <div className='p-2'>
+                                    <p className='text-3xl font-semibold'>{item.product_name}</p>
+                                    <p className='text-xl'>{item.price} <span className='text-sm text-slate-500'>so'm</span> </p>
+                                    {
+                                        item.sizes.map((size, index) => (
+                                            <span key={index} className='text-sm text-slate-500'>
+                                                {size}{index < item.sizes.length - 1 ? ', ' : ''}
+                                            </span>
+                                        ))
+                                    }
+                                </div>
+                                <Link href={`/detail/${item.id}`} className='hidden sm:block'>
+                                    <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
+                                        Ko'proq
+                                    </button>
+                                </Link>
                             </div>
                         </Link>
                     </SwiperSlide>

@@ -24,7 +24,7 @@ const HomeHero = ({ banner }) => {
 
     return (
         <div className='p-5 relative w-full mt-20 2xl:px-20'>
-            <div className='h-[180px] sm500:h-[250px] sm:h-[300px] md:h-[400px] md992:h-[450px] xl:h-[700px] 2xl:h-[600px] overflow-hidden rounded-xl'>
+            <div className='h-[230px] sm500:h-[300px] sm:h-[360px] md:h-[450px] md992:h-[500px] lg:h-[580px] xl:h-[750px] 2xl:h-[600px] overflow-hidden rounded-xl'>
                 <Carousel ref={carouselRef}>
                     <CarouselContent>
                         {banner.map((item) => (
