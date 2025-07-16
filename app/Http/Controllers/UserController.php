@@ -65,7 +65,6 @@ class UserController extends Controller
             // 🟡 Sessionga saqlaymiz
             session(['pending_user_id' => $user->id]);
 
-            logger()->info("Yangi kod: {$rawCode}");
             Mail::to($user->email)->send(new VerifyCodeMail($rawCode));
             // Mail::raw("Sizning tasdiqlash kodingiz: {$rawCode}", function ($message) use ($user) {
             //     $message->to($user->email)->subject('Tasdiqlash kodingiz');
@@ -79,6 +78,7 @@ class UserController extends Controller
 
     public function verifyRegister(Request $request)
     {
+        // dd($request->all()); // <-- vaqtincha
         $request->validate([
             'code' => 'required|string',
         ]);
@@ -98,10 +98,9 @@ class UserController extends Controller
         if (!VerificationCode::verify($request->code, $user)) {
             return back()->withErrors(['code' => 'Kod noto‘g‘ri yoki muddati o‘tgan.']);
         }
-
         $user->markEmailAsVerified(); // ✅ ADD THIS
         auth()->login($user);
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 
     // 👥 Admin panel uchun barcha userlar

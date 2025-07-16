@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use Hash;
 
 class VerifyCodeController extends Controller
 {
@@ -14,7 +11,7 @@ class VerifyCodeController extends Controller
             ->latest()
             ->first();
 
-        return $latest && Hash::check($inputCode, $latest->code);
+        return $latest && \Hash::check($inputCode, $latest->code);
     }
 
 }
