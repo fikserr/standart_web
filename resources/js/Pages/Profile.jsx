@@ -30,7 +30,7 @@ const Profile = () => {
                         </Link>
                         <Link href={"/address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><MdOutlineLocationOn /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Bizning manzil</p>
+                            <p style={{ fontFamily: 'OswaldLight' }}>Mening manzilim</p>
                         </Link>
                         <Link href={"/address-add"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><MdOutlineAddLocationAlt /></p>

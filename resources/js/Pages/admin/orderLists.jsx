@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 
 const statusStyles = {
@@ -10,22 +18,38 @@ const statusStyles = {
     success: "bg-green-100 text-green-700",
     cancelled: "bg-red-100 text-red-700",
 };
+const statusList = ["pending", "confirmed", "success", "cancelled"];
+const limit = 10;
 
 export default function OrderList({ orders }) {
-    const [statuses, setStatuses] = useState(
+    const [activeStatus, setActiveStatus] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [activePage, setActivePage] = useState(1);
+    const { toast } = useToast();
+
+    const [statuses, setStatuses] = useState(() =>
         orders.reduce((acc, order) => {
             acc[order.id] = order.status;
             return acc;
         }, {})
     );
-    const { toast } = useToast();
+
+    const handleStatusFilter = (status) => {
+        setActiveStatus(status);
+    };
+
+    const resetFilters = () => {
+        setActiveStatus(null);
+        setSelectedDate(null);
+    };
+
     const handleStatusChange = (orderId, newStatus) => {
         axios
             .patch(`/admin/orders/${orderId}/status`, { status: newStatus })
             .then(() => {
                 setStatuses((prev) => ({ ...prev, [orderId]: newStatus }));
                 toast({
-                    title: "✅ Holat muvaffaqiyatli o‘zgartirildi",
+                    title: "✅ Holat o‘zgartirildi",
                     description: `Buyurtma #${orderId} endi "${newStatus}" holatida.`,
                 });
             })
@@ -33,10 +57,53 @@ export default function OrderList({ orders }) {
                 toast({
                     variant: "destructive",
                     title: "❌ Xatolik yuz berdi",
-                    description:
-                        "Buyurtma holatini o‘zgartirishda muammo yuz berdi.",
+                    description: "Holatni yangilashda muammo yuz berdi.",
                 });
             });
+    };
+
+    const CustomDateButton = React.forwardRef(({ value, onClick }, ref) => (
+        <Button variant="outline" onClick={onClick} ref={ref}>
+            📅 {value || "Select Date"}
+        </Button>
+    ));
+    CustomDateButton.displayName = "CustomDateButton";
+    const filteredOrders = useMemo(() => {
+        let result = orders;
+
+        if (activeStatus) {
+            result = result.filter((order) => statuses[order.id] === activeStatus);
+        }
+
+        if (selectedDate) {
+            const selected = new Date(selectedDate);
+            result = result.filter((order) => {
+                const orderDate = new Date(order.created_at);
+                return (
+                    orderDate.getFullYear() === selected.getFullYear() &&
+                    orderDate.getMonth() === selected.getMonth() &&
+                    orderDate.getDate() === selected.getDate()
+                );
+            });
+        }
+        return result;
+    }, [activeStatus, selectedDate, orders, statuses]);
+
+    const totalPages = Math.ceil(filteredOrders.length / limit);
+    const paginatedOrders = useMemo(() => {
+        const startIndex = (activePage - 1) * limit;
+        return filteredOrders.slice(startIndex, startIndex + limit);
+    }, [filteredOrders, activePage]);
+
+    const goToPreviousPage = () => {
+        if (activePage > 1) {
+            setActivePage((prev) => prev - 1);
+        }
+    };
+    const goToNextPage = () => {
+        if (activePage < totalPages) {
+            setActivePage((prev) => prev + 1);
+        }
     };
 
     return (
@@ -45,15 +112,35 @@ export default function OrderList({ orders }) {
 
             <div className="mb-4 flex flex-wrap gap-4 items-center justify-between">
                 <div className="flex gap-2">
-                    <Button variant="outline">
-                        <Filter className="mr-2 h-4 w-4" />
-                        Filter By
-                    </Button>
-                    <Button variant="outline">Date</Button>
-                    <Button variant="outline">Order Type</Button>
-                    <Button variant="outline">Order Status</Button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline">
+                                <Filter className="mr-2 h-4 w-4" />
+                                {activeStatus
+                                    ? activeStatus.charAt(0).toUpperCase() + activeStatus.slice(1)
+                                    : "Order Status"}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {statusList.map((status) => (
+                                <DropdownMenuItem
+                                    key={status}
+                                    onClick={() => handleStatusFilter(status)}
+                                    className={statusStyles[status]}
+                                >
+                                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <DatePicker
+                        selected={selectedDate}
+                        onChange={(date) => setSelectedDate(date)}
+                        customInput={<CustomDateButton />}
+                        dateFormat="dd MMM yyyy"
+                    />
                 </div>
-                <Button variant="ghost" className="text-red-500">
+                <Button variant="ghost" className="text-red-500" onClick={resetFilters}>
                     Reset Filter
                 </Button>
             </div>
@@ -63,21 +150,18 @@ export default function OrderList({ orders }) {
                     <thead>
                         <tr className="bg-gray-100 text-gray-700">
                             <th className="px-4 py-2 font-medium">ID</th>
-                            <th className="px-4 py-2 font-medium">NAME</th>
-                            <th className="px-4 py-2 font-medium">ADDRESS</th>
-                            <th className="px-4 py-2 font-medium">DATE</th>
-                            <th className="px-4 py-2 font-medium">STATUS</th>
+                            <th className="px-4 py-2 font-medium">Ismlar</th>
+                            <th className="px-4 py-2 font-medium">Manzillar</th>
+                            <th className="px-4 py-2 font-medium">Kun/oy/yil</th>
+                            <th className="px-4 py-2 font-medium">Holati</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order) => (
-                            <tr
-                                key={order.id}
-                                className="border-b border-gray-200"
-                            >
+                        {paginatedOrders.map((order) => (
+                            <tr key={order.id} className="border-b border-gray-200">
                                 <td className="px-4 py-3">{order.id}</td>
                                 <td className="px-4 py-3 font-medium text-gray-900">
-                                    {order.user?.name}
+                                    {order.user?.name || "—"}
                                 </td>
                                 <td className="px-4 py-3">
                                     {order.address
@@ -85,37 +169,25 @@ export default function OrderList({ orders }) {
                                         : "—"}
                                 </td>
                                 <td className="px-4 py-3">
-                                    {new Date(
-                                        order.created_at
-                                    ).toLocaleDateString("uz-UZ", {
+                                    {new Date(order.created_at).toLocaleDateString("en-GB", {
                                         year: "numeric",
                                         month: "long",
-                                        day: "numeric",
-                                        hour: "2-digit",
-                                        minute: "2-digit",
+                                        day: "2-digit",
                                     })}
                                 </td>
                                 <td className="px-4 py-3">
                                     <select
                                         value={statuses[order.id]}
                                         onChange={(e) =>
-                                            handleStatusChange(
-                                                order.id,
-                                                e.target.value
-                                            )
+                                            handleStatusChange(order.id, e.target.value)
                                         }
-                                        className={`text-xs font-semibold px-2.5 py-0.5 rounded ${
-                                            statusStyles[statuses[order.id]]
-                                        }`}
+                                        className={`text-xs font-semibold px-2.5 py-0.5 rounded ${statusStyles[statuses[order.id]]}`}
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="confirmed">
-                                            Confirmed
-                                        </option>
-                                        <option value="success">Success</option>
-                                        <option value="cancelled">
-                                            Cancelled
-                                        </option>
+                                        {statusList.map((status) => (
+                                            <option key={status} value={status}>
+                                                {status.charAt(0).toUpperCase() + status.slice(1)}
+                                            </option>
+                                        ))}
                                     </select>
                                 </td>
                             </tr>
@@ -125,11 +197,24 @@ export default function OrderList({ orders }) {
             </div>
 
             <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
-                <div className="flex gap-2">
-                    <Button variant="outline" size="icon">
+                <div className="flex gap-2 items-center">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={goToPreviousPage}
+                        disabled={activePage === 1}
+                    >
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon">
+                    <span>
+                        Page {activePage} of {totalPages}
+                    </span>
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={goToNextPage}
+                        disabled={activePage === totalPages}
+                    >
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>

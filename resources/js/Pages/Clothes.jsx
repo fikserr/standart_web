@@ -24,7 +24,7 @@ const Clothes = ({ products }) => {
     return (
         <div className='px-5 xl:px-20 mt-20'>
             <h2 style={{ fontFamily: "Oswald" }} className='text-2xl'>Kiyimlar</h2>
-            <FilterModal />
+            <FilterModal onPriceChange={setPriceFilter} onSizeChange={setSelectedSizes}/>
             <div className='grid xl:grid-cols-4 xl:gap-5'>
                 <div className='hidden xl:block px-3 '>
                     <FilterSidebar  onPriceChange={setPriceFilter} onSizeChange={setSelectedSizes}/>

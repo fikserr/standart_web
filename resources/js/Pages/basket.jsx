@@ -46,7 +46,10 @@ const CartPage = ({ cartItems, address }) => {
     // buyurtmani yuborish
     const handlePlaceOrder = () => {
         if (!selectedAddressId) {
-            alert("Iltimos, yetkazish manzilini tanlang!");
+            toast({
+                title: "Manzil tanlanmadi",
+                description: "Iltimos, yetkazish manzilini tanlang.",
+            });
             return;
         }
         axios
@@ -112,7 +115,7 @@ const CartPage = ({ cartItems, address }) => {
                     >
                         {address?.map(address => (
                             <option key={address.id} value={address.id}>
-                                {address.region}, {address.street}, {address.house_number}
+                                {address.region}, {address.city}, {address.street}, {address.house_number}
                             </option>
                         ))}
                     </select>
