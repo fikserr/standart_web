@@ -1,91 +1,95 @@
-// src/Shared/VerifyCodeModal.jsx
-import { useEffect, useState } from 'react';
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp"
+import { useEffect, useState } from "react";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp"
+    InputOTP,
+    InputOTPGroup,
+    InputOTPSlot,
+} from "@/components/ui/input-otp";
 
 const VerifyCodeModal = ({ isOpen, onClose, onSubmit, email }) => {
-  const [code, setCode] = useState('');
-  const [timeLeft, setTimeLeft] = useState(180); // 3 daqiqa = 180 soniya
-  console.log(code);
-  
-  useEffect(() => {
-    let timer;
-    if (isOpen) {
-      setTimeLeft(180); // Har safar ochilganda qaytadan 3 daqiqa o'rnatiladi
-      timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
+    const [code, setCode] = useState("");
+    const [timeLeft, setTimeLeft] = useState(180);
 
-    return () => clearInterval(timer); // Modal yopilganda tozalash
-  }, [isOpen]);
+    useEffect(() => {
+        let timer;
+        if (isOpen) {
+            setTimeLeft(180);
+            timer = setInterval(() => {
+                setTimeLeft((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+        }
 
-  const handleVerify = () => {
-    onSubmit(code);
-  };
+        return () => clearInterval(timer);
+    }, [isOpen]);
 
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
+    const handleVerify = () => {
+        if (code.length === 6) {
+            onSubmit(code);
+        }
+    };
 
-  if (!isOpen) return null;
+    const formatTime = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-xl shadow-md w-[90%] sm:w-[400px]">
-        <h2 className="text-xl font-semibold mb-2">Tasdiqlash kodi</h2>
-        <p className="mb-1 text-sm text-gray-600">
-          Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong>
-        </p>
-        <p className="text-sm text-gray-500 mb-3">Kod muddati tugash vaqti: <strong>{formatTime(timeLeft)}</strong></p>
+    if (!isOpen) return null;
 
-        <InputOTP
-          maxLength={6}
-          value={code}
-          onChange={(value) => setCode(value)}
-          pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-        >
-          <InputOTPGroup className="w-full p-2 rounded mb-3 outline-none flex justify-center">
-            <InputOTPSlot index={0} />
-            <InputOTPSlot index={1} />
-            <InputOTPSlot index={2} />
-            <InputOTPSlot index={3} />
-            <InputOTPSlot index={4} />
-            <InputOTPSlot index={5} />
-          </InputOTPGroup>
-        </InputOTP>
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-xl shadow-md w-[90%] sm:w-[400px]">
+                <h2 className="text-xl font-semibold mb-2">Tasdiqlash kodi</h2>
+                <p className="mb-1 text-sm text-gray-600">
+                    Emailga yuborilgan 6 xonali kodni kiriting: <strong>{email}</strong>
+                </p>
+                <p className="text-sm text-gray-500 mb-3">
+                    Kod muddati tugash vaqti: <strong>{formatTime(timeLeft)}</strong>
+                </p>
 
-        <div className="flex justify-end space-x-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-          >
-            Bekor qilish
-          </button>
-          <button
-            onClick={handleVerify}
-            disabled={timeLeft === 0}
-            className={`px-4 py-2 rounded text-white ${timeLeft === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-black'
-              }`}
-          >
-            Tasdiqlash
-          </button>
+                <InputOTP
+                    maxLength={6}
+                    value={code}
+                    onChange={setCode}
+                >
+                    <InputOTPGroup className="w-full p-2 rounded mb-3 outline-none flex justify-center">
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                </InputOTP>
+
+                <div className="flex justify-end space-x-2">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                        Bekor qilish
+                    </button>
+                    <button
+                        onClick={handleVerify}
+                        disabled={timeLeft === 0 || code.length < 6}
+                        className={`px-4 py-2 rounded text-white ${
+                            timeLeft === 0 || code.length < 6
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-black"
+                        }`}
+                    >
+                        Tasdiqlash
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default VerifyCodeModal;

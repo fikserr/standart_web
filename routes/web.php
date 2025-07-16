@@ -22,7 +22,7 @@ Route::get('/', function () {
     }
     return inertia('Home');
 });
-
+Route::middleware('web')->group(function () {
 // 🔐 Auth sahifalari (login, register, logout)
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
@@ -32,7 +32,7 @@ Route::post('/verify-register', [UserController::class, 'verifyRegister']);
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->post('/verify-code', [VerifyCodeController::class, 'verify'])->name('verify.code');
-
+});
 // 📧 Test email
 Route::get('/test-email', function () {
     Mail::raw('Salom! Laraveldan test email.', function ($message) {
