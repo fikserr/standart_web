@@ -17,14 +17,19 @@ import { Button } from "../ui/button";
 
 const items = [
   {
-    title: "Asboblar paneli",
+    title: "Dashboard",
     url: "/admin-dashboard",
     icon: MdDashboard,
   },
   {
-    title: "Banner",
+    title: "Bannerlar",
     url: "/admin-products",
     icon: MdAllInbox,
+  },
+  {
+    title: "Tovarlar",
+    url: "/admin-productStock",
+    icon: BsCollectionFill,
   },
   {
     title: "Tovar Qo'shish",
@@ -37,17 +42,12 @@ const items = [
     icon: BsClipboard2CheckFill,
   },
   {
-    title: "Tovarlar",
-    url: "/admin-productStock",
-    icon: BsCollectionFill,
-  },
-  {
     title: "Foydalanuvchilar",
     url: "/admin-users",
     icon: ImUsers,
   },
   {
-    title: "Katogoriya yaratish",
+    title: "Kategoriya yaratish",
     url: "/admin/categories/create",
     icon: MdCategory,
   },

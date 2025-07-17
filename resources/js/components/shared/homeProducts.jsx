@@ -88,7 +88,7 @@ const HomeProducts = ({ data, favorites }) => {
                             </div>
                             <div className='flex items-end justify-between'>
                                 <div className='p-2'>
-                                    <p className='text-3xl font-semibold'>{item.product_name}</p>
+                                    <p className='text-3xl font-semibold'>{item.product_name.toUpperCase()}</p>
                                     <p className='text-xl'>{item.price} <span className='text-sm text-slate-500'>so'm</span> </p>
                                     {
                                         item.sizes.map((size, index) => (

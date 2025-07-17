@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React from "react";
 
 const EmptyCart = () => {
@@ -19,12 +20,12 @@ const EmptyCart = () => {
                 <p className="max-w-md text-gray-600 mb-6">
                     Buyurtma berishdan oldin, iltimos, bir nechta mahsulotlarni savatga qo‘shing. "Katalog" sahifasida siz ko‘plab qiziqarli mahsulotlarni topishingiz mumkin.
                 </p>
-                <button
+                <Link
                     className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
-                    onClick={() => window.location.href = '/catalog'}
+                    href="/"
                 >
                     KATALOGGA O‘TISH
-                </button>
+                </Link>
             </div>
         </div>
     );
