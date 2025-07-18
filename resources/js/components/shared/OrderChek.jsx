@@ -1,63 +1,62 @@
 import React from 'react';
 
 const OrderCheck = ({ data }) => {
-
-
     const total = data.items.reduce((sum, item) => sum + item.total, 0);
 
     return (
-        <div className="max-w-md mx-auto bg-white border border-black p-6 font-sans text-sm">
-            <h2 className="text-center text-2xl font-bold mb-2">{data.shop.name}</h2>
-            <p className="text-center mb-2">{data.shop.address}</p>
-            <p className="text-center mb-2">Telefon: {data.shop.phone}</p>
-            <p className="text-center text-xs text-gray-600 mb-6">Kamchiliklar haqida 3 kun ichida xabar berishingizni so‘raymiz</p>
+        <div className="max-w-[280px] text-[10px] font-mono ">
+            <h2 className="text-center text-[14px] font-bold">{data.shop.name}</h2>
+            <p className="text-center">{data.shop.address}</p>
+            <p className="text-center mb-1">Tel: {data.shop.phone}</p>
+            <p className="text-center text-gray-500 text-[9px] mb-2">Kamchiliklar haqida 3 kun ichida xabar bering</p>
 
-            <div className="mb-2 flex justify-between items-start">
-                <div className='space-y-2'>
+            <div className="flex justify-between mb-1">
+                <div>
                     <p><strong>Mijoz:</strong> {data.client.name}</p>
                     <p><strong>Tel:</strong> {data.client.phone}</p>
                     <p><strong>Chek №:</strong> {data.checkNumber}</p>
                 </div>
-                <div>
-                    <p><strong>Sana:</strong> {data.date}</p>
+                <div className="text-right">
+                    <p><strong>Sana:</strong></p>
+                    <p>{data.date}</p>
                 </div>
             </div>
 
-            <table className="w-full border border-collapse mt-4">
-                <thead className="bg-gray-100 text-gray-700">
-                    <tr>
-                        <th className="border py-1 w-[5%]">№</th>
-                        <th className="border px-2 py-1 w-[100%]">Nomi</th>
-                        <th className="border py-1 w-[3%]">O‘lch. birligi</th>
-                        <th className="border py-1 w-[3%]">Miqdor</th>
-                        <th className="border py-1 w-[10%]">Narx (so‘m)</th>
-                        <th className="border py-1 w-[30%]">Jami (so‘m)</th>
+            <table className="w-full border-t border-b text-[9px]">
+                <thead>
+                    <tr className="border-y text-left">
+                        <th className="py-1">№</th>
+                        <th>Nomi</th>
+                        <th>O‘lch</th>
+                        <th>Miqdor</th>
+                        <th>Narx</th>
+                        <th>Jami</th>
                     </tr>
                 </thead>
                 <tbody>
                     {data.items.map((item, idx) => (
-                        <tr key={idx}>
-                            <td className="border px-2 py-1 text-center">{idx + 1}</td>
-                            <td className="border px-2 py-1">{item.name}</td>
-                            <td className="border px-2 py-1 text-center">{item.unit}</td>
-                            <td className="border px-2 py-1 text-center">{item.quantity}</td>
-                            <td className="border px-2 py-1 text-right">{item.price}</td>
-                            <td className="border px-2 py-1 text-right">{item.total}</td>
+                        <tr key={idx} className="align-top">
+                            <td>{idx + 1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.unit}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.price}</td>
+                            <td>{item.total}</td>
                         </tr>
                     ))}
-                    <tr className="font-semibold">
-                        <td colSpan="5" className="border px-2 py-1 text-right">Jami:</td>
-                        <td className="border px-2 py-1 text-right">{total}</td>
+                    <tr className="font-semibold border-t">
+                        <td colSpan="5" className="text-right pr-1">Jami:</td>
+                        <td>{total.toFixed(2)}</td>
                     </tr>
                 </tbody>
             </table>
 
-            <div className="mt-6 space-y-1">
+            <div className="mt-2 text-[10px] space-y-1">
                 <p><strong>To‘langan:</strong> {data.paid}</p>
                 <p><strong>Qarz:</strong> {data.debt}</p>
             </div>
 
-            <p className="mt-6 text-center font-semibold">Xaridingiz uchun rahmat!</p>
+            <p className="mt-3 text-center font-semibold text-[10px]">Xaridingiz uchun rahmat!</p>
         </div>
     );
 };

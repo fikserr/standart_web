@@ -82,7 +82,7 @@ Route::middleware([auth::class, IsUser::class])->group(function () {
     // Qo‘shimcha sahifalar
     Route::get('/policy', fn() => inertia('Policy'));
     Route::get('/order-table', fn() => inertia('orderTable'));
-    Route::get('/orderchek80', fn() => inertia('order80'));
+    Route::get('/orderchek', fn() => inertia('orderTableBig'));
 });
 
 // 🛠️ Admin uchun sahifalar

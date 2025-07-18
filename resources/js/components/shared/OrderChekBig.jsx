@@ -4,7 +4,7 @@ const CheckView = ({data}) => {
   
 
   return (
-    <div className="max-w-3xl mx-auto border border-gray-700 p-6 bg-white font-sans text-sm">
+    <div className="w-full p-2 bg-white font-sans text-sm">
       <h1 className="text-4xl font-extrabold text-center mb-2">{data.store.name}</h1>
       <p className="text-center">{data.store.address}</p>
       <p className="text-center mb-4">Telefon: {data.store.phone}</p>
@@ -18,15 +18,15 @@ const CheckView = ({data}) => {
       </div>
 
       <table className="w-full border border-collapse mt-2">
-        <thead className="bg-gray-100">
+        <thead className="bg-gray-200">
           <tr>
             <th className="border px-2 py-1 w-[5%]">№</th>
-            <th className="border px-2 py-1 w-[60%] text-left">Nomi</th>
-            <th className="border px-2 py-1 w-[12%]">O‘lchov</th>
+            <th className="border px-2 py-1 w-[50%] text-left">Nomi</th>
+            <th className="border px-2 py-1 w-[5%]">O‘lchov</th>
             <th className="border px-2 py-1 w-[10%]">Miqdor</th>
             <th className="border px-2 py-1 w-[10%]">Narx $</th>
-            <th className="border px-2 py-1 w-[14%]">Narx so‘m</th>
-            <th className="border px-2 py-1 w-[14%]">Valyuta so‘m</th>
+            <th className="border px-2 py-1 w-[10%]">Narx so‘m</th>
+            <th className="border px-2 py-1 w-[10%]">Valyuta so‘m</th>
           </tr>
         </thead>
         <tbody>
