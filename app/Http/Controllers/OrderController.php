@@ -95,6 +95,6 @@ class OrderController extends Controller
     // Buyurtma muvaffaqiyatli tugadi sahifasi
     public function success()
     {
-        return inertia('OrderSuccess'); // yoki redirect to some page
+        return inertia('order-success'); // yoki redirect to some page
     }
 }
