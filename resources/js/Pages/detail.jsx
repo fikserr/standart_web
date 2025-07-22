@@ -90,7 +90,7 @@ const Index = ({ detail }) => {
                          <div className='flex items-center justify-between mt-5'>
                         <div>
                             <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
-                                Narxi: {detail.price.toLocaleString()} ₽
+                                Narxi: {detail.price.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
