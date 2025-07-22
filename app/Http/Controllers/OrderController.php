@@ -97,4 +97,20 @@ class OrderController extends Controller
     {
         return inertia('order-success'); // yoki redirect to some page
     }
+    public function show($id)
+    {
+        $order = Order::with(['user', 'items.product', 'address'])->findOrFail($id);
+
+        return Inertia::render('admin/orderTableBig', [
+            'order' => $order,
+        ]);
+    }
+    public function showPos($id)
+    {
+        $order = Order::with(['user', 'items.product', 'address'])->findOrFail($id);
+
+        return Inertia::render('admin/orderTable', [
+            'order' => $order,
+        ]);
+    }
 }

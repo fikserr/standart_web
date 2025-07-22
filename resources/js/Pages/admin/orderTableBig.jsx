@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import OrderChek80 from '@/components/shared/OrderChekBig';
 
-const OrderTable = () => {
+const OrderTable = ({order}) => {
   const data = {
     store: {
       name: "STROY LIGHT",
@@ -94,7 +94,8 @@ const OrderTable = () => {
   };
 
   const printRef = useRef();
-
+  console.log(order);
+  
   const handleDownload = async () => {
     const element = printRef.current;
     const canvas = await html2canvas(element, { scale: 2 });

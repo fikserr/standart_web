@@ -87,8 +87,8 @@ Route::middleware([auth::class, IsUser::class])->group(function () {
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     // Dashboard
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
-    Route::get('/order-table', fn() => inertia('orderTable'));
-    Route::get('/orderchek', fn() => inertia('orderTableBig'));
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
+    Route::get('/admin/orders/pos/{id}', [OrderController::class, 'showPos'])->name('admin.orders.showPos');
 
     // Category
     Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');

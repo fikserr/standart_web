@@ -194,7 +194,10 @@ export default function OrderList({ orders }) {
                                     </select>
                                 </td>
                                 <td>
-                                    <Link href={"/orderchek"} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
+                                    <Link  href={`/admin/orders/${order.id}`} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
+                                        <FcPrint/>
+                                    </Link>
+                                    <Link  href={`/admin/orders/pos/${order.id}`} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
                                         <FcPrint/>
                                     </Link>
                                 </td>

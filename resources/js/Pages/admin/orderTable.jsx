@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import OrderChek from '@/components/shared/OrderChek';
 
-const OrderTable = () => {
+const OrderTable = ({order}) => {
     const data = {
         shop: {
             name: "STROY LIGHT",
@@ -29,7 +29,8 @@ const OrderTable = () => {
         paid: 1526.4,
         debt: 1573.6
     };
-
+    console.log(order);
+    
     const printRef = useRef();
 
     const handleDownload = async () => {
