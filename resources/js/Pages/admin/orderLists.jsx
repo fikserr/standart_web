@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { FcPrint } from "react-icons/fc";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -11,6 +12,7 @@ import {
     DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "@inertiajs/react";
 
 const statusStyles = {
     pending: "bg-yellow-100 text-yellow-700",
@@ -154,6 +156,7 @@ export default function OrderList({ orders }) {
                             <th className="px-4 py-2 font-medium">Manzillar</th>
                             <th className="px-4 py-2 font-medium">Kun/oy/yil</th>
                             <th className="px-4 py-2 font-medium">Holati</th>
+                            <th>Chop etish</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -189,6 +192,11 @@ export default function OrderList({ orders }) {
                                             </option>
                                         ))}
                                     </select>
+                                </td>
+                                <td>
+                                    <Link href={"/orderchek"} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
+                                        <FcPrint/>
+                                    </Link>
                                 </td>
                             </tr>
                         ))}

@@ -118,7 +118,7 @@ const OrderTable = () => {
   };
 
   return (
-    <div className='mt-32 xl:px-20'>
+    <div className='mt-3 px-20'>
       <div className='min-h-screen'>
         <div ref={printRef}>
           <OrderChek80 data={data} />

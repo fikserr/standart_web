@@ -23,15 +23,15 @@ Route::get('/', function () {
     return inertia('Home');
 });
 Route::middleware('web')->group(function () {
-// 🔐 Auth sahifalari (login, register, logout)
-Route::get('/login', [UserController::class, 'index'])->name('login');
-Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
-Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
-Route::post('/request-register', [UserController::class, 'requestRegister']);
-Route::post('/verify-register', [UserController::class, 'verifyRegister']);
-Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+    // 🔐 Auth sahifalari (login, register, logout)
+    Route::get('/login', [UserController::class, 'index'])->name('login');
+    Route::post('/login', [UserController::class, 'login'])->name('login.attempt');
+    Route::get('/register', [UserController::class, 'showRegisterForm'])->name('register');
+    Route::post('/request-register', [UserController::class, 'requestRegister']);
+    Route::post('/verify-register', [UserController::class, 'verifyRegister']);
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->post('/verify-code', [VerifyCodeController::class, 'verify'])->name('verify.code');
+    Route::middleware('auth')->post('/verify-code', [VerifyCodeController::class, 'verify'])->name('verify.code');
 });
 // 📧 Test email
 Route::get('/test-email', function () {
@@ -44,9 +44,9 @@ Route::get('/test-email', function () {
 // 👤 Faqat USER (oddiy foydalanuvchi) uchun sahifalar
 Route::middleware([auth::class, IsUser::class])->group(function () {
     Route::get('/', [ProductController::class, 'userProduct'])->name('home');
-    Route::get('/shoes',  [ProductController::class, 'ShoesProducts'])->name('shoes.products');
-    Route::get('/clothes',  [ProductController::class, 'ClothesProducts'])->name('clothes.products');
-    Route::get('/accessory',  [ProductController::class, 'AccesProducts'])->name('accessory.products');
+    Route::get('/shoes', [ProductController::class, 'ShoesProducts'])->name('shoes.products');
+    Route::get('/clothes', [ProductController::class, 'ClothesProducts'])->name('clothes.products');
+    Route::get('/accessory', [ProductController::class, 'AccesProducts'])->name('accessory.products');
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 
@@ -81,14 +81,14 @@ Route::middleware([auth::class, IsUser::class])->group(function () {
 
     // Qo‘shimcha sahifalar
     Route::get('/policy', fn() => inertia('Policy'));
-    Route::get('/order-table', fn() => inertia('orderTable'));
-    Route::get('/orderchek', fn() => inertia('orderTableBig'));
 });
 
 // 🛠️ Admin uchun sahifalar
 Route::middleware(['auth', IsAdmin::class])->group(function () {
     // Dashboard
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
+    Route::get('/order-table', fn() => inertia('orderTable'));
+    Route::get('/orderchek', fn() => inertia('orderTableBig'));
 
     // Category
     Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');

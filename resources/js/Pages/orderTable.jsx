@@ -55,7 +55,7 @@ const OrderTable = () => {
     };
 
     return (
-        <div className='mt-24 px-20'>
+        <div className='px-20'>
             <div className='min-h-screen'>
                 <div ref={printRef}>
                     <OrderChek data={data} />
