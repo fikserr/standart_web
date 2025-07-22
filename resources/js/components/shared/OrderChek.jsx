@@ -32,10 +32,10 @@ const OrderCheck = ({ data }) => {
                         <th>Narx</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-left'>
                     {data.items.map((item, idx) => (
                         <tr key={item.id} className="align-top">
-                            <td>{idx + 1}</td>
+                            <td>{idx + 1}.</td>
                             <td>{item.product.product_name}</td>
                             <td>{item.size}</td>
                             <td>{item.quantity}</td>
