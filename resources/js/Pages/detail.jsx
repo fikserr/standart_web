@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
+import Loading from '@/components/ui/loader';
 import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
 import OrderModal from '@/components/shared/orderModal';
@@ -11,6 +12,7 @@ const Index = ({ detail }) => {
     const [activeSize, setActiveSize] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const { processing } = useForm();
+    console.log(useForm(), "useForm hook");
     const { toast } = useToast();
     const handleAddToCart = () => {
         if (!activeSize) {
@@ -37,7 +39,8 @@ const Index = ({ detail }) => {
     };
 
     const tabs = ['Tafsilotlar'];
-
+    console.log(processing, "processing state");
+    if( processing ) return <Loading/> 
     return (
         <div className='my-20 px-5 xl:px-32'>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
