@@ -96,5 +96,16 @@ export default {
 			'2xl': '1536px',
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate"),
+	function ({ addUtilities }) {
+		addUtilities({
+			'.no-scrollbar': {
+				'-ms-overflow-style': 'none',
+				'scrollbar-width': 'none',
+			},
+			'.no-scrollbar::-webkit-scrollbar': {
+				display: 'none',
+			},
+		});
+	},],
 }

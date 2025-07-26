@@ -86,7 +86,7 @@ const CartPage = ({ cartItems, address }) => {
                                 className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
                             />
                             <div className="sm:space-y-4 lg:space-y-1 xl:space-y-4">
-                                <h2 className="font-semibold text-xl sm500:text-3xl">
+                                <h2 className="font-semibold text-xl sm500:text-2xl">
                                     {item.product?.product_name}
                                 </h2>
                                 <p className="text-sm text-gray-500 sm:text-lg">

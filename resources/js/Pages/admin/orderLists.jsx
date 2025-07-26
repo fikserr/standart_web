@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
-import { FcPrint } from "react-icons/fc";
+import { FcPrint, FcRules } from "react-icons/fc";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -194,12 +194,14 @@ export default function OrderList({ orders }) {
                                     </select>
                                 </td>
                                 <td>
-                                    <Link  href={`/admin/orders/${order.id}`} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
-                                        <FcPrint/>
-                                    </Link>
-                                    <Link  href={`/admin/orders/pos/${order.id}`} className="text-2xl flex px-5 py-1 rounded hover:bg-slate-200 w-[50%]">
-                                        <FcPrint/>
-                                    </Link>
+                                    <div className="flex">
+                                        <Link href={`/admin/orders/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200">
+                                            <FcPrint />
+                                        </Link>
+                                        <Link href={`/admin/orders/pos/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200">
+                                            <FcRules   />
+                                        </Link>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
