@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Category;
@@ -13,28 +12,29 @@ class ProductController extends Controller
 {
     public function showProduct()
     {
-        $products = Product::with('category')->latest()->paginate(5);
+        $products = Product::with(['category', 'variants'])->latest()->paginate(5);
         return Inertia::render('admin/productStock', [
             'products' => $products,
         ]);
     }
+
     public function ClothesProducts()
     {
-        $products = Product::with('category')->latest()->paginate(5);
+        $products = Product::with('category', 'variants')->latest()->paginate(5);
         return Inertia::render('Clothes', [
             'products' => $products,
         ]);
     }
     public function ShoesProducts()
     {
-        $products = Product::with('category')->latest()->paginate(5);
+        $products = Product::with('category', 'variants')->latest()->paginate(5);
         return Inertia::render('Shoes', [
             'products' => $products,
         ]);
     }
     public function AccesProducts()
     {
-        $products = Product::with('category')->latest()->paginate(5);
+        $products = Product::with('category', 'variants')->latest()->paginate(5);
         return Inertia::render('Accessory', [
             'products' => $products,
         ]);
@@ -42,25 +42,19 @@ class ProductController extends Controller
     public function userProduct()
     {
 
-        $banners = \App\Models\Banner::latest()->get();
-        $products = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        $banners   = \App\Models\Banner::latest()->get();
+        $products  = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         $favorites = Auth::user()->favorites;
         return Inertia::render('Home', [
-            'products' => $products,
-            'banners' => $banners,
+            'products'  => $products,
+            'banners'   => $banners,
             'favorites' => $favorites,
 
         ]);
     }
     public function show($id)
     {
-        // 1. Mahsulotni ID bo‘yicha olish
-        // $product = Product::findOrFail($id); // faqat products jadvalidan
-
-        // 2. Agar category, sizes va boshqa bog‘lamalar bo‘lsa:
-        $product = Product::with(['category',])->findOrFail($id);
-
-        // 3. Inertia orqali Detail sahifaga yuborish
+        $product = Product::with(['category', 'variants'])->findOrFail($id);
         return Inertia::render('detail', [
             'detail' => $product,
         ]);
@@ -77,15 +71,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_name' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'sizes' => 'nullable|array',
-            'price' => 'required|numeric',
-            'colors' => 'nullable|string',
-            'brend' => 'nullable|string',
-            'photo1' => 'nullable|image',
-            'photo2' => 'nullable|image',
-            'photo3' => 'nullable|image',
+            'product_name'     => 'required|string',
+            'category_id'      => 'required|exists:categories,id',
+            'variants'         => 'required|array|min:1',
+            'variants.*.size'  => 'required|string',
+            'variants.*.color' => 'required|string',
+            'variants.*.price' => 'required|numeric',
+            'brend'            => 'nullable|string',
+            'photo1'           => 'nullable|image',
+            'photo2'           => 'nullable|image',
+            'photo3'           => 'nullable|image',
         ]);
 
         foreach ([1, 2, 3] as $i) {
@@ -95,7 +90,20 @@ class ProductController extends Controller
             }
         }
 
-        Product::create($data);
+        // Productni yaratamiz
+        $product = Product::create([
+            'product_name' => $data['product_name'],
+            'category_id'  => $data['category_id'],
+            'brend'        => $data['brend'] ?? null,
+            'photo1'       => $data['photo1'] ?? null,
+            'photo2'       => $data['photo2'] ?? null,
+            'photo3'       => $data['photo3'] ?? null,
+        ]);
+
+        // Variantlarini saqlaymiz
+        foreach ($data['variants'] as $variant) {
+            $product->variants()->create($variant);
+        }
 
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
@@ -103,36 +111,59 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
-            'product_name' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'sizes' => 'nullable|array',
-            'price' => 'required|numeric',
-            'colors' => 'nullable|string',
-            'brend' => 'nullable|string',
-            'photo1' => 'nullable|image',
-            'photo2' => 'nullable|image',
-            'photo3' => 'nullable|image',
+            'product_name'     => 'required|string',
+            'category_id'      => 'required|exists:categories,id',
+            'brend'            => 'nullable|string',
+            'colors'           => 'nullable|string',
+            'variants'         => 'required|array',
+            'variants.*.size'  => 'required|string',
+            'variants.*.color' => 'required|string',
+            'variants.*.price' => 'required|numeric',
+            'photo1'           => 'nullable|image',
+            'photo2'           => 'nullable|image',
+            'photo3'           => 'nullable|image',
         ]);
 
+        // Rasm fayllari uchun
         foreach (['photo1', 'photo2', 'photo3'] as $key) {
             if ($request->hasFile($key)) {
                 if ($product->$key) {
-                    \Storage::disk('public')->delete($product->$key);
+                    Storage::disk('public')->delete($product->$key);
                 }
                 $data[$key] = $request->file($key)->store('products', 'public');
             }
         }
 
-        $product->update($data);
+        // Mahsulotni yangilash
+        $product->update([
+            'product_name' => $data['product_name'],
+            'category_id'  => $data['category_id'],
+            'brend'        => $data['brend'],
+            'colors'       => $data['colors'],
+            'photo1'       => $data['photo1'] ?? $product->photo1,
+            'photo2'       => $data['photo2'] ?? $product->photo2,
+            'photo3'       => $data['photo3'] ?? $product->photo3,
+        ]);
 
-        return back()->with('success', 'Mahsulot yangilandi');
+        // Eski variantlarni o‘chirish va yangilarini saqlash
+        $product->variants()->delete();
+
+        foreach ($data['variants'] as $variant) {
+            $product->variants()->create([
+                'size'  => $variant['size'],
+                'color' => $variant['color'],
+                'price' => $variant['price'],
+            ]);
+        }
+
+        return back()->with('success', 'Mahsulot muvaffaqiyatli yangilandi!');
     }
 
     public function index(Request $request)
     {
         $search = $request->input('search');
 
-        $products = Product::with('category') // 👈 category obyekti yuklanadi
+        $products = Product::with('category', 'variants') // 👈 category obyekti yuklanadi
             ->when($search, function ($query, $search) {
                 $query->where('product_name', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
@@ -144,25 +175,25 @@ class ProductController extends Controller
 
         return Inertia::render('admin/productStock', [
             'products' => $products,
-            'filters' => [
+            'filters'  => [
                 'search' => $search,
             ],
         ]);
     }
 
-    public function edit(Product $product)
+    public function edit($id)
     {
-        $categories = Category::all();
+        $product = Product::with(['category', 'variants'])->findOrFail($id);
+
         return Inertia::render('admin/editProducts', [
             'product' => $product,
-            'categories' => $categories,
         ]);
     }
 
     public function deleteProduct(Product $product)
     {
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
-            if (!empty($product->$photoKey) && \Storage::disk('public')->exists($product->$photoKey)) {
+            if (! empty($product->$photoKey) && \Storage::disk('public')->exists($product->$photoKey)) {
                 \Storage::disk('public')->delete($product->$photoKey);
             }
         }

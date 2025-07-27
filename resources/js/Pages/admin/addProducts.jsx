@@ -12,23 +12,19 @@ const AddProductForm = ({ categories }) => {
 
   const { data, setData, post, processing, errors, reset } = useForm({
     product_name: '',
-    category: '',
-    sizes: [],
-    price: '',
-    colors: '',
+    category_id: '',
     brend: '',
     photo1: null,
     photo2: null,
     photo3: null,
+    variants: [
+      { size: '', color: '', price: '' }
+    ],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'sizes') {
-      setData(name, value.split(',').map(s => s.trim()));
-    } else {
-      setData(name, value);
-    }
+    setData(name, value);
   };
 
   const handleFileUpload = (e, key) => {
@@ -43,51 +39,46 @@ const AddProductForm = ({ categories }) => {
     }
   };
 
+  const handleVariantChange = (index, field, value) => {
+    const updatedVariants = [...data.variants];
+    updatedVariants[index][field] = value;
+    setData('variants', updatedVariants);
+  };
+
+  const addVariant = () => {
+    setData('variants', [...data.variants, { size: '', color: '', price: '' }]);
+  };
+
+  const removeVariant = (index) => {
+    const updatedVariants = data.variants.filter((_, i) => i !== index);
+    setData('variants', updatedVariants);
+  };
+
   const handleSubmit = (e) => {
-    try {
-      toast({
-        title: "Saqlanmoqda...",
-        description: "Mahsulot qo'shilmoqda, iltimos kuting...",
-      });
-      e.preventDefault();
-      post('/admin-add-store', {
-        forceFormData: true,
-        onSuccess: () => {
-          reset();
-          setPreviewImages({ photo1: null, photo2: null, photo3: null });
-        },
-      });
-      window.location.href = '/admin-productStock'
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 422) {
-          toast({
-            title: "Xatolik",
-            description: "Iltimos, barcha maydonlarni to'ldiring.",
-          });
-        } else if (error.response.status === 401) {
-          toast({
-            title: "Xatolik",
-            description: "Avval tizimga kirishingiz kerak.",
-          });
-        } else {
-          toast({
-            title: "Xatolik",
-            description: `Xatolik yuz berdi: ${error.response.statusText}`,
-          });
-        }
-      } else if (error.request) {
+    e.preventDefault();
+    toast({
+      title: "Saqlanmoqda...",
+      description: "Mahsulot qo'shilmoqda, iltimos kuting...",
+    });
+
+    post('/admin-add-store', {
+      forceFormData: true,
+      onSuccess: () => {
+        reset();
+        setPreviewImages({ photo1: null, photo2: null, photo3: null });
         toast({
-          title: "Xatolik",
-          description: "Serverga so'rov yuborishda xatolik.",
+          title: "Success",
+          description: "Mahsulot muvaffaqiyatli qo‘shildi",
         });
-      } else {
+        window.location.href = '/admin-productStock';
+      },
+      onError: () => {
         toast({
           title: "Xatolik",
-          description: `Xatolik: ${error.message}`,
+          description: "Ma'lumotlarni to‘ldirishda xatolik bor.",
         });
       }
-    }
+    });
   };
 
   return (
@@ -96,9 +87,9 @@ const AddProductForm = ({ categories }) => {
       <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
         <div className="flex gap-24 justify-center">
           {[1, 2, 3].map(i => (
-            <div key={i} className="flex flex-col items-center  transition-all duration-700 ease-in-out hover:scale-110">
+            <div key={i} className="flex flex-col items-center hover:scale-110 transition-all duration-700">
               <div className="relative group w-24 h-24">
-                <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden hover:rotate-6 transition-transform duration-700">
+                <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
                   {previewImages[`photo${i}`] ? (
                     <img
                       src={previewImages[`photo${i}`]}
@@ -124,6 +115,7 @@ const AddProductForm = ({ categories }) => {
             </div>
           ))}
         </div>
+
         <div className='grid grid-cols-2 gap-5'>
           <input
             name="product_name"
@@ -147,33 +139,7 @@ const AddProductForm = ({ categories }) => {
               </option>
             ))}
           </select>
-          {errors.category && <div className="text-red-600">{errors.category}</div>}
-
-          <input
-            name="sizes"
-            value={data.sizes.join(', ')}
-            onChange={handleChange}
-            placeholder="Sizes (e.g. S, M, L)"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
-
-          <input
-            name="price"
-            value={data.price}
-            onChange={handleChange}
-            type="number"
-            placeholder="Price"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
-          {errors.price && <div className="text-red-600">{errors.price}</div>}
-
-          <input
-            name="colors"
-            value={data.colors}
-            onChange={handleChange}
-            placeholder="Colors (e.g. red, blue)"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
+          {errors.category_id && <div className="text-red-600">{errors.category_id}</div>}
 
           <input
             name="brend"
@@ -183,10 +149,49 @@ const AddProductForm = ({ categories }) => {
             className="w-full border p-5 rounded-lg outline-none"
           />
         </div>
+
+        {/* ✅ Variantlar bo‘limi */}
+        <div>
+          <h2 className="text-xl font-semibold mb-2 mt-6">Mahsulot variantlari</h2>
+          {data.variants.map((variant, index) => (
+            <div key={index} className="flex gap-4 mb-2 items-center">
+              <input
+                type="text"
+                placeholder="Razmer (e.g. S, M)"
+                value={variant.size}
+                onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <input
+                type="text"
+                placeholder="Rang (e.g. red)"
+                value={variant.color}
+                onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <input
+                type="number"
+                placeholder="Narx (e.g. 100000)"
+                value={variant.price}
+                onChange={(e) => handleVariantChange(index, 'price', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <button type="button" onClick={() => removeVariant(index)} className="text-red-600 text-xl font-bold">✕</button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addVariant}
+            className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
+          >
+            ➕ Variant qo‘shish
+          </button>
+        </div>
+
         <button
           type="submit"
           disabled={processing}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded mt-6"
         >
           {processing ? 'Saqlanmoqda...' : '💾 Saqlash'}
         </button>

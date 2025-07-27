@@ -11,19 +11,15 @@ class Product extends Model
     protected $fillable = [
         'product_name',
         'category_id', // ⬅️ bu muhim
-        'sizes',
-        'price',
         'colors',
         'brend',
         'photo1',
         'photo2',
         'photo3',
     ];
-
     protected $casts = [
-        'sizes' => 'array',
-    ];
-
+    'variants' => 'array',
+];
     public function getPhotoUrl1Attribute()
     {
         return $this->photo1 ? Storage::url($this->photo1) : null;
@@ -43,4 +39,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
 }

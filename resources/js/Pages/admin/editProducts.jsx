@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { useToast } from '@/hooks/use-toast';
 
-const EditProduct = ({ product, categories }) => {
+const EditProduct = ({ product}) => {
   const [previewImages, setPreviewImages] = useState({
     photo1: product.photo1 || null,
     photo2: product.photo2 || null,
@@ -177,7 +177,7 @@ const EditProduct = ({ product, categories }) => {
             className="w-full border p-5 rounded-lg outline-none"
           >
             <option value="">Kategoriya tanlang</option>
-            {categories.map((category) => (
+            {product.categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
               </option>

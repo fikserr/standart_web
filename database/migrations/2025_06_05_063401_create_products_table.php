@@ -16,8 +16,6 @@ return new class extends Migration
             $table->id();
             $table->string('product_name');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->json('sizes')->nullable();
-            $table->decimal('price', 10, 2);
             $table->string('photo1')->nullable();
             $table->string('photo2')->nullable();
             $table->string('photo3')->nullable();
@@ -25,7 +23,6 @@ return new class extends Migration
             $table->string('brend')->nullable();
             $table->timestamps();
         });
-
     }
     /**
      * Reverse the migrations.
