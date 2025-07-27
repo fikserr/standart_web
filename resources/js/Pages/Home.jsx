@@ -1,7 +1,7 @@
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
-import HomeProduct from '@/components/shared/homeProducts';
+import { ClothesProducts, HomeProducts, AccessoryProducts } from "@/components/shared/homeProducts";
 import HomeHero from "@/Pages/home-hero";
 
 const Home = ({ products, banners, favorites }) => {
@@ -31,7 +31,7 @@ const Home = ({ products, banners, favorites }) => {
               <HiOutlineChevronRight />
             </h4>
           </div>
-          <HomeProduct data={products} favorites={favorites} />
+          <HomeProducts data={products} favorites={favorites} />
         </div>
       </div>
       <div>
@@ -46,7 +46,7 @@ const Home = ({ products, banners, favorites }) => {
               <HiOutlineChevronRight />
             </h4>
           </div>
-          {/* <HomeProduct data={products} favorites={favorites} /> */}
+          <ClothesProducts data={products} favorites={favorites} />
         </div>
         <div className='px-5 xl:px-20'>
           <div className='flex items-center justify-between my-3'>
@@ -59,7 +59,7 @@ const Home = ({ products, banners, favorites }) => {
               <HiOutlineChevronRight />
             </h4>
           </div>
-          {/* <HomeProduct data={products} favorites={favorites} /> */}
+          <AccessoryProducts data={products} favorites={favorites} />
         </div>
       </div>
       <div className='px-5 xl:px-20 my-14 text-white'>

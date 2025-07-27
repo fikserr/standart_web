@@ -4,94 +4,94 @@ import html2canvas from 'html2canvas';
 import OrderChek80 from '@/components/shared/OrderChekBig';
 
 const OrderTable = ({order}) => {
-  const data = {
-    store: {
-      name: "STROY LIGHT",
-      address: "YANGI BOZOR XITOY QATOR 5-BLOK 46-DUKON",
-      phone: "+998910900700"
-    },
-    seller: "ADMIN",
-    client: {
-      name: "ABDUSALIM QUVA",
-      phone: "998916815606"
-    },
-    checkNo: "350",
-    date: "10.07.2025 9:15:50",
-    startBalance: 3100000,
-    items: [
-      {
-        name: "AB KLE KATTA",
-        unit: "DONA",
-        quantity: 10,
-        priceUSD: 0.228,
-        priceUZS: 2.28
-      },
-      {
-        name: "LED LAMPA 12W",
-        unit: "DONA",
-        quantity: 5,
-        priceUSD: 0.5,
-        priceUZS: 5.00
-      },
-      {
-        name: "ROZETKA 220V",
-        unit: "DONA",
-        quantity: 20,
-        priceUSD: 0.3,
-        priceUZS: 3.00
-      },
-      {
-        name: "VYKLYUCHATEL 1 KLAVIS",
-        unit: "DONA",
-        quantity: 15,
-        priceUSD: 0.4,
-        priceUZS: 4.00
-      },
-      {
-        name: "KABEL 3x1.5mm",
-        unit: "METR",
-        quantity: 50,
-        priceUSD: 0.2,
-        priceUZS: 2.00
-      },
-      {
-        name: "KABEL 3x2.5mm",
-        unit: "METR",
-        quantity: 30,
-        priceUSD: 0.35,
-        priceUZS: 3.50
-      },
-      {
-        name: "PLAFON SVETILNIK",
-        unit: "DONA",
-        quantity: 8,
-        priceUSD: 1.2,
-        priceUZS: 12.00
-      },
-      {
-        name: "SHTEPSEL VILKA",
-        unit: "DONA",
-        quantity: 25,
-        priceUSD: 0.15,
-        priceUZS: 1.50
-      },
-      {
-        name: "AVTOMAT 16A",
-        unit: "DONA",
-        quantity: 12,
-        priceUSD: 0.6,
-        priceUZS: 6.00
-      },
-      {
-        name: "SHCHETCHIK ELEKTR",
-        unit: "DONA",
-        quantity: 2,
-        priceUSD: 5.0,
-        priceUZS: 50.00
-      }
-    ],
-    totalUZS: 89.58 // Bu qiymat barcha itemlarning narxlarining (UZS) yig'indisiga moslashtirilgan
-  };
+  // const data = {
+  //   store: {
+  //     name: "STROY LIGHT",
+  //     address: "YANGI BOZOR XITOY QATOR 5-BLOK 46-DUKON",
+  //     phone: "+998910900700"
+  //   },
+  //   seller: "ADMIN",
+  //   client: {
+  //     name: "ABDUSALIM QUVA",
+  //     phone: "998916815606"
+  //   },
+  //   checkNo: "350",
+  //   date: "10.07.2025 9:15:50",
+  //   startBalance: 3100000,
+  //   items: [
+  //     {
+  //       name: "AB KLE KATTA",
+  //       unit: "DONA",
+  //       quantity: 10,
+  //       priceUSD: 0.228,
+  //       priceUZS: 2.28
+  //     },
+  //     {
+  //       name: "LED LAMPA 12W",
+  //       unit: "DONA",
+  //       quantity: 5,
+  //       priceUSD: 0.5,
+  //       priceUZS: 5.00
+  //     },
+  //     {
+  //       name: "ROZETKA 220V",
+  //       unit: "DONA",
+  //       quantity: 20,
+  //       priceUSD: 0.3,
+  //       priceUZS: 3.00
+  //     },
+  //     {
+  //       name: "VYKLYUCHATEL 1 KLAVIS",
+  //       unit: "DONA",
+  //       quantity: 15,
+  //       priceUSD: 0.4,
+  //       priceUZS: 4.00
+  //     },
+  //     {
+  //       name: "KABEL 3x1.5mm",
+  //       unit: "METR",
+  //       quantity: 50,
+  //       priceUSD: 0.2,
+  //       priceUZS: 2.00
+  //     },
+  //     {
+  //       name: "KABEL 3x2.5mm",
+  //       unit: "METR",
+  //       quantity: 30,
+  //       priceUSD: 0.35,
+  //       priceUZS: 3.50
+  //     },
+  //     {
+  //       name: "PLAFON SVETILNIK",
+  //       unit: "DONA",
+  //       quantity: 8,
+  //       priceUSD: 1.2,
+  //       priceUZS: 12.00
+  //     },
+  //     {
+  //       name: "SHTEPSEL VILKA",
+  //       unit: "DONA",
+  //       quantity: 25,
+  //       priceUSD: 0.15,
+  //       priceUZS: 1.50
+  //     },
+  //     {
+  //       name: "AVTOMAT 16A",
+  //       unit: "DONA",
+  //       quantity: 12,
+  //       priceUSD: 0.6,
+  //       priceUZS: 6.00
+  //     },
+  //     {
+  //       name: "SHCHETCHIK ELEKTR",
+  //       unit: "DONA",
+  //       quantity: 2,
+  //       priceUSD: 5.0,
+  //       priceUZS: 50.00
+  //     }
+  //   ],
+  //   totalUZS: 89.58 // Bu qiymat barcha itemlarning narxlarining (UZS) yig'indisiga moslashtirilgan
+  // };
 
   const printRef = useRef();
   console.log(order);
@@ -122,7 +122,7 @@ const OrderTable = ({order}) => {
     <div className='mt-3 px-20'>
       <div className='min-h-screen'>
         <div ref={printRef}>
-          <OrderChek80 data={data} />
+          <OrderChek80 data={order} />
         </div>
 
         <div className="flex gap-3 mt-4">

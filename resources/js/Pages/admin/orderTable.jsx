@@ -4,31 +4,6 @@ import html2canvas from 'html2canvas';
 import OrderChek from '@/components/shared/OrderChek';
 
 const OrderTable = ({order}) => {
-    const data = {
-        shop: {
-            name: "STROY LIGHT",
-            address: "YANGI BOZOR XITOY QATOR 5-BLOK 46-DUKON",
-            phone: "+998910900700",
-        },
-        client: {
-            name: "ABDUSALIM QUVA",
-            phone: "998916815606",
-        },
-        checkNumber: "350",
-        date: "10.07.2025 9:15:50",
-        startBalance: 3100000,
-        items: [
-            {
-                name: "AB KLE KATTA",
-                unit: "DONA",
-                quantity: 10,
-                price: 0.228,
-                total: 2.28
-            }
-        ],
-        paid: 1526.4,
-        debt: 1573.6
-    };
     console.log(order);
     
     const printRef = useRef();
@@ -56,10 +31,10 @@ const OrderTable = ({order}) => {
     };
 
     return (
-        <div className='px-20'>
+        <div className='mt-10 px-20'>
             <div className='min-h-screen'>
                 <div ref={printRef}>
-                    <OrderChek data={data} />
+                    <OrderChek data={order} />
                 </div>
 
                 <div className="flex gap-3 mt-2">

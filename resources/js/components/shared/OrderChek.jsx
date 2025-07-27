@@ -5,56 +5,49 @@ const OrderCheck = ({ data }) => {
 
     return (
         <div className="max-w-[280px] text-[10px] font-mono ">
-            <h2 className="text-center text-[14px] font-bold">{data.shop.name}</h2>
-            <p className="text-center">{data.shop.address}</p>
-            <p className="text-center mb-1">Tel: {data.shop.phone}</p>
+            <h2 className="text-center text-[14px] font-bold">STROY LIGHT</h2>
+            <p className="text-center">YANGI BOZOR XITOY QATOR 5-BLOK 46-DO'KON</p>
+            <p className="text-center mb-1">Tel: +998910900070</p>
             <p className="text-center text-gray-500 text-[9px] mb-2">Kamchiliklar haqida 3 kun ichida xabar bering</p>
 
             <div className="flex justify-between mb-1">
                 <div>
-                    <p><strong>Mijoz:</strong> {data.client.name}</p>
-                    <p><strong>Tel:</strong> {data.client.phone}</p>
-                    <p><strong>Chek №:</strong> {data.checkNumber}</p>
+                    <p><strong>Mijoz:</strong> {data.address.first_name}</p>
+                    <p><strong>Tel:</strong> {data.address.phone}</p>
+                    <p><strong>Chek №:</strong> {data.items.length > 0 ? data.items[0].order_id : 'Nomaʼlum'}</p>
                 </div>
                 <div className="text-right">
                     <p><strong>Sana:</strong></p>
-                    <p>{data.date}</p>
+                    <p>{new Date(data.created_at).toLocaleString()}</p>
                 </div>
             </div>
 
-            <table className="w-full border-t border-b text-[9px]">
+            <table className="w-full border-t border-b text-center text-[9px]">
                 <thead>
-                    <tr className="border-y text-left">
+                    <tr className="border-y text-center">
                         <th className="py-1">№</th>
                         <th>Nomi</th>
                         <th>O‘lch</th>
                         <th>Miqdor</th>
                         <th>Narx</th>
-                        <th>Jami</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className='text-left'>
                     {data.items.map((item, idx) => (
-                        <tr key={idx} className="align-top">
-                            <td>{idx + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.unit}</td>
+                        <tr key={item.id} className="align-top">
+                            <td>{idx + 1}.</td>
+                            <td>{item.product.product_name}</td>
+                            <td>{item.size}</td>
                             <td>{item.quantity}</td>
                             <td>{item.price}</td>
-                            <td>{item.total}</td>
                         </tr>
                     ))}
                     <tr className="font-semibold border-t">
-                        <td colSpan="5" className="text-right pr-1">Jami:</td>
-                        <td>{total.toFixed(2)}</td>
+                        <td colSpan="4" className="text-right">Jami:</td>
+                        <td>{data.total_price}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <div className="mt-2 text-[10px] space-y-1">
-                <p><strong>To‘langan:</strong> {data.paid}</p>
-                <p><strong>Qarz:</strong> {data.debt}</p>
-            </div>
 
             <p className="mt-3 text-center font-semibold text-[10px]">Xaridingiz uchun rahmat!</p>
         </div>
