@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
 import Loading from '@/components/ui/loader';
@@ -16,25 +16,44 @@ const Index = ({ detail }) => {
     const { processing } = useForm();
     const { toast } = useToast();
 
+    // Variantlar ichidagi string size/color ni array'ga aylantirish
+    const parsedVariants = useMemo(() => {
+        return detail.variants.map(v => ({
+            ...v,
+            size: JSON.parse(v.size || '[]'),
+            color: JSON.parse(v.color || '[]'),
+        }));
+    }, [detail.variants]);
+
     // Unikal o'lchamlar
-    const sizes = [...new Set(detail.variants.map(v => v.size))];
+    const sizes = useMemo(() => {
+        const allSizes = parsedVariants.flatMap(v => v.size);
+        return [...new Set(allSizes)];
+    }, [parsedVariants]);
 
     // Tanlangan o'lchamga mos ranglar
-    const availableColors = activeSize
-        ? [...new Set(detail.variants.filter(v => v.size === activeSize).map(v => v.color))]
-        : [...new Set(detail.variants.map(v => v.color))];
+    const availableColors = useMemo(() => {
+        if (!activeSize) {
+            return [...new Set(parsedVariants.flatMap(v => v.color))];
+        }
+        return [...new Set(
+            parsedVariants
+                .filter(v => v.size.includes(activeSize))
+                .flatMap(v => v.color)
+        )];
+    }, [parsedVariants, activeSize]);
 
-    // Tanlangan color + size -> variant aniqlash
+    // Tanlangan size+color ga mos variant topish
     useEffect(() => {
-        if (activeColor && activeSize) {
-            const found = detail.variants.find(
-                v => v.color === activeColor && v.size === activeSize
+        if (activeSize && activeColor) {
+            const found = parsedVariants.find(
+                v => v.size.includes(activeSize) && v.color.includes(activeColor)
             );
             setActiveVariant(found || null);
         } else {
             setActiveVariant(null);
         }
-    }, [activeColor, activeSize, detail.variants]);
+    }, [activeSize, activeColor, parsedVariants]);
 
     const handleAddToCart = () => {
         if (!activeVariant) {
@@ -53,7 +72,7 @@ const Index = ({ detail }) => {
         }).then(() => {
             toast({
                 title: 'Savatga qo‘shildi ✅',
-                description: `${detail.product_name} (${activeVariant.size}, ${activeVariant.color}) savatga muvaffaqiyatli qo‘shildi!`
+                description: `${detail.product_name} (${activeVariant.size}, ${activeVariant.color}) savatga qo‘shildi!`
             });
             setModalOpen(true);
         }).catch(err => {
@@ -77,7 +96,6 @@ const Index = ({ detail }) => {
                             className="w-full h-[350px] rounded-2xl object-cover"
                         />
                     )}
-
                     <div className='grid grid-cols-3 gap-3 mb-3'>
                         {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
                             photo && (
@@ -105,7 +123,7 @@ const Index = ({ detail }) => {
                                 key={index}
                                 onClick={() => {
                                     setActiveSize(size);
-                                    setActiveColor(null); // ranglar qayta filtrlanadi
+                                    setActiveColor(null);
                                 }}
                                 className={`border rounded-lg px-4 py-1 cursor-pointer
                                     ${activeSize === size ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
@@ -171,7 +189,7 @@ const Index = ({ detail }) => {
                             const values = [
                                 detail?.category?.name || "Noma'lum",
                                 detail?.brend || "Yo‘q",
-                                activeVariant?.color || detail?.colors || "Noma'lum"
+                                activeVariant?.color?.join(', ') || detail?.colors || "Noma'lum"
                             ];
                             return (
                                 <div key={index} className='flex items-center justify-between' style={{ fontFamily: 'OswaldLight' }}>

@@ -4,12 +4,21 @@ import { Link } from '@inertiajs/react';
 
 const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Faqat mavjud rasmlarni olish
   const images = [item.photo1, item.photo2, item.photo3]
     .filter(Boolean)
     .map(photo => `/storage/${photo}`);
 
-  const sizes = item.variants?.map(variant => variant.size) || [];
-  const prices = item.variants?.map(variant => variant.price) || [];
+  // JSON stringlardan to'g'ri massiv olish
+  const parsedVariants = item.variants?.map(variant => ({
+    ...variant,
+    size: JSON.parse(variant.size || '[]'),
+    color: JSON.parse(variant.color || '[]'),
+  })) || [];
+
+  const sizes = [...new Set(parsedVariants.flatMap(v => v.size))];
+  const prices = parsedVariants.map(v => v.price);
   const minPrice = Math.min(...prices);
 
   useEffect(() => {
@@ -37,7 +46,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
               alt={item.product_name}
               className="w-full flex-shrink-0 object-cover h-full"
               onError={(e) => {
-                e.target.src = '/fallback.jpg'; // o'zingizga kerakli default rasm yo'lini qo'ying
+                e.target.src = '/fallback.jpg';
               }}
             />
           ))}
@@ -45,7 +54,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
 
         <button
           onClick={(e) => {
-            e.preventDefault(); // Link'ga o'tishni to'xtatish
+            e.preventDefault();
             handleClick(e, item.id);
           }}
           className='absolute top-4 right-4 z-10'
@@ -64,11 +73,9 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
           <p className='text-base'>
             {minPrice.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
           </p>
-          {sizes.map((size, idx) => (
-            <span key={idx} className='text-sm text-slate-500'>
-              {size}{idx < sizes.length - 1 ? ', ' : ''}
-            </span>
-          ))}
+          <p className='text-sm text-slate-500'>
+            {sizes.join(', ')}
+          </p>
         </div>
         <Link href={`/detail/${item.id}`} className='hidden sm:block'>
           <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
