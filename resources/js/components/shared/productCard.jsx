@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 import { Link } from '@inertiajs/react';
 
@@ -8,13 +8,17 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
     .filter(Boolean)
     .map(photo => `/storage/${photo}`);
 
+  const sizes = item.variants?.map(variant => variant.size) || [];
+  const prices = item.variants?.map(variant => variant.price) || [];
+  const minPrice = Math.min(...prices);
+
   useEffect(() => {
     const start = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % images.length);
-      }, 5000); // har 3 sekundda
+      }, 5000);
       return () => clearInterval(interval);
-    }, delay); // har bir kartaga alohida delay
+    }, delay);
 
     return () => clearTimeout(start);
   }, [delay, images.length]);
@@ -33,13 +37,19 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
               alt={item.product_name}
               className="w-full flex-shrink-0 object-cover h-full"
               onError={(e) => {
-                e.target.src = '/path/to/fallback-image.jpg';
+                e.target.src = '/fallback.jpg'; // o'zingizga kerakli default rasm yo'lini qo'ying
               }}
             />
           ))}
         </div>
 
-        <button onClick={(e) => handleClick(e, item.id)} className='absolute top-4 right-4 z-10'>
+        <button
+          onClick={(e) => {
+            e.preventDefault(); // Link'ga o'tishni to'xtatish
+            handleClick(e, item.id);
+          }}
+          className='absolute top-4 right-4 z-10'
+        >
           {isStarred ? (
             <ImStarFull className="text-2xl text-yellow-400" />
           ) : (
@@ -51,10 +61,12 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
       <div className='flex items-end justify-between'>
         <div className='p-2'>
           <p className='text-base font-semibold'>{item.product_name.toUpperCase()}</p>
-          <p className='text-base'>{item.price} <span className='text-sm text-slate-500'>so'm</span></p>
-          {item.sizes.map((size, idx) => (
+          <p className='text-base'>
+            {minPrice.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+          </p>
+          {sizes.map((size, idx) => (
             <span key={idx} className='text-sm text-slate-500'>
-              {size}{idx < item.sizes.length - 1 ? ', ' : ''}
+              {size}{idx < sizes.length - 1 ? ', ' : ''}
             </span>
           ))}
         </div>

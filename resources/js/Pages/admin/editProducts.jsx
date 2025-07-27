@@ -1,154 +1,122 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import { useToast } from '@/hooks/use-toast';
 
-const EditProduct = ({ product}) => {
+const EditProduct = ({ product, categories }) => {
+  const { toast } = useToast();
+
   const [previewImages, setPreviewImages] = useState({
     photo1: product.photo1 || null,
     photo2: product.photo2 || null,
     photo3: product.photo3 || null,
   });
-  const { toast } = useToast();
 
-  const { data, setData, errors, processing, post } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     product_name: product.product_name || '',
     category_id: product.category_id || '',
-    sizes: Array.isArray(product.sizes)
-      ? product.sizes
-      : (typeof product.sizes === 'string'
-        ? product.sizes.split(',').map(s => s.trim())
-        : []),
-    price: product.price || '',
-    colors: product.colors || '',
     brend: product.brend || '',
-    // photo1/2/3: file o‘rniga handleFileChange ishlatiladi
+    photo1: null,
+    photo2: null,
+    photo3: null,
+    variants: product.variants && Array.isArray(product.variants)
+      ? product.variants
+      : [{ size: '', color: '', price: '' }],
   });
 
-  const handleInputChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'sizes') {
-      setData(name, value.split(',').map(s => s.trim()));
-    } else {
-      setData(name, value);
+    setData(name, value);
+  };
+
+  const handleFileUpload = (e, key) => {
+    const file = e.target.files[0];
+    if (file) {
+      setData(key, file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImages(prev => ({ ...prev, [key]: reader.result }));
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleFileChange = (e, key) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setData(key, file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImages(prev => ({
-        ...prev,
-        [key]: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
+  const handleVariantChange = (index, field, value) => {
+    const updatedVariants = [...data.variants];
+    updatedVariants[index][field] = value;
+    setData('variants', updatedVariants);
   };
 
-  const handlePhotoDelete = (key) => {
-    setPreviewImages(prev => ({ ...prev, [key]: null }));
-    setData(key, null);
+  const addVariant = () => {
+    setData('variants', [...data.variants, { size: '', color: '', price: '' }]);
+  };
+
+  const removeVariant = (index) => {
+    const updatedVariants = data.variants.filter((_, i) => i !== index);
+    setData('variants', updatedVariants);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      toast({
-        title: "Saqlash",
-        description: "Mahsulot ma'lumotlari saqlanmoqda... ✅",
-      });
-      const formData = new FormData();
-      formData.append('product_name', data.product_name);
-      formData.append('category_id', data.category_id);
-      formData.append('price', data.price);
-      formData.append('colors', data.colors);
-      formData.append('brend', data.brend);
 
-      if (data.photo1 instanceof File) formData.append('photo1', data.photo1);
-      if (data.photo2 instanceof File) formData.append('photo2', data.photo2);
-      if (data.photo3 instanceof File) formData.append('photo3', data.photo3);
+    toast({
+      title: "Saqlanmoqda...",
+      description: "Mahsulot yangilanmoqda, iltimos kuting...",
+    });
 
-      data.sizes.forEach((size, i) => {
-        formData.append(`sizes[${i}]`, size);
-      });
-
-      post(`/admin-products/${product.id}`, {
-        method: 'post',
-        data: formData,
-        headers: {
-          'X-HTTP-Method-Override': 'PUT',
-        },
-      });
-      window.location.href = '/admin-productStock'
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 422) {
-          setErrors(error.response.data.errors);
-        } else if (error.response.status === 401) {
-          toast({
-            title: "Xatolik",
-            description: "Iltimos, avval tizimga kiring!",
-          });
-        } else {
-          toast({
-            title: "Xatolik",
-            description: `Xatolik: ${error.response.statusText}`,
-          });
-        }
-      } else if (error.request) {
+    post(`/admin-products/${product.id}`, {
+      method: 'post',
+      data,
+      forceFormData: true,
+      headers: {
+        'X-HTTP-Method-Override': 'PUT',
+      },
+      onSuccess: () => {
         toast({
-          title: "Xatolik",
-          description: "Serverdan javob kelmadi",
+          title: "Muvaffaqiyatli",
+          description: "Mahsulot tahrirlandi ✅",
         });
-      } else {
+        window.location.href = '/admin-productStock';
+      },
+      onError: () => {
         toast({
           title: "Xatolik",
-          description: `Xatolik: ${error.message}`,
+          description: "Ma'lumotlarni tekshiring.",
         });
       }
-    }
-  }
+    });
+  };
 
   return (
     <div className='px-5 w-[1200px]'>
       <h1 className="text-3xl font-bold mb-4 p-5">Mahsulotni tahrirlash</h1>
       <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl mx-auto">
+
+        {/* Image Upload */}
         <div className="flex gap-24 justify-center">
           {[1, 2, 3].map(i => {
             const key = `photo${i}`;
             return (
-              <div key={i} className="flex flex-col items-center transition-all duration-700 ease-in-out hover:scale-110">
+              <div key={i} className="flex flex-col items-center hover:scale-110 transition-all duration-700">
                 <div className="relative group w-24 h-24">
-                  <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden hover:rotate-6 transition-transform duration-700">
-                    {previewImages[key] && (
-                      <div className="relative">
-                        <img
-                          src={previewImages[key]?.startsWith('data:')
-                            ? previewImages[key]
-                            : `/storage/${previewImages[key]}`}
-                          alt={`Photo ${i}`}
-                          className="w-full h-32 object-cover rounded"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handlePhotoDelete(key)}
-                          className="absolute top-1 right-1 text-white bg-red-600 p-1 rounded-full text-xs"
-                        >🗑</button>
-                      </div>
+                  <div className="w-full h-full bg-slate-200 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                    {previewImages[key] ? (
+                      <img
+                        src={previewImages[key]?.startsWith('data:')
+                          ? previewImages[key]
+                          : `/storage/${previewImages[key]}`}
+                        alt={`Preview ${i}`}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-5xl animate-pulse">📷</span>
                     )}
                   </div>
                   <label className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black bg-opacity-0 hover:bg-opacity-30 rounded-full transition">
                     <input
-                      key={previewImages[key] || 'empty'}
                       type="file"
                       accept="image/*"
                       className="hidden"
-                      onChange={e => handleFileChange(e, key)}
+                      onChange={e => handleFileUpload(e, key)}
                     />
                     <span className="text-xs text-white bg-black bg-opacity-50 px-2 py-1 rounded-full">
                       Upload
@@ -160,73 +128,84 @@ const EditProduct = ({ product}) => {
           })}
         </div>
 
+        {/* Form Fields */}
         <div className='grid grid-cols-2 gap-5'>
           <input
             name="product_name"
             value={data.product_name}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Mahsulot nomi"
             className="w-full border p-5 rounded-lg outline-none"
           />
-          {errors.product_name && <p className="text-red-500">{errors.product_name}</p>}
+          {errors.product_name && <div className="text-red-600">{errors.product_name}</div>}
 
           <select
             name="category_id"
             value={data.category_id}
-            onChange={handleInputChange}
+            onChange={handleChange}
             className="w-full border p-5 rounded-lg outline-none"
           >
             <option value="">Kategoriya tanlang</option>
-            {product.categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
+            {categories?.length > 0 &&
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
           </select>
-          {errors.category_id && <p className="text-red-500">{errors.category_id}</p>}
-
-          <input
-            name="sizes"
-            value={data.sizes.join(', ')}
-            onChange={handleInputChange}
-            placeholder="Razmerlar (S, M, L...)"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
-          {errors.sizes && <p className="text-red-500">{errors.sizes}</p>}
-
-          <input
-            type="number"
-            name="price"
-            value={data.price}
-            onChange={handleInputChange}
-            placeholder="Narx"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
-          {errors.price && <p className="text-red-500">{errors.price}</p>}
-
-          <input
-            name="colors"
-            value={data.colors}
-            onChange={handleInputChange}
-            placeholder="Ranglar (qora, oq)"
-            className="w-full border p-5 rounded-lg outline-none"
-          />
-          {errors.colors && <p className="text-red-500">{errors.colors}</p>}
+          {errors.category_id && <div className="text-red-600">{errors.category_id}</div>}
 
           <input
             name="brend"
             value={data.brend}
-            onChange={handleInputChange}
+            onChange={handleChange}
             placeholder="Brend"
             className="w-full border p-5 rounded-lg outline-none"
           />
-          {errors.brend && <p className="text-red-500">{errors.brend}</p>}
+        </div>
+
+        {/* Variants */}
+        <div>
+          <h2 className="text-xl font-semibold mb-2 mt-6">Mahsulot variantlari</h2>
+          {data.variants.map((variant, index) => (
+            <div key={index} className="flex gap-4 mb-2 items-center">
+              <input
+                type="text"
+                placeholder="Razmer"
+                value={variant.size}
+                onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <input
+                type="text"
+                placeholder="Rang"
+                value={variant.color}
+                onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <input
+                type="number"
+                placeholder="Narx"
+                value={variant.price}
+                onChange={(e) => handleVariantChange(index, 'price', e.target.value)}
+                className="border p-3 rounded w-1/3"
+              />
+              <button type="button" onClick={() => removeVariant(index)} className="text-red-600 text-xl font-bold">✕</button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addVariant}
+            className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
+          >
+            ➕ Variant qo‘shish
+          </button>
         </div>
 
         <button
           type="submit"
           disabled={processing}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="bg-blue-600 text-white px-4 py-2 rounded mt-6"
         >
           {processing ? 'Saqlanmoqda...' : '💾 Saqlash'}
         </button>

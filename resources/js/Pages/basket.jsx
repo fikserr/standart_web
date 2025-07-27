@@ -9,7 +9,7 @@ const CartPage = ({ cartItems, address }) => {
     const [items, setItems] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const { toast } = useToast();
-
+    console.log(cartItems, "cartItems");
     // boshlanishida address bo‘lsa, default qilib birinchi addressni belgilash
     useEffect(() => {
         if (address && address.length > 0) {
@@ -64,7 +64,10 @@ const CartPage = ({ cartItems, address }) => {
                 window.location.href = "/order-success";
             })
             .catch(() => {
-                alert("Buyurtma berishda xatolik yuz berdi");
+                toast({
+                    title: "Xatolik",
+                    description: "Buyurtma berishda xatolik yuz berdi.",
+                });
             });
     };
 
