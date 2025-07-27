@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
 import Loading from '@/components/ui/loader';
@@ -10,27 +10,50 @@ const Index = ({ detail }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [mainPhoto, setMainPhoto] = useState(detail?.photo1);
     const [activeSize, setActiveSize] = useState(null);
+    const [activeColor, setActiveColor] = useState(null);
+    const [activeVariant, setActiveVariant] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const { processing } = useForm();
-    console.log(useForm(), "useForm hook");
     const { toast } = useToast();
+
+    // Unikal o'lchamlar
+    const sizes = [...new Set(detail.variants.map(v => v.size))];
+
+    // Tanlangan o'lchamga mos ranglar
+    const availableColors = activeSize
+        ? [...new Set(detail.variants.filter(v => v.size === activeSize).map(v => v.color))]
+        : [...new Set(detail.variants.map(v => v.color))];
+
+    // Tanlangan color + size -> variant aniqlash
+    useEffect(() => {
+        if (activeColor && activeSize) {
+            const found = detail.variants.find(
+                v => v.color === activeColor && v.size === activeSize
+            );
+            setActiveVariant(found || null);
+        } else {
+            setActiveVariant(null);
+        }
+    }, [activeColor, activeSize, detail.variants]);
+
     const handleAddToCart = () => {
-        if (!activeSize) {
+        if (!activeVariant) {
             toast({
                 title: 'Xatolik',
-                description: 'Iltimos, o‘lchamni tanlang',
+                description: 'Iltimos, o‘lcham va rangni tanlang',
                 variant: 'destructive',
             });
             return;
         }
+
         axios.post('/add-to-cart', {
             product_id: detail.id,
             quantity: quantity,
-            size: activeSize
+            variant_id: activeVariant.id,
         }).then(() => {
             toast({
                 title: 'Savatga qo‘shildi ✅',
-                description: `${detail.product_name} savatga muvaffaqiyatli qo‘shildi!`
+                description: `${detail.product_name} (${activeVariant.size}, ${activeVariant.color}) savatga muvaffaqiyatli qo‘shildi!`
             });
             setModalOpen(true);
         }).catch(err => {
@@ -39,13 +62,14 @@ const Index = ({ detail }) => {
     };
 
     const tabs = ['Tafsilotlar'];
-    console.log(processing, "processing state");
-    if( processing ) return <Loading/> 
+
+    if (processing) return <Loading />;
+
     return (
         <div className='my-20 px-5 xl:px-32'>
             <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
+                {/* Rasm */}
                 <div className='border-b-blue-300 grid gap-4 border-b-2'>
-                    {/* Asosiy rasm */}
                     {mainPhoto && (
                         <img
                             src={`/storage/${mainPhoto}?v=${Date.now()}`}
@@ -54,7 +78,6 @@ const Index = ({ detail }) => {
                         />
                     )}
 
-                    {/* Galereya rasmlari */}
                     <div className='grid grid-cols-3 gap-3 mb-3'>
                         {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
                             photo && (
@@ -70,30 +93,50 @@ const Index = ({ detail }) => {
                     </div>
                 </div>
 
+                {/* Tafsilot */}
                 <div className='my-5'>
-                    <h1 className='text-2xl font-bold mb-2' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>
+                    <h1 className='text-2xl font-bold mb-4' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>
 
-                    <h2 className="font-semibold mb-2 text-lg">EU o‘lchamlar:</h2>
-                    <div className="grid grid-cols-2 xl:grid-cols-3 gap-2">
-                        {Array.isArray(detail.sizes) && detail.sizes.map((size, index) => (
-                            <div
+                    {/* O'lcham tanlash */}
+                    <h2 className="font-semibold mb-2 text-lg">O‘lchamlar:</h2>
+                    <div className="flex gap-2 flex-wrap mb-4">
+                        {sizes.map((size, index) => (
+                            <button
                                 key={index}
-                                onClick={() => setActiveSize(size)}
-                                className={`border rounded-lg px-4 py-2 text-center cursor-pointer
+                                onClick={() => {
+                                    setActiveSize(size);
+                                    setActiveColor(null); // ranglar qayta filtrlanadi
+                                }}
+                                className={`border rounded-lg px-4 py-1 cursor-pointer
                                     ${activeSize === size ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
                                 `}
                             >
                                 {size}
-                            </div>
+                            </button>
                         ))}
                     </div>
 
-                    {/* Narxi va quantity control */}
-                    {/* ... */}
-                         <div className='flex items-center justify-between mt-5'>
+                    {/* Rang tanlash */}
+                    <h2 className="font-semibold mb-2 text-lg">Ranglar:</h2>
+                    <div className="flex gap-2 flex-wrap mb-4">
+                        {availableColors.map((color, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setActiveColor(color)}
+                                className={`border rounded-full px-4 py-1 cursor-pointer
+                                    ${activeColor === color ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
+                                `}
+                            >
+                                {color}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Narx va miqdor */}
+                    <div className='flex items-center justify-between mt-5'>
                         <div>
                             <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
-                                Narxi: {detail.price.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+                                Narxi: {(activeVariant?.price || detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -102,6 +145,7 @@ const Index = ({ detail }) => {
                             <button onClick={() => setQuantity(prev => prev + 1)} className='border px-2'>+</button>
                         </div>
                     </div>
+
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
@@ -127,7 +171,7 @@ const Index = ({ detail }) => {
                             const values = [
                                 detail?.category?.name || "Noma'lum",
                                 detail?.brend || "Yo‘q",
-                                detail?.colors || "Noma'lum"
+                                activeVariant?.color || detail?.colors || "Noma'lum"
                             ];
                             return (
                                 <div key={index} className='flex items-center justify-between' style={{ fontFamily: 'OswaldLight' }}>
@@ -144,8 +188,9 @@ const Index = ({ detail }) => {
 
             <div className='my-10'>
                 <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
-                {/* Top tovarlar bu yerga */}
+                {/* Top tovarlar bo'limi */}
             </div>
+
             <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
     );

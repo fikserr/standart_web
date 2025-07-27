@@ -1,21 +1,10 @@
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
-import { ClothesProducts, HomeProducts, AccessoryProducts } from "@/components/shared/homeProducts";
+import { HomeProducts, ClothesProducts, AccessoryProducts } from "@/components/shared/homeProducts";
 import HomeHero from "@/Pages/home-hero";
 
 const Home = ({ products, banners, favorites }) => {
-  // const [starredCards, setStarredCards] = useState({});
-
-  // const handleClick = (event, id) => {
-  //   event.preventDefault();
-  //   setStarredCards((prev) => ({
-  //     ...prev,
-  //     [id]: !prev[id],
-  //   }));
-  // }
-  console.log(products);
-  
   return (
     <div>
       <HomeHero banner={banners} />

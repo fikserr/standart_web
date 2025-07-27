@@ -43,7 +43,7 @@ class ProductController extends Controller
     {
 
         $banners   = \App\Models\Banner::latest()->get();
-        $products  = Product::All(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        $products  = Product::with('category', 'variants')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         $favorites = Auth::user()->favorites;
         return Inertia::render('Home', [
             'products'  => $products,
@@ -139,7 +139,6 @@ class ProductController extends Controller
             'product_name' => $data['product_name'],
             'category_id'  => $data['category_id'],
             'brend'        => $data['brend'],
-            'colors'       => $data['colors'],
             'photo1'       => $data['photo1'] ?? $product->photo1,
             'photo2'       => $data['photo2'] ?? $product->photo2,
             'photo3'       => $data['photo3'] ?? $product->photo3,
@@ -184,9 +183,10 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Product::with(['category', 'variants'])->findOrFail($id);
-
+        $categories = Category::all();
         return Inertia::render('admin/editProducts', [
             'product' => $product,
+            'categories' => $categories,
         ]);
     }
 
