@@ -9,7 +9,8 @@ const Login = () => {
     email: '',
     password: '',
   });
-
+  console.log(processing);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     post('/login'); // Laravelda `route('/login')` POST
@@ -17,7 +18,6 @@ const Login = () => {
   const handleChange = (e) => {
     setData(e.target.name, e.target.value);
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ffffff] perspective-1000 overflow-hidden relative font-sans">
       <div className="absolute top-0 left-0 w-full h-full z-0 pointer-events-none">
@@ -30,7 +30,6 @@ const Login = () => {
         <h2 className="text-center text-4xl font-bold tracking-widest text-black mb-10 uppercase">
           Kirish
         </h2>
-
         <div className="space-y-6">
           <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
             <h3 style={{ fontFamily: 'Oswald' }}>Elektron pochtangiz:</h3>

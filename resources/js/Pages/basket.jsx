@@ -2,7 +2,7 @@ import EmptyCart from "@/components/shared/EmptyCart";
 import { BiSolidTrash } from "react-icons/bi";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { router } from '@inertiajs/react';
+import { router } from "@inertiajs/react";
 import axios from "axios";
 
 const CartPage = ({ cartItems, address }) => {
@@ -28,21 +28,23 @@ const CartPage = ({ cartItems, address }) => {
 
     // mahsulotni savatdan o‘chirish
     const handleDelete = (id) => {
-        axios.delete(`/cart/${id}`)
-            .then(() => {
-                toast({
-                    title: "Xatolik",
-                    description: "Mahsulotni o‘chirishda xatolik yuz berdi.",
-                });
-                setItems(prev => prev.filter(item => item.id !== id));
-            })
-            .catch(() => {
+        router.delete(`/cart/${id}`, {
+            onSuccess: () => {
                 toast({
                     title: "Mahsulot o‘chirildi",
                     description: "Sizning savatingizdan mahsulot o‘chirildi.",
                 });
-                window.location.reload();
-            });
+
+                // Mahalliy holatdan ham o‘chirish
+                setItems((prev) => prev.filter((item) => item.id !== id));
+            },
+            onError: () => {
+                toast({
+                    title: "Xatolik",
+                    description: "Mahsulotni o‘chirishda xatolik yuz berdi.",
+                });
+            },
+        });
     };
 
     // buyurtmani yuborish
@@ -104,24 +106,30 @@ const CartPage = ({ cartItems, address }) => {
                             >
                                 <BiSolidTrash />
                             </button>
-                            <p className="flex gap-2">{item.quantity} <span className="hidden sm500:block">dona</span></p>
+                            <p className="flex gap-2">
+                                {item.quantity}{" "}
+                                <span className="hidden sm500:block">dona</span>
+                            </p>
                         </div>
                     </div>
                 ))}
             </div>
 
             {/* Manzil tanlash */}
-            <div className='bg-slate-200 p-3 rounded-lg mt-5'>
+            <div className="bg-slate-200 p-3 rounded-lg mt-5">
                 <div className="my-6">
-                    <label className="block text-gray-700 font-medium mb-2">Yetkazish manzili</label>
+                    <label className="block text-gray-700 font-medium mb-2">
+                        Yetkazish manzili
+                    </label>
                     <select
                         value={selectedAddressId}
                         onChange={(e) => setSelectedAddressId(e.target.value)}
                         className="border px-4 py-2 rounded w-full outline-none bg-slate-100 "
                     >
-                        {address?.map(address => (
+                        {address?.map((address) => (
                             <option key={address.id} value={address.id}>
-                                {address.region}, {address.city}, {address.street}, {address.house_number}
+                                {address.region}, {address.city},{" "}
+                                {address.street}, {address.house_number}
                             </option>
                         ))}
                     </select>

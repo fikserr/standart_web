@@ -14,6 +14,8 @@ const Home = ({ products, banners, favorites }) => {
   //     [id]: !prev[id],
   //   }));
   // }
+  console.log(products);
+  
   return (
     <div>
       <HomeHero banner={banners} />
