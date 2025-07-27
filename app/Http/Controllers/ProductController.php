@@ -71,16 +71,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_name'     => 'required|string',
+            'product_name'     => 'required|string|max:255',
             'category_id'      => 'required|exists:categories,id',
-            'variants'         => 'required|array|min:1',
-            'variants.*.size'  => 'required|string',
-            'variants.*.color' => 'required|string',
+            'brend'            => 'nullable|string|max:255',
+            'photo1'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo2'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo3'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'variants'         => 'required|array',
             'variants.*.price' => 'required|numeric',
-            'brend'            => 'nullable|string',
-            'photo1'           => 'nullable|image',
-            'photo2'           => 'nullable|image',
-            'photo3'           => 'nullable|image',
+            'variants.*.size'  => 'required|array',
+            'variants.*.color' => 'required|array',
         ]);
 
         foreach ([1, 2, 3] as $i) {
@@ -102,7 +102,11 @@ class ProductController extends Controller
 
         // Variantlarini saqlaymiz
         foreach ($data['variants'] as $variant) {
-            $product->variants()->create($variant);
+            $product->variants()->create([
+                'price' => $variant['price'],
+                'size'  => json_encode($variant['size']),  // Array → JSON string
+                'color' => json_encode($variant['color']), // Array → JSON string
+            ]);
         }
 
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
@@ -110,18 +114,17 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $data = $request->validate([
-            'product_name'     => 'required|string',
+        $data = $$request->validate([
+            'product_name'     => 'required|string|max:255',
             'category_id'      => 'required|exists:categories,id',
-            'brend'            => 'nullable|string',
-            'colors'           => 'nullable|string',
+            'brend'            => 'nullable|string|max:255',
+            'photo1'           => 'nullable|string',
+            'photo2'           => 'nullable|string',
+            'photo3'           => 'nullable|string',
             'variants'         => 'required|array',
-            'variants.*.size'  => 'required|string',
-            'variants.*.color' => 'required|string',
             'variants.*.price' => 'required|numeric',
-            'photo1'           => 'nullable|image',
-            'photo2'           => 'nullable|image',
-            'photo3'           => 'nullable|image',
+            'variants.*.size'  => 'required|array',
+            'variants.*.color' => 'required|array',
         ]);
 
         // Rasm fayllari uchun
@@ -147,11 +150,11 @@ class ProductController extends Controller
         // Eski variantlarni o‘chirish va yangilarini saqlash
         $product->variants()->delete();
 
-        foreach ($data['variants'] as $variant) {
+        foreach ($request->variants as $variant) {
             $product->variants()->create([
-                'size'  => $variant['size'],
-                'color' => $variant['color'],
                 'price' => $variant['price'],
+                'size'  => json_encode($variant['size']),
+                'color' => json_encode($variant['color']),
             ]);
         }
 
@@ -182,10 +185,10 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with(['category', 'variants'])->findOrFail($id);
+        $product    = Product::with(['category', 'variants'])->findOrFail($id);
         $categories = Category::all();
         return Inertia::render('admin/editProducts', [
-            'product' => $product,
+            'product'    => $product,
             'categories' => $categories,
         ]);
     }

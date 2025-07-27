@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -12,4 +11,8 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    protected $casts = [
+        'size'  => 'array',
+        'color' => 'array',
+    ];
 }
