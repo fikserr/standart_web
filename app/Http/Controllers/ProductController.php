@@ -103,62 +103,54 @@ class ProductController extends Controller
         // Variantlarini saqlaymiz
         foreach ($data['variants'] as $variant) {
             $product->variants()->create([
+                'size'  => $variant['size'],
+                'color' => $variant['color'],
                 'price' => $variant['price'],
-                'size'  => json_encode($variant['size']),  // Array → JSON string
-                'color' => json_encode($variant['color']), // Array → JSON string
             ]);
         }
 
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        $data = $$request->validate([
-            'product_name'     => 'required|string|max:255',
-            'category_id'      => 'required|exists:categories,id',
-            'brend'            => 'nullable|string|max:255',
-            'photo1'           => 'nullable|string',
-            'photo2'           => 'nullable|string',
-            'photo3'           => 'nullable|string',
-            'variants'         => 'required|array',
-            'variants.*.price' => 'required|numeric',
-            'variants.*.size'  => 'required|array',
-            'variants.*.color' => 'required|array',
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'product_name' => 'required|string',
+            'category'     => 'required|string',
+            'brend'        => 'required|string',
+            'photo1'       => 'nullable|image',
+            'photo2'       => 'nullable|image',
+            'photo3'       => 'nullable|image',
         ]);
 
-        // Rasm fayllari uchun
-        foreach (['photo1', 'photo2', 'photo3'] as $key) {
-            if ($request->hasFile($key)) {
-                if ($product->$key) {
-                    Storage::disk('public')->delete($product->$key);
-                }
-                $data[$key] = $request->file($key)->store('products', 'public');
-            }
+        if ($request->hasFile('photo1')) {
+            $path1           = $request->file('photo1')->store('photos', 'public');
+            $product->photo1 = '/storage/' . $path1;
         }
 
-        // Mahsulotni yangilash
-        $product->update([
-            'product_name' => $data['product_name'],
-            'category_id'  => $data['category_id'],
-            'brend'        => $data['brend'],
-            'photo1'       => $data['photo1'] ?? $product->photo1,
-            'photo2'       => $data['photo2'] ?? $product->photo2,
-            'photo3'       => $data['photo3'] ?? $product->photo3,
-        ]);
-
-        // Eski variantlarni o‘chirish va yangilarini saqlash
-        $product->variants()->delete();
-
-        foreach ($request->variants as $variant) {
-            $product->variants()->create([
-                'price' => $variant['price'],
-                'size'  => json_encode($variant['size']),
-                'color' => json_encode($variant['color']),
-            ]);
+        if ($request->hasFile('photo2')) {
+            $path2           = $request->file('photo2')->store('photos', 'public');
+            $product->photo2 = '/storage/' . $path2;
         }
 
-        return back()->with('success', 'Mahsulot muvaffaqiyatli yangilandi!');
+        if ($request->hasFile('photo3')) {
+            $path3           = $request->file('photo3')->store('photos', 'public');
+            $product->photo3 = '/storage/' . $path3;
+        }
+
+        $product->product_name = $request->product_name;
+        $product->category     = $request->category;
+        $product->brend        = $request->brend;
+        $product->photo_url1   = $request->photo_url1;
+        $product->photo_url2   = $request->photo_url2;
+        $product->photo_url3   = $request->photo_url3;
+        $product->variants     = json_decode($request->variants, true);
+
+        $product->save();
+
+        return redirect()->back();
     }
 
     public function index(Request $request)
