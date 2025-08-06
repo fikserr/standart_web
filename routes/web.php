@@ -89,18 +89,15 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::get('/admin-dashboard', fn() => inertia('admin/dashboard'))->name('admin.dashboard');
     Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
     Route::get('/admin/orders/pos/{id}', [OrderController::class, 'showPos'])->name('admin.orders.showPos');
-
     // Category
     Route::get('/admin/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/admin/categories', [CategoryController::class, 'store'])->name('categories.store');
-
     // Banners
     Route::post('/banners', [BannerController::class, 'store'])->name('banners.store');
     Route::delete('/banners/{id}', [BannerController::class, 'destroy'])->name('banners.destroy');
     Route::get('/admin-banner', fn() => inertia('admin/admin-banner'));
     Route::get('/admin-products', [BannerController::class, 'index'])->name('banners.index');
-
     // Products
     Route::get('/admin-productStock', [ProductController::class, 'index'])->name('admin.products.index');
     Route::get('/admin-add-product', [ProductController::class, 'create'])->name('admin.products.create');
@@ -109,11 +106,9 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     Route::put('/admin-products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/admin-delete-product/{product}', [ProductController::class, 'deleteProduct']);
     Route::delete('/admin-delete-photo/{product}/{key}', [ProductController::class, 'deletePhoto']);
-
     // Orders
     Route::get('/admin-order-lists', [OrderController::class, 'adminOrders'])->name('admin.orders');
     Route::patch('/admin/orders/{order}/status', [OrderController::class, 'updateStatus']);
-
     // Users
     Route::get('/admin-users', [UserController::class, 'adminUsers'])->name('admin.users');
     Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');

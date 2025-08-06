@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
-
+import { router } from "@inertiajs/react";
 const EditProduct = ({ product, categories }) => {
     const { toast } = useToast();
 
@@ -11,7 +11,7 @@ const EditProduct = ({ product, categories }) => {
         photo3: product.photo3 || null,
     });
 
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, put } = useForm({
         product_name: product.product_name || "",
         category_id: product.category_id || "",
         brend: product.brend || "",
@@ -22,9 +22,8 @@ const EditProduct = ({ product, categories }) => {
         variants:
             product.variants && Array.isArray(product.variants)
                 ? product.variants
-                : [{ size: "", color: "", price: "" }],
+                : [{ sizes: [], colors: [], price: "" }],
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData(name, value);
@@ -44,14 +43,23 @@ const EditProduct = ({ product, categories }) => {
 
     const handleVariantChange = (index, field, value) => {
         const updatedVariants = [...data.variants];
-        updatedVariants[index][field] = value;
+
+        // Agar sizes yoki colors bo‘lsa — array qilib saqlaymiz
+        if (field === "sizes" || field === "colors") {
+            updatedVariants[index][field] = value
+                .split(",")
+                .map((s) => s.trim());
+        } else {
+            updatedVariants[index][field] = value;
+        }
+
         setData("variants", updatedVariants);
     };
 
     const addVariant = () => {
         setData("variants", [
             ...data.variants,
-            { size: "", color: "", price: "" },
+            { sizes: "", colors: "", price: "" },
         ]);
     };
 
@@ -60,7 +68,7 @@ const EditProduct = ({ product, categories }) => {
         setData("variants", updatedVariants);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         toast({
@@ -68,27 +76,61 @@ const EditProduct = ({ product, categories }) => {
             description: "Mahsulot yangilanmoqda, iltimos kuting...",
         });
 
-        post(`/admin-products/${product.id}`, {
-            method: "post",
-            data,
-            forceFormData: true,
-            headers: {
-                "X-HTTP-Method-Override": "PUT",
-            },
-            onSuccess: () => {
-                toast({
-                    title: "Muvaffaqiyatli",
-                    description: "Mahsulot tahrirlandi ✅",
-                });
-                window.location.href = "/admin-productStock";
-            },
-            onError: () => {
-                toast({
-                    title: "Xatolik",
-                    description: "Ma'lumotlarni tekshiring.",
-                });
-            },
-        });
+        try {
+            const formData = new FormData();
+
+            // Oddiy maydonlar
+            formData.append("product_name", data.product_name);
+            formData.append("category_id", data.category_id);
+            formData.append("brend", data.brend);
+
+            // Fayllar mavjud bo‘lsa qo‘shamiz
+            if (data.photo1 instanceof File) {
+                formData.append("photo1", data.photo1);
+            } else {
+                formData.append("photo_url1", data.photo1); // eski rasm
+            }
+
+            if (data.photo2 instanceof File) {
+                formData.append("photo2", data.photo2);
+            } else {
+                formData.append("photo_url2", data.photo2);
+            }
+
+            if (data.photo3 instanceof File) {
+                formData.append("photo3", data.photo3);
+            } else {
+                formData.append("photo_url3", data.photo3);
+            }
+
+            // Variants (array)
+            formData.append("variants", JSON.stringify(data.variants));
+
+            // Yuborish
+            await axios.post(
+                `/admin-products/${product.id}?_method=PUT`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            toast({
+                title: "Muvaffaqiyatli",
+                description: "Mahsulot yangilandi! ✅",
+            });
+        } catch (error) {
+            console.error("Xatolik:", error);
+            toast({
+                title: "Xatolik!",
+                variant: "destructive",
+                description:
+                    error?.response?.data?.message ??
+                    "Serverdan nomaʼlum xatolik",
+            });
+        }
     };
 
     return (
@@ -170,12 +212,11 @@ const EditProduct = ({ product, categories }) => {
                         className="w-full border p-5 rounded-lg outline-none"
                     >
                         <option value="">Kategoriya tanlang</option>
-                        {categories?.length > 0 &&
-                            categories.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
                     </select>
                     {errors.category_id && (
                         <div className="text-red-600">{errors.category_id}</div>
@@ -202,25 +243,34 @@ const EditProduct = ({ product, categories }) => {
                         >
                             <input
                                 type="text"
-                                placeholder="Razmer"
-                                value={variant.size}
+                                placeholder="Razmerlar (e.g. S, M, L)"
+                                value={
+                                    Array.isArray(variant.sizes)
+                                        ? variant.sizes.join(", ")
+                                        : variant.sizes
+                                }
                                 onChange={(e) =>
                                     handleVariantChange(
                                         index,
-                                        "size",
+                                        "sizes",
                                         e.target.value
                                     )
                                 }
                                 className="border p-3 rounded w-1/3"
                             />
+
                             <input
                                 type="text"
-                                placeholder="Rang"
-                                value={variant.color}
+                                placeholder="Ranglar (e.g. red, blue)"
+                                value={
+                                    Array.isArray(variant.colors)
+                                        ? variant.colors.join(", ")
+                                        : variant.colors
+                                }
                                 onChange={(e) =>
                                     handleVariantChange(
                                         index,
-                                        "color",
+                                        "colors",
                                         e.target.value
                                     )
                                 }

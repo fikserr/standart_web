@@ -17,7 +17,7 @@ const AddProductForm = ({ categories }) => {
         photo1: null,
         photo2: null,
         photo3: null,
-        variants: [{ size: "", color: "", price: "" }],
+        variants: [{ sizes: "", colors: "", price: "" }], // 👈 to‘g‘rilandi
     });
 
     const handleChange = (e) => {
@@ -39,7 +39,7 @@ const AddProductForm = ({ categories }) => {
 
     const handleVariantChange = (index, field, value) => {
         const updatedVariants = [...data.variants];
-        if (field === "size" || field === "color") {
+        if (field === "sizes" || field === "colors") {
             updatedVariants[index][field] = value
                 .split(",")
                 .map((i) => i.trim());
@@ -52,7 +52,7 @@ const AddProductForm = ({ categories }) => {
     const addVariant = () => {
         setData("variants", [
             ...data.variants,
-            { size: "", color: "", price: "" },
+            { sizes: "", colors: "", price: "" }, // 👈 to‘g‘rilandi
         ]);
     };
 
@@ -80,8 +80,8 @@ const AddProductForm = ({ categories }) => {
                 window.location.href = "/admin-productStock";
             },
             onError: () => {
-              console.log(errors);
-              
+                console.log(errors);
+
                 toast({
                     title: "Xatolik",
                     description: "Ma'lumotlarni to‘ldirishda xatolik bor.",
@@ -187,16 +187,16 @@ const AddProductForm = ({ categories }) => {
                         >
                             <input
                                 type="text"
-                                placeholder="Razmer (e.g. S, M, L)"
+                                placeholder="Razmerlar (e.g. S, M, L)"
                                 value={
-                                    Array.isArray(variant.size)
-                                        ? variant.size.join(", ")
-                                        : variant.size
+                                    Array.isArray(variant.sizes)
+                                        ? variant.sizes.join(", ")
+                                        : variant.sizes
                                 }
                                 onChange={(e) =>
                                     handleVariantChange(
                                         index,
-                                        "size",
+                                        "sizes",
                                         e.target.value
                                     )
                                 }
@@ -205,16 +205,16 @@ const AddProductForm = ({ categories }) => {
 
                             <input
                                 type="text"
-                                placeholder="Rang (e.g. red, blue)"
+                                placeholder="Ranglar (e.g. red, blue)"
                                 value={
-                                    Array.isArray(variant.color)
-                                        ? variant.color.join(", ")
-                                        : variant.color
+                                    Array.isArray(variant.colors)
+                                        ? variant.colors.join(", ")
+                                        : variant.colors
                                 }
                                 onChange={(e) =>
                                     handleVariantChange(
                                         index,
-                                        "color",
+                                        "colors",
                                         e.target.value
                                     )
                                 }

@@ -71,16 +71,16 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_name'     => 'required|string|max:255',
-            'category_id'      => 'required|exists:categories,id',
-            'brend'            => 'nullable|string|max:255',
-            'photo1'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'photo2'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'photo3'           => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'variants'         => 'required|array',
-            'variants.*.price' => 'required|numeric',
-            'variants.*.size'  => 'required|array',
-            'variants.*.color' => 'required|array',
+            'product_name'      => 'required|string|max:255',
+            'category_id'       => 'required|exists:categories,id',
+            'brend'             => 'nullable|string|max:255',
+            'photo1'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo2'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo3'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'variants'          => 'required|array',
+            'variants.*.price'  => 'required|numeric',
+            'variants.*.sizes'  => 'required|array',
+            'variants.*.colors' => 'required|array',
         ]);
 
         foreach ([1, 2, 3] as $i) {
@@ -103,54 +103,58 @@ class ProductController extends Controller
         // Variantlarini saqlaymiz
         foreach ($data['variants'] as $variant) {
             $product->variants()->create([
-                'size'  => $variant['size'],
-                'color' => $variant['color'],
-                'price' => $variant['price'],
+                'sizes'  => $variant['sizes'],
+                'colors' => $variant['colors'],
+                'price'  => $variant['price'],
             ]);
         }
 
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::findOrFail($id);
+        // Ichki funksiya
+        $uploadImage = function ($request, $key, $default = null) {
+            if ($request->hasFile($key)) {
+                return $request->file($key)->store('products', 'public');
+            }
+            return $default;
+        };
 
-        $request->validate([
+        $data = $request->validate([
             'product_name' => 'required|string',
-            'category'     => 'required|string',
             'brend'        => 'required|string',
+            'category_id'  => 'required|exists:categories,id',
             'photo1'       => 'nullable|image',
             'photo2'       => 'nullable|image',
             'photo3'       => 'nullable|image',
+            'photo_url1'   => 'nullable|string',
+            'photo_url2'   => 'nullable|string',
+            'photo_url3'   => 'nullable|string',
+            'variants'     => 'required|json',
         ]);
 
-        if ($request->hasFile('photo1')) {
-            $path1           = $request->file('photo1')->store('photos', 'public');
-            $product->photo1 = '/storage/' . $path1;
+        $product->update([
+            'product_name' => $data['product_name'],
+            'brend'        => $data['brend'],
+            'category_id'  => $data['category_id'],
+            'photo1'       => $uploadImage($request, 'photo1', $data['photo_url1']),
+            'photo2'       => $uploadImage($request, 'photo2', $data['photo_url2']),
+            'photo3'       => $uploadImage($request, 'photo3', $data['photo_url3']),
+        ]);
+
+        $product->variants()->delete();
+
+        foreach (json_decode($data['variants'], true) as $variant) {
+            $product->variants()->create([
+                'sizes'  => $variant['sizes'],
+                'colors' => $variant['colors'],
+                'price'  => $variant['price'],
+            ]);
         }
 
-        if ($request->hasFile('photo2')) {
-            $path2           = $request->file('photo2')->store('photos', 'public');
-            $product->photo2 = '/storage/' . $path2;
-        }
-
-        if ($request->hasFile('photo3')) {
-            $path3           = $request->file('photo3')->store('photos', 'public');
-            $product->photo3 = '/storage/' . $path3;
-        }
-
-        $product->product_name = $request->product_name;
-        $product->category     = $request->category;
-        $product->brend        = $request->brend;
-        $product->photo_url1   = $request->photo_url1;
-        $product->photo_url2   = $request->photo_url2;
-        $product->photo_url3   = $request->photo_url3;
-        $product->variants     = json_decode($request->variants, true);
-
-        $product->save();
-
-        return redirect()->back();
+        return response()->json(['message' => 'Mahsulot yangilandi ✅']);
     }
 
     public function index(Request $request)
@@ -187,15 +191,28 @@ class ProductController extends Controller
 
     public function deleteProduct(Product $product)
     {
+        // Rasmlarni o‘chirish
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
-            if (! empty($product->$photoKey) && \Storage::disk('public')->exists($product->$photoKey)) {
-                \Storage::disk('public')->delete($product->$photoKey);
+            $filePath = $product->$photoKey;
+
+            if (! empty($filePath)) {
+                // "storage/products/example.jpg" => "products/example.jpg"
+                $cleanPath = str_replace('storage/', '', $filePath);
+
+                if (\Storage::disk('public')->exists($cleanPath)) {
+                    \Storage::disk('public')->delete($cleanPath);
+                }
             }
         }
 
+        // Bog‘liq variantlarni o‘chirish
+        $product->variants()->delete();
+
+        // Mahsulotni o‘chirish
         $product->delete();
 
-        return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi']);
+        // JSON javob (frontend uchun qulay)
+        return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi'], 200);
     }
 
     public function deletePhoto($id, $key)
@@ -215,4 +232,5 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Photo deleted']);
     }
+
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('photo1')->nullable();
             $table->string('photo2')->nullable();
             $table->string('photo3')->nullable();
-            $table->string('colors')->nullable();
             $table->string('brend')->nullable();
             $table->timestamps();
         });
