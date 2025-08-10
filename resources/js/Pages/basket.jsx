@@ -11,8 +11,6 @@ const CartPage = ({ cartItems, address }) => {
     const [processingOrder, setProcessingOrder] = useState(false);
     const { toast } = useToast();
 
-    console.log("Cart items:", cartItems);
-
     useEffect(() => {
         if (address && address.length > 0) {
             setSelectedAddressId(address[0].id);
@@ -25,7 +23,8 @@ const CartPage = ({ cartItems, address }) => {
 
     const calculateTotal = (items) => {
         return items.reduce((total, item) => {
-            return total + (item.product?.price || 0) * item.quantity;
+            const price = item.price ?? item.variant?.price ?? 0;
+            return total + price * item.quantity;
         }, 0);
     };
 
@@ -82,48 +81,51 @@ const CartPage = ({ cartItems, address }) => {
         <div className="px-10 sm:px-10 md:px-20 lg:px-44 xl:px-64 py-10 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 mt-16">Savat</h1>
             <div className="grid lg:grid-cols-2 gap-3">
-                {items.map((item) => (
-                    <div
-                        key={item.id}
-                        className="border w-full rounded-lg p-4 flex items-center justify-between"
-                    >
-                        <div className="flex items-start gap-4">
-                            <img
-                                src={`/storage/${item.product?.photo1}`}
-                                alt={item.product?.product_name}
-                                className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
-                            />
-                            <div className="sm:space-y-1 lg:space-y-1 xl:space-y-1">
-                                <h2 className="font-semibold text-xl sm500:text-2xl">
-                                    {item.product?.product_name}
-                                </h2>
-                                {/* Size */}
-                                <p className="text-sm text-gray-500 sm:text-lg">
-                                    Size: {item.size || "Noma'lum"}
-                                </p>
-                                {/* Color */}
-                                <p className="text-sm text-gray-500 sm:text-lg">
-                                    Color: {item.color || "Noma'lum"}
-                                </p>
-                                {/* Price */}
-                                <p className="text-sm sm:text-lg text-gray-500">
-                                    Narxi: {item.product?.price?.toLocaleString()} so‘m
+                {items.map((item) => {
+                    const selectedColor = item.color || "Noma'lum";
+                    const selectedSize = item.size || "Noma'lum";
+                    const price = item.price ?? 0;
+
+                    return (
+                        <div
+                            key={item.id}
+                            className="border w-full rounded-lg p-4 flex items-center justify-between"
+                        >
+                            <div className="flex items-start gap-4">
+                                <img
+                                    src={`/storage/${item.product?.photo1}`}
+                                    alt={item.product?.product_name}
+                                    className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
+                                />
+                                <div className="space-y-1">
+                                    <h2 className="font-semibold text-xl">
+                                        {item.product?.product_name}
+                                    </h2>
+                                    <p className="text-sm text-gray-500">
+                                        Size: {selectedSize}
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Color: {selectedColor}
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Narxi: {price.toLocaleString()} so‘m
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-end gap-4">
+                                <button
+                                    className="text-red-500 hover:text-red-700 text-xl"
+                                    onClick={() => handleDelete(item.id)}
+                                >
+                                    <BiSolidTrash />
+                                </button>
+                                <p className="flex gap-2">
+                                    {item.quantity} <span>dona</span>
                                 </p>
                             </div>
                         </div>
-                        <div className="flex flex-col items-end justify-between h-full gap-4">
-                            <button
-                                className="text-red-500 hover:text-red-700 text-xl"
-                                onClick={() => handleDelete(item.id)}
-                            >
-                                <BiSolidTrash />
-                            </button>
-                            <p className="flex gap-2">
-                                {item.quantity} <span className="hidden sm500:block">dona</span>
-                            </p>
-                        </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="bg-slate-200 p-3 rounded-lg mt-5">
@@ -138,7 +140,8 @@ const CartPage = ({ cartItems, address }) => {
                     >
                         {address?.map((addr) => (
                             <option key={addr.id} value={addr.id}>
-                                {addr.region}, {addr.city}, {addr.street}, {addr.house_number}
+                                {addr.region}, {addr.city}, {addr.street},{" "}
+                                {addr.house_number}
                             </option>
                         ))}
                     </select>
@@ -149,7 +152,7 @@ const CartPage = ({ cartItems, address }) => {
                         Umumiy: {calculateTotal(items).toLocaleString()} so‘m
                     </h3>
                     <button
-                        className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition disabled:opacity-50"
                         onClick={handlePlaceOrder}
                         disabled={processingOrder}
                     >
