@@ -197,8 +197,8 @@ class ProductController extends Controller
     public function deleteProduct(Product $product)
     {
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
-            if (!empty($product->$photoKey) && \Storage::disk('public')->exists($product->$photoKey)) {
-                \Storage::disk('public')->delete($product->$photoKey);
+            if (!empty($product->$photoKey) && Storage::disk('public')->exists($product->$photoKey)) {
+                Storage::disk('public')->delete($product->$photoKey);
             }
         }
 

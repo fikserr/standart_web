@@ -1,9 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useForm } from '@inertiajs/react';
 import { HiOutlineChevronRight } from "react-icons/hi";
-import Loading from '@/components/ui/loader';
-import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
 import OrderModal from '@/components/shared/orderModal';
 
 const Index = ({ detail }) => {
@@ -13,15 +11,15 @@ const Index = ({ detail }) => {
     const [activeColor, setActiveColor] = useState(null);
     const [activeVariant, setActiveVariant] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const { processing } = useForm();
+    const [processing, setProcessing] = useState(false); // Processing holatini boshqaramiz
     const { toast } = useToast();
 
-    // Variantlar ichidagi string size/color ni array'ga aylantirish
+    // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
         return detail.variants.map(v => ({
             ...v,
-            size: JSON.parse(v.size || '[]'),
-            color: JSON.parse(v.color || '[]'),
+            size: Array.isArray(v.size) ? v.size : JSON.parse(v.size || '[]'),
+            color: Array.isArray(v.color) ? v.color : JSON.parse(v.color || '[]'),
         }));
     }, [detail.variants]);
 
@@ -55,6 +53,7 @@ const Index = ({ detail }) => {
         }
     }, [activeSize, activeColor, parsedVariants]);
 
+    // Savatga qo'shish funksiyasi
     const handleAddToCart = () => {
         if (!activeVariant) {
             toast({
@@ -65,24 +64,32 @@ const Index = ({ detail }) => {
             return;
         }
 
+        setProcessing(true); // yuklanishni boshlaymiz
+
         axios.post('/add-to-cart', {
             product_id: detail.id,
             quantity: quantity,
             variant_id: activeVariant.id,
-        }).then(() => {
-            toast({
-                title: 'Savatga qo‘shildi ✅',
-                description: `${detail.product_name} (${activeVariant.size}, ${activeVariant.color}) savatga qo‘shildi!`
+        })
+            .then(() => {
+                toast({
+                    title: 'Savatga qo‘shildi ✅',
+                    description: `${detail.product_name} (${activeVariant.size.join(', ')}, ${activeVariant.color.join(', ')}) savatga qo‘shildi!`
+                });
+                setModalOpen(true);
+            })
+            .catch(err => {
+                console.error(err.response?.data);
+                toast({
+                    title: 'Xatolik',
+                    description: 'Savatga qo‘shishda xatolik yuz berdi.',
+                    variant: 'destructive',
+                });
+            })
+            .finally(() => {
+                setProcessing(false); // yuklanish tugadi
             });
-            setModalOpen(true);
-        }).catch(err => {
-            console.error(err.response?.data);
-        });
     };
-
-    const tabs = ['Tafsilotlar'];
-
-    if (processing) return <Loading />;
 
     return (
         <div className='my-20 px-5 xl:px-32'>
@@ -164,24 +171,18 @@ const Index = ({ detail }) => {
                         </div>
                     </div>
 
+                    {/* Savatga qo‘shish tugmasi */}
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
-                        className='mt-4 w-full bg-black text-white py-2 rounded-md'
+                        className='mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed'
                     >
                         {processing ? "Yuklanmoqda..." : "Savatga qo‘shish"}
                     </button>
 
                     {/* Tafsilotlar */}
                     <div className='my-5 px-2 pt-2'>
-                        {tabs.map((tab) => (
-                            <p
-                                key={tab}
-                                className={`cursor-pointer ${tab === 'Tafsilotlar' ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
-                            >
-                                {tab}
-                            </p>
-                        ))}
+                        <p className='text-black border-b-blue-700 border-b-2 pb-2 cursor-pointer'>Tafsilotlar</p>
                     </div>
 
                     <div className='space-y-2'>
@@ -189,7 +190,7 @@ const Index = ({ detail }) => {
                             const values = [
                                 detail?.category?.name || "Noma'lum",
                                 detail?.brend || "Yo‘q",
-                                activeVariant?.color?.join(', ') || detail?.colors || "Noma'lum"
+                                activeColor || "Noma'lum"
                             ];
                             return (
                                 <div key={index} className='flex items-center justify-between' style={{ fontFamily: 'OswaldLight' }}>
@@ -202,11 +203,6 @@ const Index = ({ detail }) => {
                         })}
                     </div>
                 </div>
-            </div>
-
-            <div className='my-10'>
-                <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
-                {/* Top tovarlar bo'limi */}
             </div>
 
             <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />

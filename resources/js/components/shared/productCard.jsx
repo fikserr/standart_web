@@ -10,17 +10,19 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
     .filter(Boolean)
     .map(photo => `/storage/${photo}`);
 
-  // JSON stringlardan to'g'ri massiv olish
+  // Variantlar massivini tayyorlash
   const parsedVariants = item.variants?.map(variant => ({
     ...variant,
-    size: JSON.parse(variant.size || '[]'),
-    color: JSON.parse(variant.color || '[]'),
+    size: Array.isArray(variant.size) ? variant.size : [],
+    color: Array.isArray(variant.color) ? variant.color : [],
   })) || [];
 
+  // O'lchamlar va narxlar
   const sizes = [...new Set(parsedVariants.flatMap(v => v.size))];
   const prices = parsedVariants.map(v => v.price);
-  const minPrice = Math.min(...prices);
+  const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
+  // Slideshow uchun rasm almashinuvi
   useEffect(() => {
     const start = setTimeout(() => {
       const interval = setInterval(() => {
