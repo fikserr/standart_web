@@ -13,9 +13,11 @@ class CartController extends Controller
     public function addToCart(Request $request)
     {
         $data = $request->validate([
-            'product_id'  => 'required|exists:products,id',
-            'variant_id'  => 'nullable|exists:product_variants,id',
-            'quantity'    => 'required|integer|min:1'
+            'product_id' => 'required|exists:products,id',
+            'variant_id' => 'nullable|exists:product_variants,id',
+            'quantity' => 'required|integer|min:1',
+            'size' => 'nullable|string|max:50',
+            'color' => 'nullable|string|max:50',
         ]);
 
         $variant = null;
@@ -24,13 +26,13 @@ class CartController extends Controller
         }
 
         $cart = Cart::create([
-            'user_id'    => auth()->id(),
+            'user_id' => auth()->id(),
             'product_id' => $data['product_id'],
             'variant_id' => $data['variant_id'] ?? null,
-            'quantity'   => $data['quantity'],
-            'size'       => $variant?->size,
-            'color'      => $variant?->color,
-            'price'      => $variant?->price
+            'quantity' => $data['quantity'],
+            'size' => $data['size'] ?? $variant?->size,
+            'color' => $data['color'] ?? $variant?->color,
+            'price' => $variant?->price ?? 0,
         ]);
 
         \Log::info('Cart item added:', $cart->toArray());

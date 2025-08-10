@@ -14,12 +14,14 @@ const Index = ({ detail }) => {
     const [processing, setProcessing] = useState(false);
     const { toast } = useToast();
 
+    console.log(activeColor, activeSize);
+
     // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
         return detail.variants.map((v) => ({
             ...v,
-            size: Array.isArray(v.sizes) ? v.sizes : [],
-            color: Array.isArray(v.colors) ? v.colors : [],
+            sizes: Array.isArray(v.sizes) ? v.sizes : [],
+            colors: Array.isArray(v.colors) ? v.colors : [],
         }));
     }, [detail.variants]);
 
@@ -37,7 +39,7 @@ const Index = ({ detail }) => {
         return [
             ...new Set(
                 parsedVariants
-                    .filter((v) => v.size.includes(activeSize))
+                    .filter((v) => v.sizes.includes(activeSize))
                     .flatMap((v) => v.colors)
             ),
         ];
@@ -48,7 +50,8 @@ const Index = ({ detail }) => {
         if (activeSize && activeColor) {
             const found = parsedVariants.find(
                 (v) =>
-                    v.size.includes(activeSize) && v.color.includes(activeColor)
+                    v.sizes.includes(activeSize) &&
+                    v.colors.includes(activeColor)
             );
             setActiveVariant(found || null);
         } else {
@@ -56,10 +59,21 @@ const Index = ({ detail }) => {
         }
     }, [activeSize, activeColor, parsedVariants]);
 
-    // Savatga qo'shish funksiyasi
-    // Savatga qo'shish funksiyasi
+    // Agar activeVariant o'zgarsa va unda size/color bo'lsa — avtomatik set qilish
+    useEffect(() => {
+        if (activeVariant) {
+            if (!activeSize && activeVariant.sizes.length > 0) {
+                setActiveSize(activeVariant.sizes[0]);
+            }
+            if (!activeColor && activeVariant.colors.length > 0) {
+                setActiveColor(activeVariant.colors[0]);
+            }
+        }
+    }, [activeVariant]);
+
+    // Savatga qo'shish
     const handleAddToCart = () => {
-        if (!activeVariant) {
+        if (!activeVariant || !activeSize || !activeColor) {
             toast({
                 title: "Xatolik",
                 description: "Iltimos, o‘lcham va rangni tanlang",
@@ -75,9 +89,9 @@ const Index = ({ detail }) => {
                 product_id: detail.id,
                 quantity: quantity,
                 variant_id: activeVariant.id,
-                size: activeSize, // ✅ qo‘shildi
-                color: activeColor, // ✅ qo‘shildi
-                price: activeVariant.price, // ✅ qo‘shildi
+                size: activeSize,
+                color: activeColor,
+                price: activeVariant.price,
             })
             .then(() => {
                 toast({
@@ -119,11 +133,10 @@ const Index = ({ detail }) => {
                                         key={index}
                                         src={`/storage/${photo}?v=${Date.now()}`}
                                         alt={`Product ${index + 1}`}
-                                        className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${
-                                            mainPhoto === photo
+                                        className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo
                                                 ? "ring-2 ring-blue-400"
                                                 : ""
-                                        }`}
+                                            }`}
                                         onClick={() => setMainPhoto(photo)}
                                     />
                                 )
@@ -140,7 +153,7 @@ const Index = ({ detail }) => {
                         {detail.product_name}
                     </h1>
 
-                    {/* O'lcham tanlash */}
+                    {/* O'lcham */}
                     <h2 className="font-semibold mb-2 text-lg">O‘lchamlar:</h2>
                     <div className="flex gap-2 flex-wrap mb-4">
                         {sizes.map((size, index) => (
@@ -150,57 +163,45 @@ const Index = ({ detail }) => {
                                     setActiveSize(size);
                                     setActiveColor(null);
                                 }}
-                                className={`border rounded-lg px-4 py-1 cursor-pointer
-                                    ${
-                                        activeSize === size
-                                            ? "bg-black text-white"
-                                            : "bg-gray-100 hover:bg-gray-200"
-                                    }
-                                `}
+                                className={`border rounded-lg px-4 py-1 cursor-pointer ${activeSize === size
+                                        ? "bg-black text-white"
+                                        : "bg-gray-100 hover:bg-gray-200"
+                                    }`}
                             >
                                 {size}
                             </button>
                         ))}
                     </div>
 
-                    {/* Rang tanlash */}
+                    {/* Rang */}
                     <h2 className="font-semibold mb-2 text-lg">Ranglar:</h2>
                     <div className="flex gap-2 flex-wrap mb-4">
                         {availableColors.map((color, index) => (
                             <button
                                 key={index}
                                 onClick={() => setActiveColor(color)}
-                                className={`border rounded-full px-4 py-1 cursor-pointer
-                                    ${
-                                        activeColor === color
-                                            ? "bg-black text-white"
-                                            : "bg-gray-100 hover:bg-gray-200"
-                                    }
-                                `}
+                                className={`border rounded-full px-4 py-1 cursor-pointer ${activeColor === color
+                                        ? "bg-black text-white"
+                                        : "bg-gray-100 hover:bg-gray-200"
+                                    }`}
                             >
                                 {color}
                             </button>
                         ))}
                     </div>
 
-                    {/* Narx va miqdor */}
+                    {/* Narx & Miqdor */}
                     <div className="flex items-center justify-between mt-5">
-                        <div>
-                            <p
-                                style={{
-                                    fontFamily: "OswaldLight",
-                                    fontSize: "20px",
-                                }}
-                            >
-                                Narxi:{" "}
-                                {(
-                                    activeVariant?.price ?? detail.price
-                                )?.toLocaleString()}{" "}
-                                <span className="text-sm text-slate-500">
-                                    so'm
-                                </span>
-                            </p>
-                        </div>
+                        <p
+                            style={{
+                                fontFamily: "OswaldLight",
+                                fontSize: "20px",
+                            }}
+                        >
+                            Narxi:{" "}
+                            {(activeVariant?.price ?? detail.price)?.toLocaleString()}{" "}
+                            <span className="text-sm text-slate-500">so'm</span>
+                        </p>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() =>
@@ -220,11 +221,11 @@ const Index = ({ detail }) => {
                         </div>
                     </div>
 
-                    {/* Savatga qo‘shish tugmasi */}
+                    {/* Savatga qo‘shish */}
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
-                        className="mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50"
                     >
                         {processing ? "Yuklanmoqda..." : "Savatga qo‘shish"}
                     </button>
