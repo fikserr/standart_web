@@ -25,6 +25,7 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function ShoesProducts()
     {
         $products = Product::with('category', 'variants')->latest()->paginate(5);
@@ -32,6 +33,7 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function AccesProducts()
     {
         $products = Product::with('category', 'variants')->latest()->paginate(5);
@@ -39,19 +41,20 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function userProduct()
     {
-
         $banners = \App\Models\Banner::latest()->get();
         $products = Product::with('category', 'variants')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         $favorites = Auth::user()->favorites;
+
         return Inertia::render('Home', [
             'products' => $products,
             'banners' => $banners,
             'favorites' => $favorites,
-
         ]);
     }
+
     public function show($id)
     {
         $product = Product::with(['category', 'variants'])->findOrFail($id);
@@ -59,6 +62,7 @@ class ProductController extends Controller
             'detail' => $product,
         ]);
     }
+
     public function create()
     {
         $categories = Category::select('id', 'name')->get();
@@ -74,13 +78,13 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brend' => 'nullable|string|max:255',
-            'photo1' => 'nullable|image',
-            'photo2' => 'nullable|image',
-            'photo3' => 'nullable|image',
+            'photo1' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo2' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo3' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'variants' => 'required|array',
             'variants.*.price' => 'required|numeric',
-            'variants.*.size' => 'required|array',
-            'variants.*.color' => 'required|array',
+            'variants.*.sizes' => 'required|array',
+            'variants.*.colors' => 'required|array',
         ]);
 
         foreach ([1, 2, 3] as $i) {
@@ -103,8 +107,8 @@ class ProductController extends Controller
         // Variantlarini saqlaymiz
         foreach ($data['variants'] as $variant) {
             $product->variants()->create([
-                'size' => $variant['size'],
-                'color' => $variant['color'],
+                'sizes' => $variant['sizes'],
+                'colors' => $variant['colors'],
                 'price' => $variant['price'],
             ]);
         }
@@ -112,65 +116,60 @@ class ProductController extends Controller
         return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli qo‘shildi!');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        $product = Product::findOrFail($id);
-    
+        // Ichki funksiya
+        $uploadImage = function ($request, $key, $default = null) {
+            if ($request->hasFile($key)) {
+                return $request->file($key)->store('products', 'public');
+            }
+            return $default;
+        };
+
         $data = $request->validate([
-            'product_name' => 'required|string|max:255',
+            'product_name' => 'required|string',
+            'brend' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'brend' => 'nullable|string|max:255',
             'photo1' => 'nullable|image',
             'photo2' => 'nullable|image',
             'photo3' => 'nullable|image',
-            'variants' => 'required|array',
-            'variants.*.size' => 'required',
-            'variants.*.color' => 'required',
-            'variants.*.price' => 'required|numeric',
+            'photo_url1' => 'nullable|string',
+            'photo_url2' => 'nullable|string',
+            'photo_url3' => 'nullable|string',
+            'variants' => 'required|json',
         ]);
-    
-        // Rasm fayllarini saqlash
-        foreach ([1, 2, 3] as $i) {
-            $field = 'photo' . $i;
-            if ($request->hasFile($field)) {
-                $data[$field] = $request->file($field)->store('products', 'public');
-                $product->$field = $data[$field];
-            }
-        }
-    
-        // Ma'lumotlarni yangilash
+
         $product->update([
             'product_name' => $data['product_name'],
+            'brend' => $data['brend'],
             'category_id' => $data['category_id'],
-            'brend' => $data['brend'] ?? null,
+            'photo1' => $uploadImage($request, 'photo1', $data['photo_url1']),
+            'photo2' => $uploadImage($request, 'photo2', $data['photo_url2']),
+            'photo3' => $uploadImage($request, 'photo3', $data['photo_url3']),
         ]);
-    
-        // Eski variantlarni o'chiramiz
+
         $product->variants()->delete();
-    
-        // Yangi variantlarni saqlaymiz
-        foreach ($data['variants'] as $variant) {
+
+        foreach (json_decode($data['variants'], true) as $variant) {
             $product->variants()->create([
-                'size' => $variant['size'],
-                'color' => $variant['color'],
+                'sizes' => $variant['sizes'],
+                'colors' => $variant['colors'],
                 'price' => $variant['price'],
             ]);
         }
-    
-        return redirect()->back()->with('success', 'Mahsulot muvaffaqiyatli yangilandi!');
-    }
-    
 
+        return response()->json(['message' => 'Mahsulot yangilandi ✅']);
+    }
 
     public function index(Request $request)
     {
         $search = $request->input('search');
 
-        $products = Product::with('category', 'variants') // 👈 category obyekti yuklanadi
+        $products = Product::with('category', 'variants')
             ->when($search, function ($query, $search) {
                 $query->where('product_name', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%"); // 👈 category.name bo‘yicha qidiruv
+                        $q->where('name', 'like', "%{$search}%");
                     });
             })
             ->latest()
@@ -188,6 +187,7 @@ class ProductController extends Controller
     {
         $product = Product::with(['category', 'variants'])->findOrFail($id);
         $categories = Category::all();
+
         return Inertia::render('admin/editProducts', [
             'product' => $product,
             'categories' => $categories,
@@ -196,15 +196,27 @@ class ProductController extends Controller
 
     public function deleteProduct(Product $product)
     {
+        // Rasmlarni o‘chirish
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
-            if (!empty($product->$photoKey) && Storage::disk('public')->exists($product->$photoKey)) {
-                Storage::disk('public')->delete($product->$photoKey);
+            $filePath = $product->$photoKey;
+
+            if (!empty($filePath)) {
+                // "storage/products/example.jpg" => "products/example.jpg"
+                $cleanPath = str_replace('storage/', '', $filePath);
+
+                if (\Storage::disk('public')->exists($cleanPath)) {
+                    \Storage::disk('public')->delete($cleanPath);
+                }
             }
         }
 
+        // Bog‘liq variantlarni o‘chirish
+        $product->variants()->delete();
+
+        // Mahsulotni o‘chirish
         $product->delete();
 
-        return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi']);
+        return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi'], 200);
     }
 
     public function deletePhoto($id, $key)

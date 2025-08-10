@@ -11,15 +11,15 @@ const Index = ({ detail }) => {
     const [activeColor, setActiveColor] = useState(null);
     const [activeVariant, setActiveVariant] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const [processing, setProcessing] = useState(false); // Processing holatini boshqaramiz
+    const [processing, setProcessing] = useState(false);
     const { toast } = useToast();
 
     // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
         return detail.variants.map(v => ({
             ...v,
-            size: Array.isArray(v.size) ? v.size : JSON.parse(v.size || '[]'),
-            color: Array.isArray(v.color) ? v.color : JSON.parse(v.color || '[]'),
+            size: Array.isArray(v.sizes) ? v.sizes : [],
+            color: Array.isArray(v.colors) ? v.colors : [],
         }));
     }, [detail.variants]);
 
@@ -41,7 +41,7 @@ const Index = ({ detail }) => {
         )];
     }, [parsedVariants, activeSize]);
 
-    // Tanlangan size+color ga mos variant topish
+    // Tanlangan size + color ga mos variant topish
     useEffect(() => {
         if (activeSize && activeColor) {
             const found = parsedVariants.find(
@@ -64,7 +64,7 @@ const Index = ({ detail }) => {
             return;
         }
 
-        setProcessing(true); // yuklanishni boshlaymiz
+        setProcessing(true);
 
         axios.post('/add-to-cart', {
             product_id: detail.id,
@@ -74,7 +74,7 @@ const Index = ({ detail }) => {
             .then(() => {
                 toast({
                     title: 'Savatga qo‘shildi ✅',
-                    description: `${detail.product_name} (${activeVariant.size.join(', ')}, ${activeVariant.color.join(', ')}) savatga qo‘shildi!`
+                    description: `${detail.product_name} (${activeSize}, ${activeColor}) savatga qo‘shildi!`
                 });
                 setModalOpen(true);
             })
@@ -87,7 +87,7 @@ const Index = ({ detail }) => {
                 });
             })
             .finally(() => {
-                setProcessing(false); // yuklanish tugadi
+                setProcessing(false);
             });
     };
 
@@ -161,7 +161,7 @@ const Index = ({ detail }) => {
                     <div className='flex items-center justify-between mt-5'>
                         <div>
                             <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
-                                Narxi: {(activeVariant?.price || detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+                                Narxi: {(activeVariant?.price ?? detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
                             </p>
                         </div>
                         <div className="flex items-center gap-2">

@@ -18,8 +18,8 @@ class Product extends Model
         'photo3',
     ];
     protected $casts = [
-    'variants' => 'array',
-];
+        'variants' => 'array',
+    ];
     public function getPhotoUrl1Attribute()
     {
         return $this->photo1 ? Storage::url($this->photo1) : null;
@@ -43,5 +43,5 @@ class Product extends Model
     {
         return $this->hasMany(ProductVariant::class);
     }
-
+    
 }

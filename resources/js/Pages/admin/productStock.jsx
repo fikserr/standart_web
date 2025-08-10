@@ -3,13 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import { Link, router } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-} from "@ui/pagination"
-import { HiOutlineSearch } from 'react-icons/hi';
-
+import { Pagination, PaginationContent, PaginationItem } from "@ui/pagination";
+import { HiOutlineSearch } from "react-icons/hi";
 
 const ProductStock = ({ products }) => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -25,7 +20,7 @@ const ProductStock = ({ products }) => {
     };
     const [currentProductId, setCurrentProductId] = useState(null);
     const [currentPhotos, setCurrentPhotos] = useState([]);
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState("");
     const confirmPhotoDelete = (productId, photoKeys) => {
         setSelectedProductId(productId);
         setSelectedPhotoKeys(photoKeys);
@@ -42,7 +37,11 @@ const ProductStock = ({ products }) => {
             setImageIndexes((prev) => {
                 const updated = {};
                 products.data.forEach((product) => {
-                    const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
+                    const photos = [
+                        product.photo1,
+                        product.photo2,
+                        product.photo3,
+                    ].filter(Boolean);
                     const currentIndex = prev[product.id] || 0;
                     updated[product.id] = (currentIndex + 1) % photos.length;
                 });
@@ -60,46 +59,63 @@ const ProductStock = ({ products }) => {
         const value = e.target.value;
         setSearch(value);
         // Laravel route bilan sozlanishi kerak: route('admin.users')
-        router.get('/admin-users', { search: value }, { preserveState: true });
+        router.get("/admin-users", { search: value }, { preserveState: true });
     };
 
-    const handlePhotoDelete = async (productId, photoKeys) => {
-        if (selectedProductId && selectedPhotoKeys.length) {
-            handlePhotoDelete(selectedProductId, selectedPhotoKeys);
-            closeConfirmModal();
-        }
+    const deleteProduct = async (productId) => {
         try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
 
             const response = await fetch(`/admin-delete-product/${productId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
                     "X-CSRF-TOKEN": csrfToken,
+                    "X-Requested-With": "XMLHttpRequest",
                 },
-                body: JSON.stringify({ photoKeys }),
             });
 
             if (response.ok) {
-                toast({ title: "Rasmlar o‘chirildi 🗑️ ", description: "Rasmlar muvaffaqiyatli o‘chirildi ✅" });
-                window.location.reload();
-            } else {
                 const data = await response.json();
-                toast({ title: "Xatolik", description: "Rasmlarni o‘chirishda xatolik yuz berdi." });
+                toast({
+                    title: "✅ Mahsulot o‘chirildi",
+                    description: data.message,
+                });
+
+                // Refresh qilsin:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "❌ Xatolik",
+                    description: "Mahsulotni o‘chirishda muammo yuz berdi.",
+                });
             }
         } catch (error) {
             console.error("Xatolik:", error);
-            toast({ title: "Xatolik", description: "Rasmlarni o‘chirishda xatolik yuz berdi." });
+            toast({
+                variant: "destructive",
+                title: "❌ Server xatosi",
+                description: "Tarmoqda muammo yuz berdi.",
+            });
         }
     };
+
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            router.get('/admin-productStock', { search }, { preserveState: true });
+            router.get(
+                "/admin-productStock",
+                { search },
+                { preserveState: true }
+            );
         }, 500); // 500ms kutadi, foydalanuvchi yozishni to‘xtatguncha
 
         return () => clearTimeout(delayDebounceFn);
-    }, [search]);;
+    }, [search]);
     console.log(products);
     return (
         <div className="p-6 mx-5 w-[1200px]">
@@ -128,29 +144,48 @@ const ProductStock = ({ products }) => {
                     </thead>
                     <tbody>
                         {products.data.map((product, idx) => {
-                            const photos = [product.photo1, product.photo2, product.photo3].filter(Boolean);
-                            const currentImage = photos[imageIndexes[product.id] || 0];
+                            const photos = [
+                                product.photo1,
+                                product.photo2,
+                                product.photo3,
+                            ].filter(Boolean);
+                            const currentImage =
+                                photos[imageIndexes[product.id] || 0];
                             return (
-                                <tr key={idx} className="border-b hover:bg-gray-50">
+                                <tr
+                                    key={idx}
+                                    className="border-b hover:bg-gray-50"
+                                >
                                     <td className="py-2">
                                         <div className="relative w-24 h-24 flex items-center justify-center">
                                             <img
                                                 src={`/storage/${currentImage}?v=${Date.now()}`}
                                                 alt={product.product_name}
                                                 className="w-20 h-20 rounded object-cover cursor-zoom-in"
-                                                onClick={() => openImgModal(product.id, `/storage/${currentImage}`, photos)}
+                                                onClick={() =>
+                                                    openImgModal(
+                                                        product.id,
+                                                        `/storage/${currentImage}`,
+                                                        photos
+                                                    )
+                                                }
                                             />
                                         </div>
                                     </td>
                                     <td>{product.product_name}</td>
-                                    <td>{product.category?.name || '—'}</td>
+                                    <td>{product.category?.name || "—"}</td>
                                     <td>{product.price}</td>
                                     <td>{product.brend}</td>
                                     <td>{product.colors}</td>
                                     <td>
                                         <div className="flex gap-2">
-                                            <Button size="icon" variant="outline">
-                                                <Link href={`/admin-products/${product.id}/edit`}>
+                                            <Button
+                                                size="icon"
+                                                variant="outline"
+                                            >
+                                                <Link
+                                                    href={`/admin-products/${product.id}/edit`}
+                                                >
                                                     <Pencil className="w-4 h-4" />
                                                 </Link>
                                             </Button>
@@ -158,7 +193,9 @@ const ProductStock = ({ products }) => {
                                                 size="icon"
                                                 variant="outline"
                                                 className="text-red-500"
-                                                onClick={() => confirmPhotoDelete(product.id, ['photo1', 'photo2', 'photo3'])}
+                                                onClick={() =>
+                                                    deleteProduct(product.id)
+                                                }
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </Button>
@@ -182,9 +219,16 @@ const ProductStock = ({ products }) => {
                             {currentPhotos.length > 1 && (
                                 <button
                                     onClick={() => {
-                                        const index = currentPhotos.findIndex((img) => `/storage/${img}` === modalImage);
-                                        const prevIndex = (index - 1 + currentPhotos.length) % currentPhotos.length;
-                                        setModalImage(`/storage/${currentPhotos[prevIndex]}`);
+                                        const index = currentPhotos.findIndex(
+                                            (img) =>
+                                                `/storage/${img}` === modalImage
+                                        );
+                                        const prevIndex =
+                                            (index - 1 + currentPhotos.length) %
+                                            currentPhotos.length;
+                                        setModalImage(
+                                            `/storage/${currentPhotos[prevIndex]}`
+                                        );
                                     }}
                                     className="absolute left-2 top-1/2 hover:bg-black duration-700 bg-opacity-55 text-white p-2 px-4 rounded"
                                 >
@@ -199,9 +243,15 @@ const ProductStock = ({ products }) => {
                             {currentPhotos.length > 1 && (
                                 <button
                                     onClick={() => {
-                                        const index = currentPhotos.findIndex((img) => `/storage/${img}` === modalImage);
-                                        const nextIndex = (index + 1) % currentPhotos.length;
-                                        setModalImage(`/storage/${currentPhotos[nextIndex]}`);
+                                        const index = currentPhotos.findIndex(
+                                            (img) =>
+                                                `/storage/${img}` === modalImage
+                                        );
+                                        const nextIndex =
+                                            (index + 1) % currentPhotos.length;
+                                        setModalImage(
+                                            `/storage/${currentPhotos[nextIndex]}`
+                                        );
                                     }}
                                     className="absolute right-2 top-1/2 hover:bg-black duration-700 bg-opacity-50 text-white p-2 px-4 rounded"
                                 >
@@ -214,37 +264,62 @@ const ProductStock = ({ products }) => {
                 {showConfirmModal && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white p-6 rounded-lg shadow-md max-w-md w-full">
-                            <h2 className="text-xl font-semibold mb-4">Tovarni o‘chirishni tasdiqlang</h2>
-                            <p className="mb-6">Ushbu tovarni rostdan ham o‘chirib tashlamoqchimisiz?</p>
+                            <h2 className="text-xl font-semibold mb-4">
+                                Tovarni o‘chirishni tasdiqlang
+                            </h2>
+                            <p className="mb-6">
+                                Ushbu tovarni rostdan ham o‘chirib
+                                tashlamoqchimisiz?
+                            </p>
                             <div className="flex justify-end gap-4">
-                                <Button variant="outline" onClick={closeConfirmModal}>Bekor qilish</Button>
-                                <Button variant="destructive" onClick={handlePhotoDelete}>O‘chirish</Button>
+                                <Button
+                                    variant="outline"
+                                    onClick={closeConfirmModal}
+                                >
+                                    Bekor qilish
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    onClick={deleteProduct}
+                                >
+                                    O‘chirish
+                                </Button>
                             </div>
                         </div>
                     </div>
                 )}
-                {products.total ? (<Pagination className="mt-5">
-                    <PaginationContent>
-                        {products.links.map((item, i) => (
-                            <PaginationItem key={i}>
-                                {item.url ? (
-                                    <Link
-                                        href={item.url}
-                                        className={`px-3 py-1 rounded hover:bg-gray-200 ${item.active ? "bg-gray-300 font-bold" : ""
+                {products.total ? (
+                    <Pagination className="mt-5">
+                        <PaginationContent>
+                            {products.links.map((item, i) => (
+                                <PaginationItem key={i}>
+                                    {item.url ? (
+                                        <Link
+                                            href={item.url}
+                                            className={`px-3 py-1 rounded hover:bg-gray-200 ${
+                                                item.active
+                                                    ? "bg-gray-300 font-bold"
+                                                    : ""
                                             }`}
-                                        dangerouslySetInnerHTML={{ __html: item.label }}
-                                    />
-                                ) : (
-                                    <span
-                                        className="px-3 py-1 text-gray-400"
-                                        dangerouslySetInnerHTML={{ __html: item.label }}
-                                    />
-                                )}
-                            </PaginationItem>
-                        ))}
-                    </PaginationContent>
-                </Pagination>) : ("")}
-
+                                            dangerouslySetInnerHTML={{
+                                                __html: item.label,
+                                            }}
+                                        />
+                                    ) : (
+                                        <span
+                                            className="px-3 py-1 text-gray-400"
+                                            dangerouslySetInnerHTML={{
+                                                __html: item.label,
+                                            }}
+                                        />
+                                    )}
+                                </PaginationItem>
+                            ))}
+                        </PaginationContent>
+                    </Pagination>
+                ) : (
+                    ""
+                )}
             </div>
         </div>
     );
