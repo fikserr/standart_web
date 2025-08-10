@@ -25,6 +25,7 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function ShoesProducts()
     {
         $products = Product::with('category', 'variants')->latest()->paginate(5);
@@ -32,6 +33,7 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function AccesProducts()
     {
         $products = Product::with('category', 'variants')->latest()->paginate(5);
@@ -39,19 +41,20 @@ class ProductController extends Controller
             'products' => $products,
         ]);
     }
+
     public function userProduct()
     {
-
-        $banners   = \App\Models\Banner::latest()->get();
-        $products  = Product::with('category', 'variants')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
+        $banners = \App\Models\Banner::latest()->get();
+        $products = Product::with('category', 'variants')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         $favorites = Auth::user()->favorites;
-        return Inertia::render('Home', [
-            'products'  => $products,
-            'banners'   => $banners,
-            'favorites' => $favorites,
 
+        return Inertia::render('Home', [
+            'products' => $products,
+            'banners' => $banners,
+            'favorites' => $favorites,
         ]);
     }
+
     public function show($id)
     {
         $product = Product::with(['category', 'variants'])->findOrFail($id);
@@ -59,6 +62,7 @@ class ProductController extends Controller
             'detail' => $product,
         ]);
     }
+
     public function create()
     {
         $categories = Category::select('id', 'name')->get();
@@ -71,15 +75,15 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'product_name'      => 'required|string|max:255',
-            'category_id'       => 'required|exists:categories,id',
-            'brend'             => 'nullable|string|max:255',
-            'photo1'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'photo2'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'photo3'            => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
-            'variants'          => 'required|array',
-            'variants.*.price'  => 'required|numeric',
-            'variants.*.sizes'  => 'required|array',
+            'product_name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'brend' => 'nullable|string|max:255',
+            'photo1' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo2' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo3' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
+            'variants' => 'required|array',
+            'variants.*.price' => 'required|numeric',
+            'variants.*.sizes' => 'required|array',
             'variants.*.colors' => 'required|array',
         ]);
 
@@ -93,19 +97,19 @@ class ProductController extends Controller
         // Productni yaratamiz
         $product = Product::create([
             'product_name' => $data['product_name'],
-            'category_id'  => $data['category_id'],
-            'brend'        => $data['brend'] ?? null,
-            'photo1'       => $data['photo1'] ?? null,
-            'photo2'       => $data['photo2'] ?? null,
-            'photo3'       => $data['photo3'] ?? null,
+            'category_id' => $data['category_id'],
+            'brend' => $data['brend'] ?? null,
+            'photo1' => $data['photo1'] ?? null,
+            'photo2' => $data['photo2'] ?? null,
+            'photo3' => $data['photo3'] ?? null,
         ]);
 
         // Variantlarini saqlaymiz
         foreach ($data['variants'] as $variant) {
             $product->variants()->create([
-                'sizes'  => $variant['sizes'],
+                'sizes' => $variant['sizes'],
                 'colors' => $variant['colors'],
-                'price'  => $variant['price'],
+                'price' => $variant['price'],
             ]);
         }
 
@@ -124,33 +128,33 @@ class ProductController extends Controller
 
         $data = $request->validate([
             'product_name' => 'required|string',
-            'brend'        => 'required|string',
-            'category_id'  => 'required|exists:categories,id',
-            'photo1'       => 'nullable|image',
-            'photo2'       => 'nullable|image',
-            'photo3'       => 'nullable|image',
-            'photo_url1'   => 'nullable|string',
-            'photo_url2'   => 'nullable|string',
-            'photo_url3'   => 'nullable|string',
-            'variants'     => 'required|json',
+            'brend' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'photo1' => 'nullable|image',
+            'photo2' => 'nullable|image',
+            'photo3' => 'nullable|image',
+            'photo_url1' => 'nullable|string',
+            'photo_url2' => 'nullable|string',
+            'photo_url3' => 'nullable|string',
+            'variants' => 'required|json',
         ]);
 
         $product->update([
             'product_name' => $data['product_name'],
-            'brend'        => $data['brend'],
-            'category_id'  => $data['category_id'],
-            'photo1'       => $uploadImage($request, 'photo1', $data['photo_url1']),
-            'photo2'       => $uploadImage($request, 'photo2', $data['photo_url2']),
-            'photo3'       => $uploadImage($request, 'photo3', $data['photo_url3']),
+            'brend' => $data['brend'],
+            'category_id' => $data['category_id'],
+            'photo1' => $uploadImage($request, 'photo1', $data['photo_url1']),
+            'photo2' => $uploadImage($request, 'photo2', $data['photo_url2']),
+            'photo3' => $uploadImage($request, 'photo3', $data['photo_url3']),
         ]);
 
         $product->variants()->delete();
 
         foreach (json_decode($data['variants'], true) as $variant) {
             $product->variants()->create([
-                'sizes'  => $variant['sizes'],
+                'sizes' => $variant['sizes'],
                 'colors' => $variant['colors'],
-                'price'  => $variant['price'],
+                'price' => $variant['price'],
             ]);
         }
 
@@ -161,11 +165,11 @@ class ProductController extends Controller
     {
         $search = $request->input('search');
 
-        $products = Product::with('category', 'variants') // 👈 category obyekti yuklanadi
+        $products = Product::with('category', 'variants')
             ->when($search, function ($query, $search) {
                 $query->where('product_name', 'like', "%{$search}%")
                     ->orWhereHas('category', function ($q) use ($search) {
-                        $q->where('name', 'like', "%{$search}%"); // 👈 category.name bo‘yicha qidiruv
+                        $q->where('name', 'like', "%{$search}%");
                     });
             })
             ->latest()
@@ -173,7 +177,7 @@ class ProductController extends Controller
 
         return Inertia::render('admin/productStock', [
             'products' => $products,
-            'filters'  => [
+            'filters' => [
                 'search' => $search,
             ],
         ]);
@@ -181,10 +185,11 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product    = Product::with(['category', 'variants'])->findOrFail($id);
+        $product = Product::with(['category', 'variants'])->findOrFail($id);
         $categories = Category::all();
+
         return Inertia::render('admin/editProducts', [
-            'product'    => $product,
+            'product' => $product,
             'categories' => $categories,
         ]);
     }
@@ -195,7 +200,7 @@ class ProductController extends Controller
         foreach (['photo1', 'photo2', 'photo3'] as $photoKey) {
             $filePath = $product->$photoKey;
 
-            if (! empty($filePath)) {
+            if (!empty($filePath)) {
                 // "storage/products/example.jpg" => "products/example.jpg"
                 $cleanPath = str_replace('storage/', '', $filePath);
 
@@ -211,7 +216,6 @@ class ProductController extends Controller
         // Mahsulotni o‘chirish
         $product->delete();
 
-        // JSON javob (frontend uchun qulay)
         return response()->json(['message' => 'Mahsulot va rasmlar o‘chirildi'], 200);
     }
 
@@ -232,5 +236,4 @@ class ProductController extends Controller
 
         return response()->json(['message' => 'Photo deleted']);
     }
-
 }

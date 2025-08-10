@@ -8,14 +8,17 @@ import axios from "axios";
 const CartPage = ({ cartItems, address }) => {
     const [items, setItems] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
+    const [processingOrder, setProcessingOrder] = useState(false);
     const { toast } = useToast();
-    console.log(cartItems, "cartItems");
-    // boshlanishida address bo‘lsa, default qilib birinchi addressni belgilash
+
+    console.log("Cart items:", cartItems);
+
     useEffect(() => {
         if (address && address.length > 0) {
             setSelectedAddressId(address[0].id);
         }
     }, [address]);
+
     useEffect(() => {
         setItems(cartItems || []);
     }, [cartItems]);
@@ -26,7 +29,6 @@ const CartPage = ({ cartItems, address }) => {
         }, 0);
     };
 
-    // mahsulotni savatdan o‘chirish
     const handleDelete = (id) => {
         router.delete(`/cart/${id}`, {
             onSuccess: () => {
@@ -34,8 +36,6 @@ const CartPage = ({ cartItems, address }) => {
                     title: "Mahsulot o‘chirildi",
                     description: "Sizning savatingizdan mahsulot o‘chirildi.",
                 });
-
-                // Mahalliy holatdan ham o‘chirish
                 setItems((prev) => prev.filter((item) => item.id !== id));
             },
             onError: () => {
@@ -47,7 +47,6 @@ const CartPage = ({ cartItems, address }) => {
         });
     };
 
-    // buyurtmani yuborish
     const handlePlaceOrder = () => {
         if (!selectedAddressId) {
             toast({
@@ -56,9 +55,10 @@ const CartPage = ({ cartItems, address }) => {
             });
             return;
         }
+        setProcessingOrder(true);
         axios
             .post("/place-order", {
-                address_id: selectedAddressId,
+                address_id: Number(selectedAddressId),
             })
             .then(() => {
                 window.location.href = "/order-success";
@@ -68,6 +68,9 @@ const CartPage = ({ cartItems, address }) => {
                     title: "Xatolik",
                     description: "Buyurtma berishda xatolik yuz berdi.",
                 });
+            })
+            .finally(() => {
+                setProcessingOrder(false);
             });
     };
 
@@ -90,15 +93,21 @@ const CartPage = ({ cartItems, address }) => {
                                 alt={item.product?.product_name}
                                 className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
                             />
-                            <div className="sm:space-y-4 lg:space-y-1 xl:space-y-4">
+                            <div className="sm:space-y-1 lg:space-y-1 xl:space-y-1">
                                 <h2 className="font-semibold text-xl sm500:text-2xl">
                                     {item.product?.product_name}
                                 </h2>
+                                {/* Size */}
                                 <p className="text-sm text-gray-500 sm:text-lg">
-                                    Size: {item.size}
+                                    Size: {item.size || "Noma'lum"}
                                 </p>
+                                {/* Color */}
+                                <p className="text-sm text-gray-500 sm:text-lg">
+                                    Color: {item.color || "Noma'lum"}
+                                </p>
+                                {/* Price */}
                                 <p className="text-sm sm:text-lg text-gray-500">
-                                    Narxi: {item.product?.price} so‘m
+                                    Narxi: {item.product?.price?.toLocaleString()} so‘m
                                 </p>
                             </div>
                         </div>
@@ -110,15 +119,13 @@ const CartPage = ({ cartItems, address }) => {
                                 <BiSolidTrash />
                             </button>
                             <p className="flex gap-2">
-                                {item.quantity}{" "}
-                                <span className="hidden sm500:block">dona</span>
+                                {item.quantity} <span className="hidden sm500:block">dona</span>
                             </p>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Manzil tanlash */}
             <div className="bg-slate-200 p-3 rounded-lg mt-5">
                 <div className="my-6">
                     <label className="block text-gray-700 font-medium mb-2">
@@ -127,27 +134,26 @@ const CartPage = ({ cartItems, address }) => {
                     <select
                         value={selectedAddressId}
                         onChange={(e) => setSelectedAddressId(e.target.value)}
-                        className="border px-4 py-2 rounded w-full outline-none bg-slate-100 "
+                        className="border px-4 py-2 rounded w-full outline-none bg-slate-100"
                     >
-                        {address?.map((address) => (
-                            <option key={address.id} value={address.id}>
-                                {address.region}, {address.city},{" "}
-                                {address.street}, {address.house_number}
+                        {address?.map((addr) => (
+                            <option key={addr.id} value={addr.id}>
+                                {addr.region}, {addr.city}, {addr.street}, {addr.house_number}
                             </option>
                         ))}
                     </select>
                 </div>
 
-                {/* Umumiy narx va buyurtma tugmasi */}
                 <div className="mt-10 flex justify-between items-center border-t pt-6">
                     <h3 className="text-xl font-bold">
-                        Umumiy: {calculateTotal(items)} so‘m
+                        Umumiy: {calculateTotal(items).toLocaleString()} so‘m
                     </h3>
                     <button
-                        className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
+                        className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={handlePlaceOrder}
+                        disabled={processingOrder}
                     >
-                        Buyurtma berish
+                        {processingOrder ? "Yuborilmoqda..." : "Buyurtma berish"}
                     </button>
                 </div>
             </div>

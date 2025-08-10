@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useForm } from '@inertiajs/react';
+import { useState, useEffect, useMemo } from 'react';
 import { HiOutlineChevronRight } from "react-icons/hi";
-import Loading from '@/components/ui/loader';
-import { useToast } from '@/hooks/use-toast';
 import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
 import OrderModal from '@/components/shared/orderModal';
 
 const Index = ({ detail }) => {
@@ -13,29 +11,49 @@ const Index = ({ detail }) => {
     const [activeColor, setActiveColor] = useState(null);
     const [activeVariant, setActiveVariant] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const { processing } = useForm();
+    const [processing, setProcessing] = useState(false);
     const { toast } = useToast();
 
+    // Variantlarni arrayga aylantirish
+    const parsedVariants = useMemo(() => {
+        return detail.variants.map(v => ({
+            ...v,
+            size: Array.isArray(v.sizes) ? v.sizes : [],
+            color: Array.isArray(v.colors) ? v.colors : [],
+        }));
+    }, [detail.variants]);
+
     // Unikal o'lchamlar
-    const sizes = [...new Set(detail.variants.map(v => v.size))];
+    const sizes = useMemo(() => {
+        const allSizes = parsedVariants.flatMap(v => v.size);
+        return [...new Set(allSizes)];
+    }, [parsedVariants]);
 
     // Tanlangan o'lchamga mos ranglar
-    const availableColors = activeSize
-        ? [...new Set(detail.variants.filter(v => v.size === activeSize).map(v => v.color))]
-        : [...new Set(detail.variants.map(v => v.color))];
+    const availableColors = useMemo(() => {
+        if (!activeSize) {
+            return [...new Set(parsedVariants.flatMap(v => v.color))];
+        }
+        return [...new Set(
+            parsedVariants
+                .filter(v => v.size.includes(activeSize))
+                .flatMap(v => v.color)
+        )];
+    }, [parsedVariants, activeSize]);
 
-    // Tanlangan color + size -> variant aniqlash
+    // Tanlangan size + color ga mos variant topish
     useEffect(() => {
-        if (activeColor && activeSize) {
-            const found = detail.variants.find(
-                v => v.color === activeColor && v.size === activeSize
+        if (activeSize && activeColor) {
+            const found = parsedVariants.find(
+                v => v.size.includes(activeSize) && v.color.includes(activeColor)
             );
             setActiveVariant(found || null);
         } else {
             setActiveVariant(null);
         }
-    }, [activeColor, activeSize, detail.variants]);
+    }, [activeSize, activeColor, parsedVariants]);
 
+    // Savatga qo'shish funksiyasi
     const handleAddToCart = () => {
         if (!activeVariant) {
             toast({
@@ -46,24 +64,32 @@ const Index = ({ detail }) => {
             return;
         }
 
+        setProcessing(true);
+
         axios.post('/add-to-cart', {
             product_id: detail.id,
             quantity: quantity,
             variant_id: activeVariant.id,
-        }).then(() => {
-            toast({
-                title: 'Savatga qo‘shildi ✅',
-                description: `${detail.product_name} (${activeVariant.size}, ${activeVariant.color}) savatga muvaffaqiyatli qo‘shildi!`
+        })
+            .then(() => {
+                toast({
+                    title: 'Savatga qo‘shildi ✅',
+                    description: `${detail.product_name} (${activeSize}, ${activeColor}) savatga qo‘shildi!`
+                });
+                setModalOpen(true);
+            })
+            .catch(err => {
+                console.error(err.response?.data);
+                toast({
+                    title: 'Xatolik',
+                    description: 'Savatga qo‘shishda xatolik yuz berdi.',
+                    variant: 'destructive',
+                });
+            })
+            .finally(() => {
+                setProcessing(false);
             });
-            setModalOpen(true);
-        }).catch(err => {
-            console.error(err.response?.data);
-        });
     };
-
-    const tabs = ['Tafsilotlar'];
-
-    if (processing) return <Loading />;
 
     return (
         <div className='my-20 px-5 xl:px-32'>
@@ -77,7 +103,6 @@ const Index = ({ detail }) => {
                             className="w-full h-[350px] rounded-2xl object-cover"
                         />
                     )}
-
                     <div className='grid grid-cols-3 gap-3 mb-3'>
                         {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
                             photo && (
@@ -105,7 +130,7 @@ const Index = ({ detail }) => {
                                 key={index}
                                 onClick={() => {
                                     setActiveSize(size);
-                                    setActiveColor(null); // ranglar qayta filtrlanadi
+                                    setActiveColor(null);
                                 }}
                                 className={`border rounded-lg px-4 py-1 cursor-pointer
                                     ${activeSize === size ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
@@ -136,7 +161,7 @@ const Index = ({ detail }) => {
                     <div className='flex items-center justify-between mt-5'>
                         <div>
                             <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
-                                Narxi: {(activeVariant?.price || detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+                                Narxi: {(activeVariant?.price ?? detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -146,24 +171,18 @@ const Index = ({ detail }) => {
                         </div>
                     </div>
 
+                    {/* Savatga qo‘shish tugmasi */}
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
-                        className='mt-4 w-full bg-black text-white py-2 rounded-md'
+                        className='mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed'
                     >
                         {processing ? "Yuklanmoqda..." : "Savatga qo‘shish"}
                     </button>
 
                     {/* Tafsilotlar */}
                     <div className='my-5 px-2 pt-2'>
-                        {tabs.map((tab) => (
-                            <p
-                                key={tab}
-                                className={`cursor-pointer ${tab === 'Tafsilotlar' ? 'text-black border-b-blue-700 border-b-2 pb-2' : 'text-slate-500'}`}
-                            >
-                                {tab}
-                            </p>
-                        ))}
+                        <p className='text-black border-b-blue-700 border-b-2 pb-2 cursor-pointer'>Tafsilotlar</p>
                     </div>
 
                     <div className='space-y-2'>
@@ -171,7 +190,7 @@ const Index = ({ detail }) => {
                             const values = [
                                 detail?.category?.name || "Noma'lum",
                                 detail?.brend || "Yo‘q",
-                                activeVariant?.color || detail?.colors || "Noma'lum"
+                                activeColor || "Noma'lum"
                             ];
                             return (
                                 <div key={index} className='flex items-center justify-between' style={{ fontFamily: 'OswaldLight' }}>
@@ -184,11 +203,6 @@ const Index = ({ detail }) => {
                         })}
                     </div>
                 </div>
-            </div>
-
-            <div className='my-10'>
-                <h3 style={{ fontFamily: 'Oswald', fontSize: '20px' }}>Qiziqarli takliflar</h3>
-                {/* Top tovarlar bo'limi */}
             </div>
 
             <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
