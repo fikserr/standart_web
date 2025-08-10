@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, act } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +16,7 @@ const Index = ({ detail }) => {
 
     console.log(activeColor, activeSize);
 
+    
     // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
         return detail.variants.map((v) => ({
@@ -81,14 +82,14 @@ const Index = ({ detail }) => {
             });
             return;
         }
-
+            console.log(activeVariant.price,);
         setProcessing(true);
-
+       
+        
         axios
             .post("/add-to-cart", {
                 product_id: detail.id,
                 quantity: quantity,
-                variant_id: activeVariant.id,
                 size: activeSize,
                 color: activeColor,
                 price: activeVariant.price,

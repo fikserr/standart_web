@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -44,19 +43,21 @@ class OrderController extends Controller
             'address_id' => 'required|exists:addresses,id',
         ]);
 
-        $cartItems = Cart::where('user_id', $user->id)->get();
+        // Savatni product bilan olish
+        $cartItems = Cart::with('product')
+            ->where('user_id', $user->id)
+            ->get();
+
         if ($cartItems->isEmpty()) {
             return back()->with('error', 'Savat bo‘sh!');
         }
 
-        $totalPrice = 0;
-        foreach ($cartItems as $item) {
-            $product = Product::find($item->product_id);
-            if ($product) {
-                $totalPrice += $product->price * $item->quantity;
-            }
-        }
+        // Umumiy narxni hisoblash — narx to‘g‘ridan-to‘g‘ri cart jadvalidan olinadi
+        $totalPrice = $cartItems->reduce(function ($total, $item) {
+            return $total + ($item->price * $item->quantity);
+        }, 0);
 
+        // Buyurtma yaratish
         $order = Order::create([
             'user_id'     => $user->id,
             'address_id'  => $request->address_id,
@@ -64,23 +65,25 @@ class OrderController extends Controller
             'total_price' => $totalPrice,
         ]);
 
+        // Savatdagi mahsulotlarni order_items jadvaliga yozish
         foreach ($cartItems as $item) {
-            $product = Product::find($item->product_id);
-            if ($product) {
-                OrderItem::create([
-                    'order_id'   => $order->id,
-                    'product_id' => $item->product_id,
-                    'quantity'   => $item->quantity,
-                    'size'       => $item->size,
-                    'price'      => $product->price,
-                ]);
-            }
+            OrderItem::create([
+                'order_id'   => $order->id,
+                'product_id' => $item->product_id,
+                'quantity'   => $item->quantity,
+                'size'       => $item->size,
+                'color'      => $item->color,
+                'price'      => $item->price, // to‘g‘ridan-to‘g‘ri cart narxidan
+            ]);
         }
 
+        // Savatni tozalash
         Cart::where('user_id', $user->id)->delete();
 
-        return redirect()->route('order.success')->with('success', 'Buyurtma yuborildi!');
+        return redirect()->route('order.success')
+            ->with('success', 'Buyurtma yuborildi!');
     }
+
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([

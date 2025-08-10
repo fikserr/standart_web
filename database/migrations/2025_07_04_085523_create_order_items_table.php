@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->string('size')->nullable();
-            $table->decimal('price', 10, 2); // copy from product.price at the time of order
+            $table->string('color')->nullable();
+            $table->decimal('price', 10, 2);
             $table->timestamps();
         });
-
     }
 
     /**

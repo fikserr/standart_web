@@ -10,7 +10,8 @@ const CartPage = ({ cartItems, address }) => {
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [processingOrder, setProcessingOrder] = useState(false);
     const { toast } = useToast();
-
+    console.log("Cart Items:", cartItems);
+    
     useEffect(() => {
         if (address && address.length > 0) {
             setSelectedAddressId(address[0].id);
@@ -23,8 +24,7 @@ const CartPage = ({ cartItems, address }) => {
 
     const calculateTotal = (items) => {
         return items.reduce((total, item) => {
-            const price = item.price ?? item.variant?.price ?? 0;
-            return total + price * item.quantity;
+            return total + (item.price ?? 0) * item.quantity;
         }, 0);
     };
 

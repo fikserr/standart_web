@@ -11,7 +11,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->foreignId('variant_id')->nullable()->constrained('product_variants')->onDelete('cascade');
             $table->string('size')->nullable(); // bitta tanlangan razmer
             $table->string('color')->nullable(); // bitta tanlangan rang
             $table->decimal('price', 10, 2)->nullable();

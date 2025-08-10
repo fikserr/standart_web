@@ -14,25 +14,19 @@ class CartController extends Controller
     {
         $data = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'variant_id' => 'nullable|exists:product_variants,id',
             'quantity' => 'required|integer|min:1',
             'size' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:50',
+            'price' => 'nullable|integer|min:1',
         ]);
-
-        $variant = null;
-        if (!empty($data['variant_id'])) {
-            $variant = ProductVariant::findOrFail($data['variant_id']);
-        }
 
         $cart = Cart::create([
             'user_id' => auth()->id(),
             'product_id' => $data['product_id'],
-            'variant_id' => $data['variant_id'] ?? null,
             'quantity' => $data['quantity'],
-            'size' => $data['size'] ?? $variant?->size,
-            'color' => $data['color'] ?? $variant?->color,
-            'price' => $variant?->price ?? 0,
+            'size' => $data['size'] ?? null,
+            'color' => $data['color'] ?? null,
+            'price' => $data['price'] ?? 0,
         ]);
 
         \Log::info('Cart item added:', $cart->toArray());
@@ -42,7 +36,7 @@ class CartController extends Controller
 
     public function showCart()
     {
-        $cartItems = Cart::with(['product', 'variant'])
+        $cartItems = Cart::with(['product'])
             ->where('user_id', Auth::id())
             ->get();
 
