@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
-    use HasFactory;
-
-    protected $fillable = ['user_id', 'product_id', 'quantity', 'size',];
+    protected $fillable = [
+        'user_id', 'product_id', 'variant_id', 'quantity',
+        'size', 'color', 'price'
+    ];
 
     public function product()
     {
@@ -20,4 +20,11 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
+    }
 }
+
+

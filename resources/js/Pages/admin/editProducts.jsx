@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { useForm } from "@inertiajs/react";
-import { useToast } from "@/hooks/use-toast";
 
-const EditProductForm = ({ product, categories }) => {
-=======
 import React, { use, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { useToast } from "@/hooks/use-toast";
 import { router } from "@inertiajs/react";
 const EditProduct = ({ product, categories }) => {
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
     const { toast } = useToast();
     const [previewImages, setPreviewImages] = useState({
         photo1: product.photo1 ? `/storage/${product.photo1}` : null,
@@ -22,16 +15,6 @@ const EditProduct = ({ product, categories }) => {
         product_name: product.product_name || "",
         category_id: product.category_id || "",  // 🔥 E'TIBOR BERISh
         brend: product.brend || "",
-<<<<<<< HEAD
-        photo1: null,
-        photo2: null,
-        photo3: null,
-        variants: product.variants.map((v) => ({
-            size: Array.isArray(v.size) ? v.size : v.size.split(","),
-            color: Array.isArray(v.color) ? v.color : v.color.split(","),
-            price: v.price,
-        })),
-=======
         // Yangi fayl tanlanmasa eski preview fayl nomini yuboramiz
         photo1: product.photo1 || "",
         photo2: product.photo2 || "",
@@ -40,7 +23,6 @@ const EditProduct = ({ product, categories }) => {
             product.variants && Array.isArray(product.variants)
                 ? product.variants
                 : [{ sizes: [], colors: [], price: "" }],
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -61,13 +43,6 @@ const EditProduct = ({ product, categories }) => {
 
     const handleVariantChange = (index, field, value) => {
         const updatedVariants = [...data.variants];
-<<<<<<< HEAD
-        if (field === "size" || field === "color") {
-            updatedVariants[index][field] = value.split(",").map((i) => i.trim());
-        } else {
-            updatedVariants[index][field] = value;
-        }
-=======
 
         // Agar sizes yoki colors bo‘lsa — array qilib saqlaymiz
         if (field === "sizes" || field === "colors") {
@@ -78,19 +53,16 @@ const EditProduct = ({ product, categories }) => {
             updatedVariants[index][field] = value;
         }
 
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
+
         setData("variants", updatedVariants);
     };
 
     const addVariant = () => {
-<<<<<<< HEAD
-        setData("variants", [...data.variants, { size: "", color: "", price: "" }]);
-=======
+
         setData("variants", [
             ...data.variants,
             { sizes: "", colors: "", price: "" },
         ]);
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
     };
 
     const removeVariant = (index) => {
@@ -104,25 +76,6 @@ const EditProduct = ({ product, categories }) => {
             title: "Yangilanmoqda...",
             description: "Mahsulot yangilanmoqda, iltimos kuting...",
         });
-
-<<<<<<< HEAD
-        put(`/admin-products/${product.id}`, {
-            forceFormData: true,
-            onSuccess: () => {
-                toast({
-                    title: "Success",
-                    description: "Mahsulot muvaffaqiyatli yangilandi",
-                });
-                window.location.href = "/admin-productStock";
-            },
-            onError: () => {
-                toast({
-                    title: "Xatolik",
-                    description: "Ma'lumotlarni to‘ldirishda xatolik bor.",
-                });
-            },
-        });
-=======
         try {
             const formData = new FormData();
 
@@ -178,7 +131,6 @@ const EditProduct = ({ product, categories }) => {
                     "Serverdan nomaʼlum xatolik",
             });
         }
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
     };
 
     return (
@@ -259,11 +211,6 @@ const EditProduct = ({ product, categories }) => {
                         <div key={index} className="flex gap-4 mb-2 items-center">
                             <input
                                 type="text"
-<<<<<<< HEAD
-                                placeholder="Razmer (e.g. S, M, L)"
-                                value={Array.isArray(variant.size) ? variant.size.join(", ") : variant.size}
-                                onChange={(e) => handleVariantChange(index, "size", e.target.value)}
-=======
                                 placeholder="Razmerlar (e.g. S, M, L)"
                                 value={
                                     Array.isArray(variant.sizes)
@@ -277,17 +224,12 @@ const EditProduct = ({ product, categories }) => {
                                         e.target.value
                                     )
                                 }
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
                                 className="border p-3 rounded w-1/3"
                             />
 
                             <input
                                 type="text"
-<<<<<<< HEAD
-                                placeholder="Rang (e.g. red, blue)"
-                                value={Array.isArray(variant.color) ? variant.color.join(", ") : variant.color}
-                                onChange={(e) => handleVariantChange(index, "color", e.target.value)}
-=======
+
                                 placeholder="Ranglar (e.g. red, blue)"
                                 value={
                                     Array.isArray(variant.colors)
@@ -301,7 +243,6 @@ const EditProduct = ({ product, categories }) => {
                                         e.target.value
                                     )
                                 }
->>>>>>> 26d83350ee424395ac36eac5321eba665a5ca83a
                                 className="border p-3 rounded w-1/3"
                             />
 
@@ -343,4 +284,4 @@ const EditProduct = ({ product, categories }) => {
     );
 };
 
-export default EditProductForm;
+export default EditProduct;

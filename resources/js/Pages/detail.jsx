@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
-import axios from 'axios';
-import { useToast } from '@/hooks/use-toast';
-import OrderModal from '@/components/shared/orderModal';
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import OrderModal from "@/components/shared/orderModal";
 
 const Index = ({ detail }) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -16,7 +16,7 @@ const Index = ({ detail }) => {
 
     // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
-        return detail.variants.map(v => ({
+        return detail.variants.map((v) => ({
             ...v,
             size: Array.isArray(v.sizes) ? v.sizes : [],
             color: Array.isArray(v.colors) ? v.colors : [],
@@ -25,27 +25,30 @@ const Index = ({ detail }) => {
 
     // Unikal o'lchamlar
     const sizes = useMemo(() => {
-        const allSizes = parsedVariants.flatMap(v => v.size);
+        const allSizes = parsedVariants.flatMap((v) => v.sizes);
         return [...new Set(allSizes)];
     }, [parsedVariants]);
 
     // Tanlangan o'lchamga mos ranglar
     const availableColors = useMemo(() => {
         if (!activeSize) {
-            return [...new Set(parsedVariants.flatMap(v => v.color))];
+            return [...new Set(parsedVariants.flatMap((v) => v.colors))];
         }
-        return [...new Set(
-            parsedVariants
-                .filter(v => v.size.includes(activeSize))
-                .flatMap(v => v.color)
-        )];
+        return [
+            ...new Set(
+                parsedVariants
+                    .filter((v) => v.size.includes(activeSize))
+                    .flatMap((v) => v.colors)
+            ),
+        ];
     }, [parsedVariants, activeSize]);
 
     // Tanlangan size + color ga mos variant topish
     useEffect(() => {
         if (activeSize && activeColor) {
             const found = parsedVariants.find(
-                v => v.size.includes(activeSize) && v.color.includes(activeColor)
+                (v) =>
+                    v.size.includes(activeSize) && v.color.includes(activeColor)
             );
             setActiveVariant(found || null);
         } else {
@@ -54,36 +57,41 @@ const Index = ({ detail }) => {
     }, [activeSize, activeColor, parsedVariants]);
 
     // Savatga qo'shish funksiyasi
+    // Savatga qo'shish funksiyasi
     const handleAddToCart = () => {
         if (!activeVariant) {
             toast({
-                title: 'Xatolik',
-                description: 'Iltimos, o‘lcham va rangni tanlang',
-                variant: 'destructive',
+                title: "Xatolik",
+                description: "Iltimos, o‘lcham va rangni tanlang",
+                variant: "destructive",
             });
             return;
         }
 
         setProcessing(true);
 
-        axios.post('/add-to-cart', {
-            product_id: detail.id,
-            quantity: quantity,
-            variant_id: activeVariant.id,
-        })
+        axios
+            .post("/add-to-cart", {
+                product_id: detail.id,
+                quantity: quantity,
+                variant_id: activeVariant.id,
+                size: activeSize, // ✅ qo‘shildi
+                color: activeColor, // ✅ qo‘shildi
+                price: activeVariant.price, // ✅ qo‘shildi
+            })
             .then(() => {
                 toast({
-                    title: 'Savatga qo‘shildi ✅',
-                    description: `${detail.product_name} (${activeSize}, ${activeColor}) savatga qo‘shildi!`
+                    title: "Savatga qo‘shildi ✅",
+                    description: `${detail.product_name} (${activeSize}, ${activeColor}) savatga qo‘shildi!`,
                 });
                 setModalOpen(true);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err.response?.data);
                 toast({
-                    title: 'Xatolik',
-                    description: 'Savatga qo‘shishda xatolik yuz berdi.',
-                    variant: 'destructive',
+                    title: "Xatolik",
+                    description: "Savatga qo‘shishda xatolik yuz berdi.",
+                    variant: "destructive",
                 });
             })
             .finally(() => {
@@ -92,35 +100,45 @@ const Index = ({ detail }) => {
     };
 
     return (
-        <div className='my-20 px-5 xl:px-32'>
-            <div className='grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2'>
+        <div className="my-20 px-5 xl:px-32">
+            <div className="grid sm:grid-cols-2 gap-5 md:gap-10 xl:grid-cols-2">
                 {/* Rasm */}
-                <div className='border-b-blue-300 grid gap-4 border-b-2'>
+                <div className="border-b-blue-300 grid gap-4 border-b-2">
                     {mainPhoto && (
                         <img
                             src={`/storage/${mainPhoto}?v=${Date.now()}`}
-                            alt={detail.product_name || 'Product image'}
+                            alt={detail.product_name || "Product image"}
                             className="w-full h-[350px] rounded-2xl object-cover"
                         />
                     )}
-                    <div className='grid grid-cols-3 gap-3 mb-3'>
-                        {[detail.photo1, detail.photo2, detail.photo3].map((photo, index) => (
-                            photo && (
-                                <img
-                                    key={index}
-                                    src={`/storage/${photo}?v=${Date.now()}`}
-                                    alt={`Product ${index + 1}`}
-                                    className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo ? 'ring-2 ring-blue-400' : ''}`}
-                                    onClick={() => setMainPhoto(photo)}
-                                />
-                            )
-                        ))}
+                    <div className="grid grid-cols-3 gap-3 mb-3">
+                        {[detail.photo1, detail.photo2, detail.photo3].map(
+                            (photo, index) =>
+                                photo && (
+                                    <img
+                                        key={index}
+                                        src={`/storage/${photo}?v=${Date.now()}`}
+                                        alt={`Product ${index + 1}`}
+                                        className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${
+                                            mainPhoto === photo
+                                                ? "ring-2 ring-blue-400"
+                                                : ""
+                                        }`}
+                                        onClick={() => setMainPhoto(photo)}
+                                    />
+                                )
+                        )}
                     </div>
                 </div>
 
                 {/* Tafsilot */}
-                <div className='my-5'>
-                    <h1 className='text-2xl font-bold mb-4' style={{ fontFamily: "Oswald" }}>{detail.product_name}</h1>
+                <div className="my-5">
+                    <h1
+                        className="text-2xl font-bold mb-4"
+                        style={{ fontFamily: "Oswald" }}
+                    >
+                        {detail.product_name}
+                    </h1>
 
                     {/* O'lcham tanlash */}
                     <h2 className="font-semibold mb-2 text-lg">O‘lchamlar:</h2>
@@ -133,7 +151,11 @@ const Index = ({ detail }) => {
                                     setActiveColor(null);
                                 }}
                                 className={`border rounded-lg px-4 py-1 cursor-pointer
-                                    ${activeSize === size ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
+                                    ${
+                                        activeSize === size
+                                            ? "bg-black text-white"
+                                            : "bg-gray-100 hover:bg-gray-200"
+                                    }
                                 `}
                             >
                                 {size}
@@ -149,7 +171,11 @@ const Index = ({ detail }) => {
                                 key={index}
                                 onClick={() => setActiveColor(color)}
                                 className={`border rounded-full px-4 py-1 cursor-pointer
-                                    ${activeColor === color ? 'bg-black text-white' : 'bg-gray-100 hover:bg-gray-200'}
+                                    ${
+                                        activeColor === color
+                                            ? "bg-black text-white"
+                                            : "bg-gray-100 hover:bg-gray-200"
+                                    }
                                 `}
                             >
                                 {color}
@@ -158,16 +184,39 @@ const Index = ({ detail }) => {
                     </div>
 
                     {/* Narx va miqdor */}
-                    <div className='flex items-center justify-between mt-5'>
+                    <div className="flex items-center justify-between mt-5">
                         <div>
-                            <p style={{ fontFamily: "OswaldLight", fontSize: "20px" }}>
-                                Narxi: {(activeVariant?.price ?? detail.price)?.toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+                            <p
+                                style={{
+                                    fontFamily: "OswaldLight",
+                                    fontSize: "20px",
+                                }}
+                            >
+                                Narxi:{" "}
+                                {(
+                                    activeVariant?.price ?? detail.price
+                                )?.toLocaleString()}{" "}
+                                <span className="text-sm text-slate-500">
+                                    so'm
+                                </span>
                             </p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))} className='border px-2'>-</button>
+                            <button
+                                onClick={() =>
+                                    setQuantity((prev) => Math.max(1, prev - 1))
+                                }
+                                className="border px-2"
+                            >
+                                -
+                            </button>
                             <span>{quantity}</span>
-                            <button onClick={() => setQuantity(prev => prev + 1)} className='border px-2'>+</button>
+                            <button
+                                onClick={() => setQuantity((prev) => prev + 1)}
+                                className="border px-2"
+                            >
+                                +
+                            </button>
                         </div>
                     </div>
 
@@ -175,37 +224,51 @@ const Index = ({ detail }) => {
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
-                        className='mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed'
+                        className="mt-4 w-full bg-black text-white py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {processing ? "Yuklanmoqda..." : "Savatga qo‘shish"}
                     </button>
 
                     {/* Tafsilotlar */}
-                    <div className='my-5 px-2 pt-2'>
-                        <p className='text-black border-b-blue-700 border-b-2 pb-2 cursor-pointer'>Tafsilotlar</p>
+                    <div className="my-5 px-2 pt-2">
+                        <p className="text-black border-b-blue-700 border-b-2 pb-2 cursor-pointer">
+                            Tafsilotlar
+                        </p>
                     </div>
 
-                    <div className='space-y-2'>
-                        {['Kategoriya', 'Brend', 'Rangi'].map((label, index) => {
-                            const values = [
-                                detail?.category?.name || "Noma'lum",
-                                detail?.brend || "Yo‘q",
-                                activeColor || "Noma'lum"
-                            ];
-                            return (
-                                <div key={index} className='flex items-center justify-between' style={{ fontFamily: 'OswaldLight' }}>
-                                    <h3 style={{ fontSize: "20px" }}>{label}</h3>
-                                    <span className='text-slate-600 flex items-center'>
-                                        {values[index]} <HiOutlineChevronRight />
-                                    </span>
-                                </div>
-                            );
-                        })}
+                    <div className="space-y-2">
+                        {["Kategoriya", "Brend", "Rangi"].map(
+                            (label, index) => {
+                                const values = [
+                                    detail?.category?.name || "Noma'lum",
+                                    detail?.brend || "Yo‘q",
+                                    activeColor || "Noma'lum",
+                                ];
+                                return (
+                                    <div
+                                        key={index}
+                                        className="flex items-center justify-between"
+                                        style={{ fontFamily: "OswaldLight" }}
+                                    >
+                                        <h3 style={{ fontSize: "20px" }}>
+                                            {label}
+                                        </h3>
+                                        <span className="text-slate-600 flex items-center">
+                                            {values[index]}{" "}
+                                            <HiOutlineChevronRight />
+                                        </span>
+                                    </div>
+                                );
+                            }
+                        )}
                     </div>
                 </div>
             </div>
 
-            <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            <OrderModal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+            />
         </div>
     );
 };
