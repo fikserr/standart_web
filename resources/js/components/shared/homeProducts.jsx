@@ -15,7 +15,6 @@ export const HomeProducts = ({ data, favorites }) => {
         });
         return initialStars;
     });
-    console.log(data, "data from HomeProducts");
 
     const { toast } = useToast();
 

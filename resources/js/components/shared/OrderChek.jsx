@@ -22,22 +22,24 @@ const OrderCheck = ({ data }) => {
                 </div>
             </div>
 
-            <table className="w-full border-t border-b text-center text-[9px]">
+            <table className="w-full border-t border-b text-[9px]">
                 <thead>
                     <tr className="border-y text-center">
                         <th className="py-1">№</th>
-                        <th>Nomi</th>
+                        <th className='text-left px-2'>Nomi</th>
                         <th>O‘lch</th>
+                        <th>Rang</th>
                         <th>Miqdor</th>
                         <th>Narx</th>
                     </tr>
                 </thead>
-                <tbody className='text-left'>
+                <tbody className='text-center'>
                     {data.items.map((item, idx) => (
                         <tr key={item.id} className="align-top">
                             <td>{idx + 1}.</td>
-                            <td>{item.product.product_name}</td>
+                            <td className='px-2 pr-5 text-left'>{item.product.product_name}</td>
                             <td>{item.size}</td>
+                            <td>{item.color}</td>
                             <td>{item.quantity}</td>
                             <td>{item.price}</td>
                         </tr>
