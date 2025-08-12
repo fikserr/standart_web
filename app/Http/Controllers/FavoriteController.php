@@ -12,18 +12,18 @@ class FavoriteController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->latest()->paginate(5);
+        $products  = Product::with(['category', 'variants'])->latest()->get();
         $favorites = Auth::user()->favorites;
+
         return inertia('Favorite', [
             'favorites' => $favorites,
-            'products' => $products,
+            'products'  => $products,
         ]);
-        
     }
 
     public function store(Request $request)
     {
-        $user = $request->user();
+        $user      = $request->user();
         $productId = $request->input('product_id');
 
         $user->favorites()->syncWithoutDetaching([$productId]);

@@ -7,6 +7,8 @@ const EmptyFavorites = ({ favorites, products }) => {
     const favoriteProducts = products?.data?.filter(product =>
         favorites.some(fav => fav.id === product.id)
     );
+    console.log("Favorites:", favorites, "Products:", products);
+    
     console.log("Favorite Products:", favoriteProducts);
 
     if (favorites && favorites.length > 0 && favoriteProducts.length > 0) {
