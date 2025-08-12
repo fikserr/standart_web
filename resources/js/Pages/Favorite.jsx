@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import favoriteImg from '../../../storage/app/private/assets/favorite.png';
-import HomeProducts from "@/components/shared/homeProducts";
+import { HomeProducts } from "../components/shared/homeProducts";
 
 
 const EmptyFavorites = ({ favorites, products }) => {
     const favoriteProducts = products?.data?.filter(product =>
         favorites.some(fav => fav.id === product.id)
     );
+    console.log("Favorite Products:", favoriteProducts);
 
     if (favorites && favorites.length > 0 && favoriteProducts.length > 0) {
         return (

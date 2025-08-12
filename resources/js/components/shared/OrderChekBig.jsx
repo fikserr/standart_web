@@ -2,7 +2,7 @@ import React from 'react';
 
 const CheckView = ({ data }) => {
 
-
+console.log("CheckView Data:", data);
   return (
     <div className="w-full p-2 font-sans text-sm">
       <h1 className="text-4xl font-extrabold text-center mb-2">STROY LIGHT</h1>
@@ -21,7 +21,8 @@ const CheckView = ({ data }) => {
           <tr>
             <th className="border px-5 py-3 w-[5%]">№</th>
             <th className="border px-5 py-3 w-[100%] text-left">Nomi</th>
-            <th className="border px-10 py-3 w-[10%]">O‘lcham</th>
+            <th className="border px-5 py-3 w-[5%]">O‘lcham</th>
+            <th className="border px-5 py-3 w-[5%]">Rangi</th>
             <th className="border px-10 py-3 w-[20%]">Miqdor</th>
             <th className="border px-10 py-3 w-[20%]">Narx</th>
           </tr>
@@ -32,6 +33,7 @@ const CheckView = ({ data }) => {
               <td className="border px-5 py-3 text-center">{i + 1}</td>
               <td className="border px-5 w-96 py-3 text-left font-semibold">{item.product.product_name}</td>
               <td className="border px-10 py-3 text-center">{item.size}</td>
+              <td className="border px-10 py-3 text-center">{item.color}</td>
               <td className="border px-10 py-3 text-center">{item.quantity}</td>
               <td className="border px-10 py-3 text-center">{item.price}</td>
             </tr>

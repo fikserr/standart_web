@@ -13,7 +13,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
   // Variantlar massivini tayyorlash
   const parsedVariants = item.variants?.map(variant => ({
     ...variant,
-    size: Array.isArray(variant.size) ? variant.size : [],
+    sizes: Array.isArray(variant.size) ? variant.size : [],
     color: Array.isArray(variant.color) ? variant.color : [],
   })) || [];
 

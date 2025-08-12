@@ -6,29 +6,86 @@ import { useState } from 'react';
 const Acsesuar = ({ products }) => {
     const [priceFilter, setPriceFilter] = useState({ minPrice: '', maxPrice: '' });
     const [selectedSizes, setSelectedSizes] = useState([]);
+    const [selectedColors, setSelectedColors] = useState([]);
+
     const filteredProducts = products?.data?.filter(item => {
         const price = Number(item.price);
 
-        // Narx filter
+        // Narx bo'yicha filtr
         if (priceFilter.minPrice && price < Number(priceFilter.minPrice)) return false;
         if (priceFilter.maxPrice && price > Number(priceFilter.maxPrice)) return false;
 
-        // Razmer filter
-        if (selectedSizes.length > 0) {
+        // O'lcham bo'yicha filtr
+        if (selectedSizes.length > 0 && item.sizes?.length > 0) {
             const hasMatchingSize = item.sizes.some(size => selectedSizes.includes(size));
             if (!hasMatchingSize) return false;
         }
 
+        // Rang bo'yicha filtr (agar mavjud bo‘lsa)
+        if (selectedColors.length > 0 && item.colors?.length > 0) {
+            const hasMatchingColor = item.colors.some(color => selectedColors.includes(color));
+            if (!hasMatchingColor) return false;
+        }
+
         return true;
     });
+
+    // O'lchamlar ro'yxati
+    const allSizes = Array.from(new Set(
+        products?.data?.flatMap(item => item.sizes || []) || []
+    ));
+
+    // Ranglar ro'yxati (ixtiyoriy)
+    const allColors = Array.from(new Set(
+        products?.data?.flatMap(item => item.colors || []) || []
+    ));
+
+    // Brendlar ro'yxati
+    const allBrands = Array.from(new Set(
+        products?.data?.map(p => p.brend).filter(Boolean)
+    ));
+
+    // Kategoriyalar ro'yxati
+    const allCategories = Array.from(new Set(
+        products?.data?.map(p => p.category?.name).filter(Boolean)
+    ));
+
     return (
         <div className='px-5 xl:px-20 mt-20'>
             <h2 style={{ fontFamily: "Oswald" }} className='text-2xl'>Aksesuarlar</h2>
-            <FilterModal onPriceChange={setPriceFilter} onSizeChange={setSelectedSizes}/>
+
+            <FilterModal
+                onPriceChange={setPriceFilter}
+                onSizeChange={setSelectedSizes}
+                onColorChange={setSelectedColors}
+                sizes={allSizes}
+                colors={allColors}
+                brands={allBrands}
+            />
+
             <div className='grid xl:grid-cols-4 xl:gap-5'>
-                <div className='hidden xl:block px-3 '>
-                    <FilterSidebar onPriceChange={setPriceFilter} onSizeChange={setSelectedSizes} />
+                {/* Sidebar */}
+                <div className='hidden xl:block px-3'>
+                    <FilterSidebar
+                        data={products.data}
+                        colors={allColors}
+                        sizes={allSizes}
+                        brands={allBrands}
+                        categories={allCategories}
+                        variantsColors={allColors}
+                        variantsSizes={allSizes}
+                        onPriceChange={setPriceFilter}
+                        onSizeChange={setSelectedSizes}
+                        onColorChange={setSelectedColors}
+                        onClearFilters={() => {
+                            setPriceFilter({ minPrice: '', maxPrice: '' });
+                            setSelectedSizes([]);
+                            setSelectedColors([]);
+                        }}
+                    />
                 </div>
+
+                {/* Products List */}
                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:col-span-3 gap-4 xl:mt-5'>
                     {filteredProducts?.map((item) => (
                         <Link href={`/detail/${item.id}`} key={item.id} className='rounded h-80'>
@@ -44,15 +101,13 @@ const Acsesuar = ({ products }) => {
                             </div>
                             <div className='flex items-end justify-between'>
                                 <div className='p-2'>
-                                    <p className='text-3xl font-semibold'>{item.product_name}</p>
-                                    <p className='text-xl'>{item.price} <span className='text-sm text-slate-500'>so'm</span> </p>
-                                    {
-                                        item.sizes.map((size, index) => (
-                                            <span key={index} className='text-sm text-slate-500'>
-                                                {size}{index < item.sizes.length - 1 ? ', ' : ''}
-                                            </span>
-                                        ))
-                                    }
+                                    <p className='text-2xl font-semibold'>{item.product_name}</p>
+                                    <p className='text-lg'>
+                                        {Number(item.price).toLocaleString()} <span className='text-sm text-slate-500'>so'm</span>
+                                    </p>
+                                    <p className='text-sm text-slate-500'>
+                                        {item.sizes?.join(', ')}
+                                    </p>
                                 </div>
                                 <Link href={`/detail/${item.id}`} className='hidden sm:block'>
                                     <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
@@ -64,8 +119,8 @@ const Acsesuar = ({ products }) => {
                     ))}
                 </div>
             </div>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
-export default Acsesuar
+export default Acsesuar;
