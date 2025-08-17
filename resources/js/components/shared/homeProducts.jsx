@@ -28,7 +28,6 @@ export const HomeProducts = ({ data, favorites }) => {
                     title: "Sevimlilardan o'chirildi",
                     description: "✅ Mahsulot o'chirildi",
                 });
-                window.location.reload();
             } catch (error) {
                 console.error(error);
                 alert("Sevimlilardan o'chirishda xatolik ❌");
@@ -99,7 +98,6 @@ export const ClothesProducts = ({ data, favorites }) => {
                     title: "Sevimlilardan o'chirildi",
                     description: "✅ Mahsulot o'chirildi",
                 });
-                window.location.reload();
             } catch (error) {
                 console.error(error);
                 alert("Sevimlilardan o'chirishda xatolik ❌");
@@ -170,7 +168,6 @@ export const AccessoryProducts = ({ data, favorites }) => {
                     title: "Sevimlilardan o'chirildi",
                     description: "✅ Mahsulot o'chirildi",
                 });
-                window.location.reload();
             } catch (error) {
                 console.error(error);
                 alert("Sevimlilardan o'chirishda xatolik ❌");
