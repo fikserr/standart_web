@@ -108,20 +108,21 @@ const FilterSidebar = ({
             </div>
 
             {/* Brendlar */}
-            <div className="border p-5 rounded-md my-10">
+            <div className="border rounded-md p-5 mt-5">
                 <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
-                <div className="grid grid-cols-3 gap-2">
-                    {brands.map(brand => (
-                        <button
-                            key={brand}
-                            className={`border rounded p-2 text-sm cursor-pointer
-                    ${selectedBrands.includes(brand) ? 'bg-black text-white' : 'bg-white text-black'}`}
-                            onClick={() => toggleArrayItem(selectedBrands, setSelectedBrands, brand, onBrandChange)}
-                        >
-                            {brand}
-                        </button>
-                    ))}
-                </div>
+                {brands.map(brand => (
+                    <button
+                        key={brand}
+                        className={`p-1 rounded-md w-full text-left mb-1
+                ${selectedBrands === brand ? 'bg-black text-white' : 'bg-white text-black'}`}
+                        onClick={() => {
+                            setSelectedBrands(selectedBrands === brand ? null : brand);
+                            onBrandChange(brand);
+                        }}
+                    >
+                        {brand}
+                    </button>
+                ))}
             </div>
 
             {/* Tozalash */}

@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function ClothesProducts()
     {
-        $products = Product::with('category', 'variants')->All();
+        $products = Product::with('category', 'variants')->get();
         return Inertia::render('Clothes', [
             'products' => $products,
         ]);
@@ -28,7 +28,7 @@ class ProductController extends Controller
 
     public function ShoesProducts()
     {
-        $products = Product::with('category', 'variants')->All();
+        $products = Product::with('category', 'variants')->get();
         return Inertia::render('Shoes', [
             'products' => $products,
         ]);
@@ -36,7 +36,7 @@ class ProductController extends Controller
 
     public function AccesProducts()
     {
-        $products = Product::with('category', 'variants')->All();
+        $products = Product::with('category', 'variants')->get();
         return Inertia::render('Accessory', [
             'products' => $products,
         ]);

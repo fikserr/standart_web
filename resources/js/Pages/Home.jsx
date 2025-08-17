@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
@@ -5,52 +6,58 @@ import { HomeProducts, ClothesProducts, AccessoryProducts } from "@/components/s
 import HomeHero from "@/Pages/home-hero";
 
 const Home = ({ products, banners, favorites }) => {
+
+  // Sahifa har safar ochilganda scrollni boshiga tushiramiz
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <HomeHero banner={banners} />
-      <div>
-        <div className='px-5 xl:px-20'>
-          <div className='flex items-center justify-between my-3'>
-            <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-              Oyoq kiyimlar
-            </h3>
-            <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-              <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
-              <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-              <HiOutlineChevronRight />
-            </h4>
-          </div>
-          <HomeProducts data={products} favorites={favorites} />
+
+      <div className='px-5 xl:px-20'>
+        {/* Oyoq kiyimlar */}
+        <div className='flex items-center justify-between my-3'>
+          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
+            Oyoq kiyimlar
+          </h3>
+          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
+            <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <HiOutlineChevronRight />
+          </h4>
         </div>
+        <HomeProducts data={products} favorites={favorites} />
+
+        {/* Kiyimlar */}
+        <div className='flex items-center justify-between my-3'>
+          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
+            Kiyimlar
+          </h3>
+          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
+            <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <HiOutlineChevronRight />
+          </h4>
+        </div>
+        <ClothesProducts data={products} favorites={favorites} />
+
+        {/* Aksesuarlar */}
+        <div className='flex items-center justify-between my-3'>
+          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
+            Aksesuarlar
+          </h3>
+          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
+            <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <HiOutlineChevronRight />
+          </h4>
+        </div>
+        <AccessoryProducts data={products} favorites={favorites} />
       </div>
-      <div>
-        <div className='px-5 xl:px-20'>
-          <div className='flex items-center justify-between my-3'>
-            <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-              Kiyimlar
-            </h3>
-            <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-              <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
-              <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-              <HiOutlineChevronRight />
-            </h4>
-          </div>
-          <ClothesProducts data={products} favorites={favorites} />
-        </div>
-        <div className='px-5 xl:px-20'>
-          <div className='flex items-center justify-between my-3'>
-            <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-              Aksesuarlar
-            </h3>
-            <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-              <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
-              <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
-              <HiOutlineChevronRight />
-            </h4>
-          </div>
-          <AccessoryProducts data={products} favorites={favorites} />
-        </div>
-      </div>
+
+      {/* Narxni hisoblash */}
       <div className='px-5 xl:px-20 my-14 text-white'>
         <div className='w-full p-5 sm:p-8 xl:p-16 bg-[rgb(22,156,248)] rounded-lg flex flex-col gap-3 relative'>
           <div className='grid lg:grid-cols-5 md:grid-cols-4'>
@@ -107,6 +114,8 @@ const Home = ({ products, banners, favorites }) => {
           </div>
         </div>
       </div>
+
+      {/* Xwear haqida */}
       <div className='px-5 xl:px-20 grid lg:grid-cols-3 grid-cols-1 gap-5 xl:gap-32'>
         <div className='col-span-2'>
           <h2 style={{ fontFamily: "Oswald" }} className='text-2xl lg:text-4xl mb-2'>Xwear onlayn do'koni haqida</h2>
@@ -145,6 +154,8 @@ const Home = ({ products, banners, favorites }) => {
           </div>
         </div>
       </div>
+
+      {/* Blog */}
       <div className='px-5 xl:px-20 my-5 lg:my-10'>
         <div className='flex items-center justify-between'>
           <h2 style={{ fontFamily: "Oswald" }} className='text-xl'>Bizning blog</h2>
@@ -193,7 +204,7 @@ const Home = ({ products, banners, favorites }) => {
         </div>
       </div>
     </div >
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -8,11 +8,14 @@ const Shoes = ({ products }) => {
     const [priceFilter, setPriceFilter] = useState({ minPrice: '', maxPrice: '' });
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
     const [starredItems, setStarredItems] = useState([]);
-    console.log(products, 'products');
-    const filteredProducts = products?.data?.filter(item => {
+
+    const filteredProducts = products?.filter(item => {
         if (!item.variants || item.variants.length === 0) return false;
 
+        // Narx bo‘yicha filter
         const hasMatchingPrice = item.variants.some(variant => {
             const price = Number(variant.price);
             if (priceFilter.minPrice && price < Number(priceFilter.minPrice)) return false;
@@ -21,6 +24,7 @@ const Shoes = ({ products }) => {
         });
         if (!hasMatchingPrice) return false;
 
+        // O‘lcham bo‘yicha filter
         if (selectedSizes.length > 0) {
             const hasMatchingSize = item.variants.some(variant =>
                 variant.sizes?.some(size => selectedSizes.includes(size))
@@ -28,6 +32,7 @@ const Shoes = ({ products }) => {
             if (!hasMatchingSize) return false;
         }
 
+        // Rang bo‘yicha filter
         if (selectedColors.length > 0) {
             const hasMatchingColor = item.variants.some(variant =>
                 variant.colors?.some(color => selectedColors.includes(color))
@@ -35,8 +40,19 @@ const Shoes = ({ products }) => {
             if (!hasMatchingColor) return false;
         }
 
+        // Brend bo‘yicha filter
+        if (selectedBrands.length > 0 && !selectedBrands.includes(item.brend)) {
+            return false;
+        }
+
+        // Kategoriya bo‘yicha filter
+        if (selectedCategories.length > 0 && !selectedCategories.includes(item.category?.name)) {
+            return false;
+        }
+
         return true;
     });
+
     const handleClick = (e, productId) => {
         e.preventDefault();
         setStarredItems(prev =>
@@ -45,21 +61,23 @@ const Shoes = ({ products }) => {
                 : [...prev, productId]
         );
     };
+
+    // Unikal qiymatlarni olish
     const allColors = Array.from(new Set(
-        products?.data?.flatMap(product =>
+        products?.flatMap(product =>
             product.variants.flatMap(variant => variant.colors || [])
         ) || []
     ));
     const allSizes = Array.from(new Set(
-        products?.data?.flatMap(product =>
+        products?.flatMap(product =>
             product.variants.flatMap(variant => variant.sizes || [])
         ) || []
     ));
     const allBrands = Array.from(new Set(
-        products?.data?.map(p => p.brend).filter(Boolean)
+        products?.map(p => p.brend).filter(Boolean)
     ));
     const allCategories = Array.from(new Set(
-        products?.data?.map(p => p.category?.name).filter(Boolean)
+        products?.map(p => p.category?.name).filter(Boolean)
     ));
 
     return (
@@ -78,7 +96,6 @@ const Shoes = ({ products }) => {
             <div className='grid xl:grid-cols-4 xl:gap-5 w-full'>
                 <div className='hidden xl:block px-3'>
                     <FilterSidebar
-                        data={products.data}
                         colors={allColors}
                         sizes={allSizes}
                         brands={allBrands}
@@ -88,11 +105,16 @@ const Shoes = ({ products }) => {
                         onPriceChange={setPriceFilter}
                         onSizeChange={setSelectedSizes}
                         onColorChange={setSelectedColors}
+                        onBrandChange={setSelectedBrands}
+                        onCategoryChange={setSelectedCategories}
                         onClearFilters={() => {
                             setPriceFilter({ minPrice: '', maxPrice: '' });
                             setSelectedSizes([]);
                             setSelectedColors([]);
-                        }} />
+                            setSelectedBrands([]);
+                            setSelectedCategories([]);
+                        }}
+                    />
                 </div>
 
                 <div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:col-span-3 xl:h-2/5 gap-3'>
@@ -124,7 +146,7 @@ const Shoes = ({ products }) => {
                                     </div>
                                     <button
                                         onClick={(e) => handleClick(e, item.id)}
-                                        className='absolute top-4 right-4 z-10'
+                                        className='absolute top-4 right-4'
                                     >
                                         {starredItems.includes(item.id) ? (
                                             <ImStarFull className="text-2xl text-yellow-400" />
