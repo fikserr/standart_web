@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import favoriteImg from '../../../storage/app/private/assets/favorite.png';
 import { HomeProducts } from "../components/shared/homeProducts";
 
-
-const EmptyFavorites = ({ favorites, products }) => {
-    const favoriteProducts = products?.data?.filter(product =>
-        favorites.some(fav => fav.id === product.id)
+const EmptyFavorites = ({ favorites = [], products = [] }) => {
+    // products bu array ekan, shuning uchun .data kerak emas
+    const productList = Array.isArray(products) ? products : (products?.data || []);
+    const favoriteProducts = productList.filter(product =>
+        favorites?.some(fav => fav.id === product.id)
     );
+
     console.log("Favorites:", favorites, "Products:", products);
-    
     console.log("Favorite Products:", favoriteProducts);
 
-    if (favorites && favorites.length > 0 && favoriteProducts.length > 0) {
+    if (favorites.length > 0 && favoriteProducts.length > 0) {
         return (
             <div className="w-10/12 mx-auto min-h-screen p-4 bg-white">
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center">SEVIMLILAR</h1>
@@ -21,6 +22,7 @@ const EmptyFavorites = ({ favorites, products }) => {
             </div>
         );
     }
+
     return (
         <div className="mt-24 px-5 md:px-10 xl:px-20 min-h-screen">
             <h1 className="text-3xl md:text-4xl font-bold">SEVIMLILAR</h1>

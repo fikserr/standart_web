@@ -14,10 +14,6 @@ const Index = ({ detail }) => {
     const [processing, setProcessing] = useState(false);
     const { toast } = useToast();
 
-    console.log(activeColor, activeSize);
-
-    
-    // Variantlarni arrayga aylantirish
     const parsedVariants = useMemo(() => {
         return detail.variants.map((v) => ({
             ...v,
@@ -26,13 +22,11 @@ const Index = ({ detail }) => {
         }));
     }, [detail.variants]);
 
-    // Unikal o'lchamlar
     const sizes = useMemo(() => {
         const allSizes = parsedVariants.flatMap((v) => v.sizes);
         return [...new Set(allSizes)];
     }, [parsedVariants]);
 
-    // Tanlangan o'lchamga mos ranglar
     const availableColors = useMemo(() => {
         if (!activeSize) {
             return [...new Set(parsedVariants.flatMap((v) => v.colors))];
@@ -46,7 +40,6 @@ const Index = ({ detail }) => {
         ];
     }, [parsedVariants, activeSize]);
 
-    // Tanlangan size + color ga mos variant topish
     useEffect(() => {
         if (activeSize && activeColor) {
             const found = parsedVariants.find(
@@ -60,7 +53,6 @@ const Index = ({ detail }) => {
         }
     }, [activeSize, activeColor, parsedVariants]);
 
-    // Agar activeVariant o'zgarsa va unda size/color bo'lsa — avtomatik set qilish
     useEffect(() => {
         if (activeVariant) {
             if (!activeSize && activeVariant.sizes.length > 0) {
@@ -72,7 +64,6 @@ const Index = ({ detail }) => {
         }
     }, [activeVariant]);
 
-    // Savatga qo'shish
     const handleAddToCart = () => {
         if (!activeVariant || !activeSize || !activeColor) {
             toast({
@@ -144,8 +135,6 @@ const Index = ({ detail }) => {
                         )}
                     </div>
                 </div>
-
-                {/* Tafsilot */}
                 <div className="my-5">
                     <h1
                         className="text-2xl font-bold mb-4"
@@ -153,8 +142,6 @@ const Index = ({ detail }) => {
                     >
                         {detail.product_name}
                     </h1>
-
-                    {/* O'lcham */}
                     <h2 className="font-semibold mb-2 text-lg">O‘lchamlar:</h2>
                     <div className="flex gap-2 flex-wrap mb-4">
                         {sizes.map((size, index) => (
@@ -173,8 +160,6 @@ const Index = ({ detail }) => {
                             </button>
                         ))}
                     </div>
-
-                    {/* Rang */}
                     <h2 className="font-semibold mb-2 text-lg">Ranglar:</h2>
                     <div className="flex gap-2 flex-wrap mb-4">
                         {availableColors.map((color, index) => (
@@ -190,8 +175,6 @@ const Index = ({ detail }) => {
                             </button>
                         ))}
                     </div>
-
-                    {/* Narx & Miqdor */}
                     <div className="flex items-center justify-between mt-5">
                         <p
                             style={{
@@ -221,8 +204,6 @@ const Index = ({ detail }) => {
                             </button>
                         </div>
                     </div>
-
-                    {/* Savatga qo‘shish */}
                     <button
                         onClick={handleAddToCart}
                         disabled={processing}
@@ -230,8 +211,6 @@ const Index = ({ detail }) => {
                     >
                         {processing ? "Yuklanmoqda..." : "Savatga qo‘shish"}
                     </button>
-
-                    {/* Tafsilotlar */}
                     <div className="my-5 px-2 pt-2">
                         <p className="text-black border-b-blue-700 border-b-2 pb-2 cursor-pointer">
                             Tafsilotlar
