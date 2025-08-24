@@ -36,18 +36,28 @@ const FilterSidebar = ({
             </button>
             {/* Kategoriyalar */}
             <div className="border rounded-md p-2 mt-3">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Kategoriyalar</h2>
+                <h2
+                    style={{ fontFamily: 'Oswald', fontSize: 24 }}
+                    className="mb-2 font-semibold"
+                >
+                    Kategoriyalar
+                </h2>
+
                 {categories.map(cat => (
                     <button
-                        key={cat}
+                        key={cat.id}
                         className={`p-1 rounded-md w-full text-left mb-1
-                            ${selectedCategory === cat ? 'bg-black text-white' : 'bg-white text-black'}`}
+            ${selectedCategory === cat.name ? 'bg-black text-white' : 'bg-white text-black'}`}
                         onClick={() => {
-                            setSelectedCategory(selectedCategory === cat ? null : cat);
-                            onCategoryChange(cat);
+                            if (cat.id === cat.id) {
+                                window.location.href = `/category/${cat.id}`;
+                            } else {
+                                setSelectedCategory(selectedCategory === cat.name ? null : cat.name);
+                                onCategoryChange(cat.name);
+                            }
                         }}
                     >
-                        {cat}
+                        {cat.name}
                     </button>
                 ))}
             </div>

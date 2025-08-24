@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 import { Link } from '@inertiajs/react';
 
-const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
+const ProductCard = ({ item, handleClick, isStarred, delay = 0 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Faqat mavjud rasmlarni olish
@@ -24,13 +24,19 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
 
   // Slideshow uchun rasm almashinuvi
   useEffect(() => {
+    if (images.length <= 1) return;
+
+    // Dastlab delay bilan boshlaymiz
     const start = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % images.length);
       }, 5000);
+
+      // cleanup interval
       return () => clearInterval(interval);
     }, delay);
 
+    // cleanup timeout
     return () => clearTimeout(start);
   }, [delay, images.length]);
 

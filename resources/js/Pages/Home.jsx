@@ -23,8 +23,8 @@ const Home = ({ products, banners, favorites }) => {
             Oyoq kiyimlar
           </h3>
           <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <Link href={"/category/4"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/category/4"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>
@@ -36,8 +36,8 @@ const Home = ({ products, banners, favorites }) => {
             Kiyimlar
           </h3>
           <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <Link href={"/category/3"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/category/3"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>
@@ -49,8 +49,8 @@ const Home = ({ products, banners, favorites }) => {
             Aksesuarlar
           </h3>
           <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
+            <Link href={"/category/1"} className='md:hidden'>Ko'proq</Link>
+            <Link href={"/category/1"} className='hidden md:block'>Ko'proq maxsulot</Link>
             <HiOutlineChevronRight />
           </h4>
         </div>

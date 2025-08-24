@@ -2,20 +2,21 @@ import { Link } from '@inertiajs/react';
 import FilterModal from '@/components/shared/filter-modal';
 import FilterSidebar from '@/components/shared/filter-sidebar';
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
 
-const Shoes = ({ products }) => {
+const Accessory = ({ products, categories, favorites = [] }) => {
     const [priceFilter, setPriceFilter] = useState({ minPrice: '', maxPrice: '' });
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
-    const [starredItems, setStarredItems] = useState([]);
+    const [starredItems, setStarredItems] = useState(favorites.map(f => f.id));
+    const { toast } = useToast();
 
     const filteredProducts = products?.filter(item => {
         if (!item.variants || item.variants.length === 0) return false;
-
-        // Narx bo‘yicha filter
         const hasMatchingPrice = item.variants.some(variant => {
             const price = Number(variant.price);
             if (priceFilter.minPrice && price < Number(priceFilter.minPrice)) return false;
@@ -24,7 +25,6 @@ const Shoes = ({ products }) => {
         });
         if (!hasMatchingPrice) return false;
 
-        // O‘lcham bo‘yicha filter
         if (selectedSizes.length > 0) {
             const hasMatchingSize = item.variants.some(variant =>
                 variant.sizes?.some(size => selectedSizes.includes(size))
@@ -32,7 +32,6 @@ const Shoes = ({ products }) => {
             if (!hasMatchingSize) return false;
         }
 
-        // Rang bo‘yicha filter
         if (selectedColors.length > 0) {
             const hasMatchingColor = item.variants.some(variant =>
                 variant.colors?.some(color => selectedColors.includes(color))
@@ -40,29 +39,61 @@ const Shoes = ({ products }) => {
             if (!hasMatchingColor) return false;
         }
 
-        // Brend bo‘yicha filter
         if (selectedBrands.length > 0 && !selectedBrands.includes(item.brend)) {
             return false;
         }
 
-        // Kategoriya bo‘yicha filter
         if (selectedCategories.length > 0 && !selectedCategories.includes(item.category?.name)) {
             return false;
         }
 
         return true;
     });
+    useEffect(() => {
+        if (favorites && favorites.length > 0) {
+            setStarredItems(favorites.map(f => f.id));
+        }
+    }, [favorites]);
 
-    const handleClick = (e, productId) => {
+    const handleClick = async (e, productId) => {
         e.preventDefault();
-        setStarredItems(prev =>
-            prev.includes(productId)
-                ? prev.filter(id => id !== productId)
-                : [...prev, productId]
-        );
+
+        if (starredItems.includes(productId)) {
+            // agar sevimlida bo‘lsa - o‘chiramiz
+            try {
+                await axios.delete(`/favorites/${productId}`);
+                setStarredItems(prev => prev.filter(id => id !== productId));
+                toast({
+                    title: "Sevimlilardan o'chirildi",
+                    description: "✅ Mahsulot olib tashlandi",
+                });
+            } catch (error) {
+                console.error(error);
+                toast({
+                    title: "Xatolik",
+                    description: "❌ Sevimlilardan o‘chirishda muammo",
+                });
+            }
+        } else {
+            // agar sevimlida bo‘lmasa - qo‘shamiz
+            try {
+                await axios.post(`/favorites`, { product_id: productId });
+                setStarredItems(prev => [...prev, productId]);
+                toast({
+                    title: "Sevimlilarga qo'shildi",
+                    description: "✅ Mahsulot qo‘shildi",
+                });
+            } catch (error) {
+                console.error(error);
+                toast({
+                    title: "Xatolik",
+                    description: "❌ Sevimlilarga qo‘shishda muammo",
+                });
+            }
+        }
     };
 
-    // Unikal qiymatlarni olish
+    // Unikal qiymatlar
     const allColors = Array.from(new Set(
         products?.flatMap(product =>
             product.variants.flatMap(variant => variant.colors || [])
@@ -91,6 +122,7 @@ const Shoes = ({ products }) => {
                 sizes={allSizes}
                 colors={allColors}
                 brands={allBrands}
+                categories={categories}
             />
 
             <div className='grid xl:grid-cols-4 xl:gap-5 w-full'>
@@ -99,7 +131,7 @@ const Shoes = ({ products }) => {
                         colors={allColors}
                         sizes={allSizes}
                         brands={allBrands}
-                        categories={allCategories}
+                        categories={categories}
                         variantsColors={allColors}
                         variantsSizes={allSizes}
                         onPriceChange={setPriceFilter}
@@ -129,7 +161,7 @@ const Shoes = ({ products }) => {
                                         className="w-full overflow-hidden object-cover h-56 rounded"
                                     />
                                 </div>
-                                <div className='flex items-end justify-between'>
+                                <div className='flex items-end justify-between '>
                                     <div className=' overflow-hidden rounded-t-lg p-2'>
                                         <p className='text-2xl font-semibold'>{item.product_name}</p>
                                         <p className='text-lg'>
@@ -154,6 +186,11 @@ const Shoes = ({ products }) => {
                                             <ImStarEmpty className="text-2xl text-black" />
                                         )}
                                     </button>
+                                    <Link href={`/detail/${item.id}`} className='hidden sm:block'>
+                                        <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
+                                            Ko'proq
+                                        </button>
+                                    </Link>
                                 </div>
                             </Link>
                         );
@@ -164,4 +201,4 @@ const Shoes = ({ products }) => {
     );
 };
 
-export default Shoes;
+export default Accessory;

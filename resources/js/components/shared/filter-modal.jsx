@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 const FilterModal = ({
-    brands = [], // massiv bo‘lishi kerak
-    categoryName = '',
+    brands = [],
+    categories = [],
     colors = [],
     sizes = [],
     onSizeChange = () => { },
     onPriceChange = () => { },
     onColorChange = () => { },
-    onBrandChange = () => { }
+    onBrandChange = () => { },
+    onCategoryChange = () => { }
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -17,6 +18,7 @@ const FilterModal = ({
     const [selectedSizes, setSelectedSizes] = useState([]);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedBrands, setSelectedBrands] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
         document.body.style.overflow = (isModalOpen || isFilterOpen) ? 'hidden' : '';
@@ -29,26 +31,28 @@ const FilterModal = ({
     };
 
     const handleSizeChange = (size) => {
-        const newSize = selectedSizes[0] === size ? [] : [size];
+        const newSize = selectedSizes.includes(size)
+            ? selectedSizes.filter(s => s !== size)
+            : [...selectedSizes, size];
         setSelectedSizes(newSize);
         onSizeChange(newSize);
+        setIsFilterOpen(false);
     };
 
     const handleColorChange = (color) => {
         const newColor = selectedColor === color ? null : color;
         setSelectedColor(newColor);
         onColorChange(newColor ? [newColor] : []);
+        setIsFilterOpen(false);
     };
 
     const handleBrandChange = (brand) => {
-        let updated;
-        if (selectedBrands.includes(brand)) {
-            updated = selectedBrands.filter(b => b !== brand);
-        } else {
-            updated = [...selectedBrands, brand];
-        }
+        const updated = selectedBrands.includes(brand)
+            ? selectedBrands.filter(b => b !== brand)
+            : [...selectedBrands, brand];
         setSelectedBrands(updated);
         onBrandChange(updated);
+        // ❌ Modal yopilmasin → bir nechta tanlash uchun
     };
 
     const handleReset = () => {
@@ -57,10 +61,12 @@ const FilterModal = ({
         setSelectedSizes([]);
         setSelectedColor(null);
         setSelectedBrands([]);
+        setSelectedCategory(null);
         onPriceChange({ minPrice: '', maxPrice: '' });
         onSizeChange([]);
         onColorChange([]);
         onBrandChange([]);
+        onCategoryChange(null);
     };
 
     return (
@@ -89,7 +95,30 @@ const FilterModal = ({
                             <h2 className="font-bold">KATEGORIYA</h2>
                             <button onClick={() => setIsModalOpen(false)}>✕</button>
                         </div>
-                        <p className="text-lg">{categoryName}</p>
+
+                        <div className="flex flex-col gap-2">
+                            {categories.map(cat => (
+                                <button
+                                    key={cat.id}
+                                    className={`p-2 rounded-md text-left border
+                                        ${selectedCategory === cat.name ? 'bg-black text-white' : 'bg-white text-black'}`}
+                                    onClick={() => {
+                                        if (cat.id === cat.id) {
+                                            window.location.href = `/category/${cat.id}`;
+                                        } else {
+                                            setSelectedCategory(selectedCategory === cat.name ? null : cat.name);
+                                            onCategoryChange(cat.name);
+                                        }
+                                        const newCategory = selectedCategory === cat.name ? null : cat.name;
+                                        setSelectedCategory(newCategory);
+                                        onCategoryChange(newCategory);
+                                        setIsModalOpen(false);
+                                    }}
+                                >
+                                    {cat.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}
@@ -119,7 +148,8 @@ const FilterModal = ({
                                 <input type="number" placeholder="Maksimal narx" className='w-1/2 px-1 outline-none'
                                     value={maxPrice} onChange={e => setMaxPrice(e.target.value)} />
                             </div>
-                            <button className='bg-black text-white w-full rounded py-1 mt-5' onClick={handleApply}>
+                            <button className='bg-black text-white w-full rounded py-1 mt-5'
+                                onClick={handleApply}>
                                 Filtrni qo‘llash
                             </button>
                         </div>
@@ -140,21 +170,6 @@ const FilterModal = ({
                             </div>
                         </div>
 
-                        {/* Brend */}
-                        <div className='my-10 border p-5 rounded-md'>
-                            <h2 className="font-semibold mb-2">Brend</h2>
-                            {brands.map(brand => (
-                                <label key={brand} className="flex items-center space-x-2 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedBrands.includes(brand)}
-                                        onChange={() => handleBrandChange(brand)}
-                                    />
-                                    <span>{brand}</span>
-                                </label>
-                            ))}
-                        </div>
-
                         {/* Ranglar */}
                         <div className='my-10 border rounded-md p-5'>
                             <h2 className="font-semibold mb-2">Ranglar</h2>
@@ -172,6 +187,21 @@ const FilterModal = ({
                             </div>
                         </div>
 
+                        {/* Brendlar */}
+                        <div className="border rounded-md p-2 mb-5">
+                            <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
+                            {brands.map(brand => (
+                                <button
+                                    key={brand}
+                                    className={`p-1 rounded-md w-full text-left mb-1
+                                        ${selectedBrands.includes(brand) ? 'bg-black text-white' : 'bg-white text-black'}`}
+                                    onClick={() => handleBrandChange(brand)}
+                                >
+                                    {brand}
+                                </button>
+                            ))}
+                        </div>
+
                         {/* Reset */}
                         <button
                             onClick={handleReset}
@@ -187,4 +217,3 @@ const FilterModal = ({
 };
 
 export default FilterModal;
-    

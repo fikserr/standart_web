@@ -31,9 +31,9 @@ const Footer = () => {
                         <DropdownMenuLabel>Katalog</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <Link><DropdownMenuItem>Katalog</DropdownMenuItem></Link>
-                        <Link href={"/clothes"}><DropdownMenuItem>Kiyimlar</DropdownMenuItem></Link>
-                        <Link href={"/shoes"}><DropdownMenuItem>Oyoq kiyimlar</DropdownMenuItem></Link>
-                        <Link href={"/accessory"}><DropdownMenuItem>Aksessuarlar</DropdownMenuItem></Link>
+                        <Link href={"/category/3"}><DropdownMenuItem>Kiyimlar</DropdownMenuItem></Link>
+                        <Link href={"/category/4"}><DropdownMenuItem>Oyoq kiyimlar</DropdownMenuItem></Link>
+                        <Link href={"/category/1"}><DropdownMenuItem>Aksessuarlar</DropdownMenuItem></Link>
                         <Link><DropdownMenuItem>Xarajatlarni hisoblash</DropdownMenuItem></Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -52,9 +52,9 @@ const Footer = () => {
                 <div className='flex justify-evenly'>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
                         <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Katalog</li>
-                        <Link href={'/clothes'}><li>Kiyimlar</li></Link>
-                        <Link href={'/shoes'}><li>Oyoq kiyimlar</li></Link>
-                        <Link href={'/accessory'}><li>Aksessuarlar</li></Link>
+                        <Link href={'/category/3'}><li>Kiyimlar</li></Link>
+                        <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
+                        <Link href={'/category/1'}><li>Aksessuarlar</li></Link>
                         <img src={LogoFooter} alt="" className='hidden xl:mt-10' />
                     </ul>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>

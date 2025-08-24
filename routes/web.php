@@ -44,9 +44,9 @@ Route::get('/test-email', function () {
 // 👤 Faqat USER (oddiy foydalanuvchi) uchun sahifalar
 Route::middleware([auth::class, IsUser::class])->group(function () {
     Route::get('/', [ProductController::class, 'userProduct'])->name('home');
-    Route::get('/shoes/{id}', [ProductController::class, 'ShoesProducts'])->name('shoes.products');
-    Route::get('/clothes/{id}', [ProductController::class, 'ClothesProducts'])->name('clothes.products');
-    Route::get('/accessory/{id}', [ProductController::class, 'AccesProducts'])->name('accessory.products');
+    Route::get('/category/{id}', [ProductController::class, 'ShoesProducts'])->name('category.products');
+    Route::get('/category/{id}', [ProductController::class, 'ClothesProducts'])->name('category.products');
+    Route::get('/category/{id}', [ProductController::class, 'AccesProducts'])->name('category.products');
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
     Route::get('/profile', fn() => inertia('Profile'));
