@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Http\Controllers\{
-    AddressController,
-    BannerController,
-    CartController,
-    CategoryController,
-    FavoriteController,
-    OrderController,
-    ProductController,
-    UserController,
-    VerifyCodeController
-};
-use App\Http\Middleware\{IsAdmin, IsUser};
+use App\Http\Controllers\AddressController;
+
+use App\Http\Controllers\BannerController;
+
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerifyCodeController;;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsUser;
+use Illuminate\Support\Facades\Route;use Inertia\Inertia;
 
 // 🌐 Root yo‘naltirish (admin yoki user)
 Route::get('/', function () {
@@ -45,7 +45,7 @@ Route::get('/test-email', function () {
 Route::middleware([auth::class, IsUser::class])->group(function () {
     Route::get('/', [ProductController::class, 'userProduct'])->name('home');
     Route::get('/shoes', [ProductController::class, 'ShoesProducts'])->name('shoes.products');
-    Route::get('/clothes', [ProductController::class, 'ClothesProducts'])->name('clothes.products');
+    Route::get('/clothes/{id}', [ProductController::class, 'ClothesProducts'])->name('clothes.products');
     Route::get('/accessory', [ProductController::class, 'AccesProducts'])->name('accessory.products');
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');

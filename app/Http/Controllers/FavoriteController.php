@@ -14,13 +14,11 @@ class FavoriteController extends Controller
     {
         $products  = Product::with(['category', 'variants'])->latest()->get();
         $favorites = Auth::user()->favorites;
-
         return inertia('Favorite', [
             'favorites' => $favorites,
             'products'  => $products,
         ]);
     }
-
     public function store(Request $request)
     {
         $user      = $request->user();
