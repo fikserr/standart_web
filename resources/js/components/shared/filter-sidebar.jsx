@@ -27,8 +27,15 @@ const FilterSidebar = ({
 
     return (
         <div>
+            {/* Tozalash */}
+            <button
+                className="w-full text-center mt-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                onClick={onClearFilters}
+            >
+                Barcha filtrlarni tozalash
+            </button>
             {/* Kategoriyalar */}
-            <div className="border rounded-md p-5 mt-5">
+            <div className="border rounded-md p-2 mt-3">
                 <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Kategoriyalar</h2>
                 {categories.map(cat => (
                     <button
@@ -46,7 +53,7 @@ const FilterSidebar = ({
             </div>
 
             {/* Narx filteri */}
-            <div className="border rounded-md p-5 my-10">
+            <div className="border rounded-md p-2 my-3">
                 <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Narx bo‘yicha filter</h2>
                 <div className="flex items-center space-x-1">
                     <input
@@ -74,7 +81,7 @@ const FilterSidebar = ({
             </div>
 
             {/* O‘lchamlar */}
-            <div className="border p-5 rounded-md my-10">
+            <div className="border p-2 rounded-md my-3">
                 <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">O‘lchamlar</h2>
                 <div className="grid grid-cols-4 gap-2">
                     {variantsSizes.map(size => (
@@ -91,8 +98,8 @@ const FilterSidebar = ({
             </div>
 
             {/* Ranglar */}
-            <div className="border rounded-md p-5 my-10">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="font-semibold mb-2">Rang</h2>
+            <div className="border rounded-md p-2 my-3">
+                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="font-semibold mb-2">Ranglar</h2>
                 <div className="grid grid-cols-4 gap-2">
                     {variantsColors.map(color => (
                         <button
@@ -108,7 +115,7 @@ const FilterSidebar = ({
             </div>
 
             {/* Brendlar */}
-            <div className="border rounded-md p-5 mt-5">
+            <div className="border rounded-md p-2 mb-5">
                 <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
                 {brands.map(brand => (
                     <button
@@ -124,14 +131,6 @@ const FilterSidebar = ({
                     </button>
                 ))}
             </div>
-
-            {/* Tozalash */}
-            <button
-                className="w-full text-center py-2 mb-5 bg-gray-200 rounded hover:bg-gray-300"
-                onClick={onClearFilters}
-            >
-                Barcha filtrlarni tozalash
-            </button>
         </div>
     );
 };
