@@ -44,19 +44,16 @@ Route::get('/test-email', function () {
 // 👤 Faqat USER (oddiy foydalanuvchi) uchun sahifalar
 Route::middleware([auth::class, IsUser::class])->group(function () {
     Route::get('/', [ProductController::class, 'userProduct'])->name('home');
-    Route::get('/shoes', [ProductController::class, 'ShoesProducts'])->name('shoes.products');
+    Route::get('/shoes/{id}', [ProductController::class, 'ShoesProducts'])->name('shoes.products');
     Route::get('/clothes/{id}', [ProductController::class, 'ClothesProducts'])->name('clothes.products');
-    Route::get('/accessory', [ProductController::class, 'AccesProducts'])->name('accessory.products');
+    Route::get('/accessory/{id}', [ProductController::class, 'AccesProducts'])->name('accessory.products');
     Route::get('/detail', fn() => inertia('detail'));
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
-
-    // Profile
     Route::get('/profile', fn() => inertia('Profile'));
     Route::get('/profile-edit', fn() => inertia('EditProfile'));
     Route::get('/edit-password', fn() => inertia('EditPass'));
     Route::post('/update-password', [UserController::class, 'updatePassword']);
     Route::post('/verify-password-code', [UserController::class, 'verifyPasswordCode']);
-
     // Address
     Route::get('/address', [AddressController::class, 'show'])->name('address.show');
     Route::get('/address-add', fn() => inertia('AddAddress'))->name('address.add');

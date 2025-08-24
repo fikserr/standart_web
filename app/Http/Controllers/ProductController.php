@@ -23,28 +23,33 @@ class ProductController extends Controller
         $products = Product::with('category', 'variants')
             ->where('category_id', $id) // dinamik kategoriya
             ->get();
-
+        $categories = Product::with('category')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         return Inertia::render('Clothes', [
             'products' => $products,
         ]);
     }
 
-    public function ShoesProducts()
+    public function ShoesProducts($id)
     {
-        $products = Product::with('category', 'variants')->get();
+        $products = Product::with('category', 'variants')
+            ->where('category_id', $id) // dinamik kategoriya
+            ->get();
+        $categories = Product::with('category')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         return Inertia::render('Shoes', [
             'products' => $products,
         ]);
     }
 
-    public function AccesProducts()
+    public function AccesProducts($id)
     {
-        $products = Product::with('category', 'variants')->get();
+        $products = Product::with('category', 'variants')
+            ->where('category_id', $id) // dinamik kategoriya
+            ->get();
+        $categories = Product::with('category')->get(); // kerak bo‘lsa filter, search keyin qo‘shamiz
         return Inertia::render('Accessory', [
             'products' => $products,
         ]);
     }
-
     public function userProduct()
     {
         $banners   = \App\Models\Banner::latest()->get();
