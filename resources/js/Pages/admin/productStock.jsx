@@ -160,6 +160,7 @@ const ProductStock = ({ products }) => {
                                         <div className="relative w-24 h-24 flex items-center justify-center">
                                             <img
                                                 src={`/storage/${currentImage}?v=${Date.now()}`}
+                                                loading="lazy"
                                                 alt={product.product_name}
                                                 className="w-20 h-20 rounded object-cover cursor-zoom-in"
                                                 onClick={() =>
@@ -237,6 +238,7 @@ const ProductStock = ({ products }) => {
                             )}
                             <img
                                 src={modalImage}
+                                loading="lazy"
                                 alt="Product preview"
                                 className="max-h-[70vh] w-full object-cover rounded shadow-lg"
                             />

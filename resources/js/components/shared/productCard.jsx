@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 import { Link } from '@inertiajs/react';
 
-const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
+const ProductCard = ({ item, handleClick, isStarred, delay = 0, src, alt, className = "", fallback = "/fallback.jpg" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   // Faqat mavjud rasmlarni olish
   const images = [item.photo1, item.photo2, item.photo3]
@@ -24,13 +25,19 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
 
   // Slideshow uchun rasm almashinuvi
   useEffect(() => {
+    if (images.length <= 1) return;
+
+    // Dastlab delay bilan boshlaymiz
     const start = setTimeout(() => {
       const interval = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % images.length);
       }, 5000);
+
+      // cleanup interval
       return () => clearInterval(interval);
     }, delay);
 
+    // cleanup timeout
     return () => clearTimeout(start);
   }, [delay, images.length]);
 
@@ -41,17 +48,29 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 1 }) => {
           className="flex transition-transform duration-700 ease-in-out w-full h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {images.map((src, index) => (
-            <img
-              key={index}
-              src={`${src}?v=${Date.now()}`}
-              alt={item.product_name}
-              className="w-full flex-shrink-0 object-cover h-full"
-              onError={(e) => {
-                e.target.src = '/fallback.jpg';
-              }}
-            />
-          ))}
+          {images.map((src, index) => {
+            const [imgLoaded, setImgLoaded] = useState(false); // har rasm uchun alohida holat
+
+            return (
+              <img
+                key={index}
+                src={`${src}?v=${Date.now()}`} // cache break
+                loading="lazy"
+                alt={alt}
+                onLoad={() => setImgLoaded(true)}
+                onError={(e) => {
+                  e.currentTarget.src = fallback;
+                }}
+                className={`
+        w-full flex-shrink-0 object-cover h-full
+        transition-all duration-700 ease-in-out
+        ${imgLoaded ? "blur-0 scale-100" : "blur-md scale-105"}
+        ${className}
+      `}
+              />
+            );
+          })}
+
         </div>
 
         <button

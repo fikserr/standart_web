@@ -1,60 +1,84 @@
-import { useEffect } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
-import { HomeProducts, ClothesProducts, AccessoryProducts } from "@/components/shared/homeProducts";
-import HomeHero from "@/Pages/home-hero";
+import { Spinner } from "@/components/shared/spinner";
+
+const HomeHero = lazy(() => import("../Pages/home-hero"));
+const HomeProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.HomeProducts })));
+const ClothesProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.ClothesProducts })));
+const AccessoryProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.AccessoryProducts })));
+
+const Section = ({ title, link, children }) => (
+  <div className='my-3'>
+    <div className='flex items-center justify-between'>
+      <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
+        {title}
+      </h3>
+      <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
+        <Link href={link} className='md:hidden'>Ko'proq</Link>
+        <Link href={link} className='hidden md:block mb-3'>Ko'proq maxsulot</Link>
+        <HiOutlineChevronRight />
+      </h4>
+    </div>
+    {children}
+  </div>
+);
 
 const Home = ({ products, banners, favorites }) => {
+  const [showShoes, setShowShoes] = useState(false);
+  const [showClothes, setShowClothes] = useState(false);
+  const [showAccessories, setShowAccessories] = useState(false);
 
   // Sahifa har safar ochilganda scrollni boshiga tushiramiz
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // Bosqichma-bosqich yuklash
+    const shoesTimer = setTimeout(() => setShowShoes(true), 1000);
+    const clothesTimer = setTimeout(() => setShowClothes(true), 2000);
+    const accessoryTimer = setTimeout(() => setShowAccessories(true), 3000);
+
+    return () => {
+      clearTimeout(shoesTimer);
+      clearTimeout(clothesTimer);
+      clearTimeout(accessoryTimer);
+    };
   }, []);
 
   return (
     <div>
-      <HomeHero banner={banners} />
+      <Suspense fallback={<Spinner />}>
+        <HomeHero banner={banners} />
+      </Suspense>
 
       <div className='px-5 xl:px-20'>
         {/* Oyoq kiyimlar */}
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-            Oyoq kiyimlar
-          </h3>
-          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/shoes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/shoes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <HomeProducts data={products} favorites={favorites} />
+        {showShoes && (
+          <Section title="Kiyimlar" link="/category/3">
+            <Suspense fallback={<Spinner />}>
+              <HomeProducts data={products} favorites={favorites} />
+            </Suspense>
+          </Section>
+        )}
 
         {/* Kiyimlar */}
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-            Kiyimlar
-          </h3>
-          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/clothes"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/clothes"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <ClothesProducts data={products} favorites={favorites} />
+        {showClothes && (
+          <Section title="Kiyimlar" link="/category/3">
+            <Suspense fallback={<Spinner />}>
+              <ClothesProducts data={products} favorites={favorites} />
+            </Suspense>
+          </Section>
+        )}
 
         {/* Aksesuarlar */}
-        <div className='flex items-center justify-between my-3'>
-          <h3 style={{ fontFamily: 'Oswald' }} className='font-bold text-2xl'>
-            Aksesuarlar
-          </h3>
-          <h4 style={{ fontFamily: 'Oswald' }} className='border-b-2 border-black text-xl flex items-center p-1'>
-            <Link href={"/accessory"} className='md:hidden'>Ko'proq</Link>
-            <Link href={"/accessory"} className='hidden md:block'>Ko'proq maxsulot</Link>
-            <HiOutlineChevronRight />
-          </h4>
-        </div>
-        <AccessoryProducts data={products} favorites={favorites} />
+        {showAccessories && (
+          <Section title="Aksesuarlar" link="/category/1">
+            <Suspense fallback={<Spinner />}>
+              <AccessoryProducts data={products} favorites={favorites} />
+            </Suspense>
+          </Section>
+        )}
       </div>
 
       {/* Narxni hisoblash */}
@@ -77,8 +101,8 @@ const Home = ({ products, banners, favorites }) => {
                     Agar siz qidirayotgan narsangizni topa olmasangiz, har doim Poizon bozorida buyurtma narxini avtomatik hisoblash, shu jumladan xizmat komissiyasi va yetkazib berishdan foydalanishingiz mumkin
                   </p>
                 </div>
-                <div className='hidden md:block absolute md:bottom-32 right-5 lg:hidden '>
-                  <img src={iphone12} alt="Iphone" />
+                <div className='hidden md:block absolute md:bottom-20 right-5 lg:hidden '>
+                  <img src={iphone12} alt="Iphone" loading="lazy"/>
                 </div>
               </div>
               <div>
@@ -109,7 +133,7 @@ const Home = ({ products, banners, favorites }) => {
               </div>
             </div>
             <div className='absolute bottom-0 right-0 xl:right-10 hidden lg:block'>
-              <img src={iphone13} alt="iPhone 12" />
+              <img src={iphone13} className="w-80" alt="iPhone 12" loading="lazy"/>
             </div>
           </div>
         </div>
@@ -127,7 +151,7 @@ const Home = ({ products, banners, favorites }) => {
         <div className='my-5 flex flex-col gap-3 sm:flex-row lg:flex-col'>
           <div className='flex items-center gap-3'>
             <div className=''>
-              <img src={inbox} alt="" />
+              <img src={inbox} alt="" loading="lazy"/>
             </div>
             <div>
               <h3 className='font-bold text-md sm:text-xs md:text-base'>Rossiyaga bepul yetkazib berish</h3>
@@ -136,7 +160,7 @@ const Home = ({ products, banners, favorites }) => {
           </div>
           <div className='flex items-center gap-3'>
             <div className=''>
-              <img src={user} alt="" />
+              <img src={user} alt="" loading="lazy"/>
             </div>
             <div>
               <h3 className='font-bold text-md sm:text-xs md:text-base'>Biz vositachilarsiz ishlaymiz</h3>
@@ -145,7 +169,7 @@ const Home = ({ products, banners, favorites }) => {
           </div>
           <div className='flex items-center gap-3'>
             <div className=''>
-              <img src={check} alt="" />
+              <img src={check} alt="" loading="lazy"/>
             </div>
             <div>
               <h3 className='font-bold text-md sm:text-xs md:text-base'>Buyurtma berish va ishlatish oson</h3>
@@ -164,7 +188,7 @@ const Home = ({ products, banners, favorites }) => {
         <div className='grid md:grid-cols-2 xl:grid-cols-3 gap-5'>
           <div className='flex flex-col gap-3'>
             <div className='w-full mt-5'>
-              <img src={Blog1} alt="Img_Blog" className='w-full' />
+              <img src={Blog1} alt="Img_Blog" className='w-full' loading="lazy"/>
             </div>
             <div>
               <h3 style={{ fontFamily: "Oswald" }}>Kuz mavsumi uchun barcha ayollar kiyimlariga chegirmalarni taqdim etamiz</h3>
@@ -177,7 +201,7 @@ const Home = ({ products, banners, favorites }) => {
           </div>
           <div className='hidden md:flex flex-col gap-3'>
             <div className='w-full mt-5'>
-              <img src={Blog2} alt="Img_Blog" className='w-full' />
+              <img src={Blog2} alt="Img_Blog" className='w-full' loading="lazy"/>
             </div>
             <div>
               <h3 style={{ fontFamily: "Oswald" }}>Kuz mavsumi uchun barcha ayollar kiyimlariga chegirmalarni taqdim etamiz</h3>
@@ -190,7 +214,7 @@ const Home = ({ products, banners, favorites }) => {
           </div>
           <div className='hidden xl:flex flex-col gap-3'>
             <div className='w-full mt-5'>
-              <img src={Blog3} alt="Img_Blog" className='w-full' />
+              <img src={Blog3} alt="Img_Blog" className='w-full' loading="lazy"/>
             </div>
             <div>
               <h3 style={{ fontFamily: "Oswald" }}>Kuz mavsumi uchun barcha ayollar kiyimlariga chegirmalarni taqdim etamiz</h3>

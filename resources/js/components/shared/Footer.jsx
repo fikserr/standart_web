@@ -9,7 +9,7 @@ const Footer = () => {
     return (
         <div className='bg-[rgb(18,18,20)]'>
             <div className='flex justify-center py-5 md:hidden'>
-                <img src={LogoFooter} alt="" />
+                <img src={LogoFooter} alt="" loading="lazy" />
             </div>
             <div style={{ fontFamily: "Oswald" }} className='md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center '>
                 <DropdownMenu>
@@ -31,9 +31,9 @@ const Footer = () => {
                         <DropdownMenuLabel>Katalog</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <Link><DropdownMenuItem>Katalog</DropdownMenuItem></Link>
-                        <Link href={"/clothes"}><DropdownMenuItem>Kiyimlar</DropdownMenuItem></Link>
-                        <Link href={"/shoes"}><DropdownMenuItem>Oyoq kiyimlar</DropdownMenuItem></Link>
-                        <Link href={"/accessory"}><DropdownMenuItem>Aksessuarlar</DropdownMenuItem></Link>
+                        <Link href={"/category/3"}><DropdownMenuItem>Kiyimlar</DropdownMenuItem></Link>
+                        <Link href={"/category/4"}><DropdownMenuItem>Oyoq kiyimlar</DropdownMenuItem></Link>
+                        <Link href={"/category/1"}><DropdownMenuItem>Aksessuarlar</DropdownMenuItem></Link>
                         <Link><DropdownMenuItem>Xarajatlarni hisoblash</DropdownMenuItem></Link>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -52,10 +52,10 @@ const Footer = () => {
                 <div className='flex justify-evenly'>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
                         <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Katalog</li>
-                        <Link href={'/clothes'}><li>Kiyimlar</li></Link>
-                        <Link href={'/shoes'}><li>Oyoq kiyimlar</li></Link>
-                        <Link href={'/accessory'}><li>Aksessuarlar</li></Link>
-                        <img src={LogoFooter} alt="" className='hidden xl:mt-10' />
+                        <Link href={'/category/3'}><li>Kiyimlar</li></Link>
+                        <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
+                        <Link href={'/category/1'}><li>Aksessuarlar</li></Link>
+                        <img src={LogoFooter} alt="" className='hidden xl:mt-10' loading="lazy" />
                     </ul>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
                         <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Ma'lumot</li>
@@ -71,37 +71,21 @@ const Footer = () => {
                         <li>+7 993 608 38 85</li>
                         <li>Messengerlar</li>
                         <li className='flex gap-1'>
-                            <img src={telegram} alt="" className='w-[25px] h-[25px]' />
-                            <img src={whatsapp} alt="" className='w-[25px] h-[25px]' />
+                            <img src={telegram} alt="" className='w-[25px] h-[25px]' loading="lazy" />
+                            <img src={whatsapp} alt="" className='w-[25px] h-[25px]' loading="lazy" />
                         </li>
                         <li>Bizning ijtimoiy tarmoqlarimiz</li>
                         <li>
-                            <img src={vk} alt="" className='w-[25px] h-[25px]' />
+                            <img src={vk} alt="" className='w-[25px] h-[25px]' loading="lazy" />
                         </li>
                     </ul>
-                    {/* <div className='hidden xl:block w-1/4'>
-                        <div className='text-white hidden md:block'>
-                            <p style={{ fontFamily: "Oswald" }} className='text-2xl'>Yangiliklarga obuna bo'ling</p>
-                            <p className='text-xs xl:text-base'>Chegirmalar va yangiliklardan xabardor bo'ling</p>
-                        </div>
-                        <div className='flex justify-between items-center border-b-2 my-5'>
-                            <input type="text" placeholder='Email pochtangiz' className='bg-[rgb(18,18,20)] w-full outline-none text-white my-3' />
-                            <p className='xl:w-[33px] xl:h-[30px] w-[40px] rounded-[50%] flex justify-center items-center bg-slate-100'>
-                                <HiOutlineChevronRight />
-                            </p>
-                        </div>
-                        <div>
-                            <p className='text-slate-700 text-sm'>Axborot byulleteniga obuna bo'lish orqali siz shaxsiy ma'lumotlarni qayta ishlashga rozilik bildirasiz</p>
-                            <p className='text-slate-700 text-sm mt-5'>Foydalanuvchi shartnomasi</p>
-                        </div>
-                    </div> */}
                 </div>
             </div>
             <div className='md:hidden pb-20'>
                 <div className='flex gap-2 justify-center py-5'>
-                    <img src={telegram} alt="" />
-                    <img src={whatsapp} alt="" />
-                    <img src={vk} alt="" />
+                    <img src={telegram} alt="" loading="lazy"/>
+                    <img src={whatsapp} alt="" loading="lazy"/>
+                    <img src={vk} alt="" loading="lazy"/>
                 </div>
                 <div className='text-white text-center'>
                     <p style={{ fontFamily: "Oswald" }}>Yangiliklarga obuna bo'ling</p>

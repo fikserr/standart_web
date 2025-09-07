@@ -79,7 +79,7 @@ const AdminBanner = () => {
                                 <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (Yuklanishi tavfsiya qilinadigan Rasm hajmi 2 mb)</p>
                             </div>
                         ) : (
-                            <img src={banner} alt="Preview" className="object-cover w-full h-full" />
+                            <img src={banner} alt="Preview" className="object-cover w-full h-full" loading="lazy"/>
                         )}
                         <input
                             id="dropzone-file"

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import {
     HiOutlineMenuAlt4,
@@ -20,9 +20,21 @@ const UserNavbar = () => {
     const toggleSearch = () => setSearchInputVisible(prev => !prev);
     const toggleMobileSearch = () => setIsMobileSearchOpen(prev => !prev);
 
+    // ✅ sahifa almashtirilganda sidebar yopilishi
+    useEffect(() => {
+        const unlisten = router.on('navigate', () => {
+            setIsSidebarOpen(false);
+        });
+
+        return () => {
+            unlisten(); // cleanup
+        };
+    }, []);
+
     return (
         <div className="py-5 px-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]">
             <div className="flex items-center justify-around md:justify-between">
+                {/* MOBILE LEFT */}
                 <div className="flex items-center gap-5 md:hidden">
                     <div className="flex items-center gap-2 sm:gap-5 relative">
                         <HiOutlineMenuAlt4
@@ -48,30 +60,34 @@ const UserNavbar = () => {
                                     onClick={toggleMobileSearch}
                                 />
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
+
+                {/* SIDEBAR */}
                 <div
                     className={`fixed top-0 left-0 w-64 h-full bg-gray-800 text-white z-50 p-4 transform transition-transform duration-500 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
                         }`}
                 >
                     <div className="flex justify-between items-center">
                         <button onClick={() => setIsSidebarOpen(false)}>
-                            <img src={Logo} alt="Logo" />
+                            <img src={Logo} alt="Logo" loading="lazy"/>
                         </button>
                         <button className="text-white text-xl" onClick={() => setIsSidebarOpen(false)}>
                             <RiCloseLargeFill />
                         </button>
                     </div>
                     <div className="space-y-2 mt-10">
-                        <Link href={'/clothes'}><SidebarButton label="Kiyimlar" /></Link>
-                        <Link href={'/shoes'}><SidebarButton label="Oyoq kiyimlar" /></Link>
-                        <Link href={'/accessory'}><SidebarButton label="Aksesuarlar" /></Link>
+                        <Link href={`/category/3`}><SidebarButton label="Kiyimlar" /></Link>
+                        <Link href={'/category/4'}><SidebarButton label="Oyoq kiyimlar" /></Link>
+                        <Link href={'/category/1'}><SidebarButton label="Aksesuarlar" /></Link>
                         <Link href={'/policy'}><SidebarButton label="Ma'lumot"/></Link>
                         <Link href={'/profile'}><SidebarButton label="Profile" /></Link>
                         <Link href={'/favorites'}><SidebarButton label="Favorites" /></Link>
                     </div>
                 </div>
+
+                {/* LOGO */}
                 <div className="flex items-center gap-10">
                     <HiOutlineMenuAlt4
                         className="hidden md:block xl:hidden"
@@ -79,17 +95,21 @@ const UserNavbar = () => {
                         onClick={() => setIsSidebarOpen(true)}
                     />
                     <Link href="/">
-                        <img src={Logo} alt="Company Logo" />
+                        <img src={Logo} alt="Company Logo" loading="lazy"/>
                     </Link>
                 </div>
+
+                {/* NAV LINKS */}
                 <div className="w-4/6 hidden xl:flex justify-start">
                     <ul className="flex gap-5 2xl:gap-10 text-xl">
-                        <NavItem href="/clothes" label="Kiyimlar" />
-                        <NavItem href="/shoes" label="Oyoq kiyimlar" />
-                        <NavItem href="/accessory" label="Aksessuarlar" />
+                        <NavItem href="/category/3" label="Kiyimlar" />
+                        <NavItem href="/category/4" label="Oyoq kiyimlar" />
+                        <NavItem href="/category/1" label="Aksessuarlar" />
                         <NavItem href="/policy" label="Ma'lumot" />
                     </ul>
                 </div>
+
+                {/* RIGHT ICONS */}
                 <div className="flex items-center gap-2 sm:gap-5 md:gap-6 relative">
                     <HiOutlineSearch
                         className="hidden md:block"

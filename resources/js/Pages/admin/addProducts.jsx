@@ -108,6 +108,7 @@ const AddProductForm = ({ categories }) => {
                                     {previewImages[`photo${i}`] ? (
                                         <img
                                             src={previewImages[`photo${i}`]}
+                                            loading="lazy"
                                             alt={`Preview ${i}`}
                                             className="w-full h-full object-cover"
                                         />
