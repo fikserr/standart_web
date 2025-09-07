@@ -17,7 +17,12 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
             $table->string('size')->nullable();
-            $table->string('color')->nullable();
+
+            // color ustuni faqat bo‘lmasa qo‘shiladi
+            if (!Schema::hasColumn('order_items', 'color')) {
+                $table->string('color')->nullable();
+            }
+
             $table->decimal('price', 10, 2);
             $table->timestamps();
         });
