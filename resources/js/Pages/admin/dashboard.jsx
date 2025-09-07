@@ -43,7 +43,7 @@ const AdminDashboard = () => {
                 <div
                   className={`flex justify-center items-center p-5 rounded-[40%] ${card.iconStyle}`}
                 >
-                  <img src={card.icon} alt={card.title} />
+                  <img src={card.icon} alt={card.title} loading="lazy"/>
                 </div>
               </div>
               <div className='flex items-center gap-2 text-lg'>

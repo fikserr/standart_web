@@ -63,6 +63,7 @@ export default function ProductsUI({ banners }) {
                     <CardContent className="flex items-center justify-center p-0 relative">
                       <img
                         src={`/storage/${banner.image}`}
+                        loading="lazy"
                         alt={banner.name}
                         className="w-full h-[500px] object-cover rounded-xl"
                       />

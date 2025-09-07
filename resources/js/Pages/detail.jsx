@@ -113,6 +113,7 @@ const Index = ({ detail }) => {
                     {mainPhoto && (
                         <img
                             src={`/storage/${mainPhoto}?v=${Date.now()}`}
+                            loading="lazy"
                             alt={detail.product_name || "Product image"}
                             className="w-full h-[350px] rounded-2xl object-cover"
                         />
@@ -124,6 +125,7 @@ const Index = ({ detail }) => {
                                     <img
                                         key={index}
                                         src={`/storage/${photo}?v=${Date.now()}`}
+                                        loading="lazy"
                                         alt={`Product ${index + 1}`}
                                         className={`w-full h-[130px] object-cover rounded-lg cursor-pointer ${mainPhoto === photo
                                                 ? "ring-2 ring-blue-400"

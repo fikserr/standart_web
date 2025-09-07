@@ -27,6 +27,7 @@ const AdminFavorites = () => {
             <div className="relative w-40 h-40 mb-4">
               <img
                 src={p.image}
+                loading="lazy"
                 alt={p.title}
                 className="object-contain w-full h-full"
               />

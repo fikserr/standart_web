@@ -72,6 +72,7 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
                             >
                                 <img
                                     src={`/storage/${product.photo1}`}
+                                    loading="lazy"
                                     alt={product.product_name}
                                     className="w-full h-48 object-cover rounded-t-lg"
                                 />
@@ -116,6 +117,7 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
                 <div className="w-24 h-24 mb-6">
                     <img
                         src={favoriteImg}
+                        loading="lazy"
                         alt="Bo'sh sevimlilar ikonkasi"
                         className="w-full h-full object-contain"
                     />

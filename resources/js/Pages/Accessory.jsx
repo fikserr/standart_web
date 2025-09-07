@@ -157,6 +157,7 @@ const Accessory = ({ products, categories, favorites = [] }) => {
                                 <div className='flex justify-end rounded-t-lg'>
                                     <img
                                         src={`/storage/${item.photo1}?v=${Date.now()}`}
+                                        loading="lazy"
                                         alt={item.product_name}
                                         className="w-full overflow-hidden object-cover h-56 rounded"
                                     />

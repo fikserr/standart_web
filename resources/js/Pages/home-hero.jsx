@@ -33,6 +33,7 @@ const HomeHero = ({ banner }) => {
                                     <CardContent className="flex items-center justify-center p-0">
                                         <img
                                             src={`/storage/${item.image}`}
+                                            loading="lazy"
                                             alt={item.name}
                                             className="w-full h-full object-cover rounded-xl"
                                         />

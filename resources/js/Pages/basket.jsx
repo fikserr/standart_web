@@ -94,6 +94,7 @@ const CartPage = ({ cartItems, address }) => {
                             <div className="flex items-start gap-4">
                                 <img
                                     src={`/storage/${item.product?.photo1}`}
+                                    loading="lazy"
                                     alt={item.product?.product_name}
                                     className="w-20 h-20 sm:w-32 sm:h-32 object-cover rounded"
                                 />
