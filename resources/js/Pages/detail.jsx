@@ -185,7 +185,7 @@ const Index = ({ detail }) => {
                             }}
                         >
                             Narxi:{" "}
-                            {(activeVariant?.price ?? detail.price)?.toLocaleString()}{" "}
+                            {(activeVariant?.price ?? detail.price)}{" "}
                             <span className="text-sm text-slate-500">so'm</span>
                         </p>
                         <div className="flex items-center gap-2">
