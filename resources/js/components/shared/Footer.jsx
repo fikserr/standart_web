@@ -1,8 +1,8 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import LogoFooter from '@images/LogoFooter.webp'
-import telegram from '@images/telegram.webp'
-import whatsapp from '@images/whatsapp.webp'
-import vk from '@images/vk.webp'
+import LogoFooter from '@images/LogoFooter.avif'
+import telegram from '@images/telegram.avif'
+import whatsapp from '@images/whatsapp.avif'
+import vk from '@images/vk.avif'
 import { Link } from '@inertiajs/react';
 
 const Footer = () => {

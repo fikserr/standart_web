@@ -1,11 +1,11 @@
-import iphone12 from '@images/group329rb.webp'
-import iphone13 from '@images/Group329.webp'
-import inbox from '@images/inbox.webp'
-import user from '@images/user.webp'
-import check from '@images/check.webp'
-import Blog1 from '@images/blog_img1.webp'
-import Blog2 from '@images/blog_img2.webp'
-import Blog3 from '@images/blog_img3.webp'
+import iphone12 from '@images/group329rb.avif'
+import iphone13 from '@images/Group329.avif'
+import inbox from '@images/inbox.avif'
+import user from '@images/user.avif'
+import check from '@images/check.avif'
+import Blog1 from '@images/blog_img1.avif'
+import Blog2 from '@images/blog_img2.avif'
+import Blog3 from '@images/blog_img3.avif'
 
 export {
     iphone12,
