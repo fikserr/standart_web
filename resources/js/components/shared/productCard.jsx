@@ -58,9 +58,9 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 0, src, alt, classN
                 loading="lazy"
                 alt={alt}
                 onLoad={() => setImgLoaded(true)}
-                onError={(e) => {
-                  e.currentTarget.src = fallback;
-                }}
+                // onError={(e) => {
+                //   e.currentTarget.src = fallback;
+                // }}
                 className={`
         w-full flex-shrink-0 object-cover h-full
         transition-all duration-700 ease-in-out

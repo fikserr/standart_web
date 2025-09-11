@@ -35,7 +35,7 @@ const HomeHero = ({ banner }) => {
                                             src={`/storage/${item.image}`}
                                             loading="lazy"
                                             alt={item.name}
-                                            className="w-full h-full object-cover rounded-xl"
+                                            className="w-full h-full object-center rounded-xl"
                                         />
                                     </CardContent>
                                 </Card>

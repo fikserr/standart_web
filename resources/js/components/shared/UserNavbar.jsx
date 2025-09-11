@@ -8,7 +8,7 @@ import {
 import { ImStarEmpty } from 'react-icons/im';
 import { RiCloseLargeFill } from 'react-icons/ri';
 import { BiUser } from 'react-icons/bi';
-import Logo from '@images/Logo1.webp';
+import Logo from '@images/Logo1.avif';
 
 const UserNavbar = () => {
     const [searchInputVisible, setSearchInputVisible] = useState(false);
