@@ -71,7 +71,7 @@ const UserNavbar = () => {
                 >
                     <div className="flex justify-between items-center">
                         <button onClick={() => setIsSidebarOpen(false)}>
-                            <img src={Logo} alt="Logo" loading="lazy"/>
+                            <img src={Logo} alt="Logo" loading="lazy" className="w-full h-auto"/>
                         </button>
                         <button className="text-white text-xl" onClick={() => setIsSidebarOpen(false)}>
                             <RiCloseLargeFill />
@@ -95,7 +95,7 @@ const UserNavbar = () => {
                         onClick={() => setIsSidebarOpen(true)}
                     />
                     <Link href="/">
-                        <img src={Logo} alt="Company Logo" loading="lazy"/>
+                        <img src={Logo} alt="Company Logo" loading="lazy" className="w-full h-auto"/>
                     </Link>
                 </div>
 

@@ -11,7 +11,7 @@ const EmptyCart = () => {
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
                         alt="Bo'sh savat ikon"
-                        className="w-full h-full object-contain"
+                        className="w-full h-auto object-contain"
                     />
                 </div>
                 <h2 className="text-xl md:text-2xl font-bold mb-2">

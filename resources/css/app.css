@@ -5,16 +5,16 @@
 
 @font-face {
   font-family: 'Oswald';
-  src: url('./Oswald/static/Oswald-Bold.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/fonts/Oswald-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'OswaldLight';
-  src: url('./Oswald/static/Oswald-Light.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/fonts/Oswald-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
 }
 
 @layer base {

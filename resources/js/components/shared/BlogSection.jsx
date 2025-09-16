@@ -11,7 +11,7 @@ const BlogSection = () => (
       {[Blog1, Blog2, Blog3].map((blogImg, i) => (
         <div key={i} className='flex flex-col gap-3'>
           <div className='w-full mt-5'>
-            <img src={blogImg} alt={`Img_Blog_${i}`} className='w-full' loading="lazy" />
+            <img src={blogImg} alt={`Img_Blog_${i}`} className="w-full h-auto" loading="lazy" />
           </div>
           <div>
             <h3 style={{ fontFamily: "Oswald" }}>Kuz mavsumi uchun barcha ayollar kiyimlariga chegirmalarni taqdim etamiz</h3>
