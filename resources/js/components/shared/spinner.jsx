@@ -3,7 +3,7 @@ export const Spinner = () => (
         <div className="lds-ring">
             <div></div><div></div><div></div><div></div>
         </div>
-        <style jsx>{`
+        <style>{`
         .lds-ring {
           display: inline-block;
           position: relative;

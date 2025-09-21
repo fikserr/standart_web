@@ -140,7 +140,7 @@ const Index = ({ detail }) => {
                 <div className="my-5">
                     <h1
                         className="text-2xl font-bold mb-4"
-                        style={{ fontFamily: "Oswald" }}
+                        style={{ fontFamily: "Roboto" }}
                     >
                         {detail.product_name}
                     </h1>
@@ -180,7 +180,7 @@ const Index = ({ detail }) => {
                     <div className="flex items-center justify-between mt-5">
                         <p
                             style={{
-                                fontFamily: "OswaldLight",
+                                fontFamily: "Roboto",
                                 fontSize: "20px",
                             }}
                         >
@@ -231,7 +231,7 @@ const Index = ({ detail }) => {
                                     <div
                                         key={index}
                                         className="flex items-center justify-between"
-                                        style={{ fontFamily: "OswaldLight" }}
+                                        style={{ fontFamily: "Roboto" }}
                                     >
                                         <h3 style={{ fontSize: "20px" }}>
                                             {label}

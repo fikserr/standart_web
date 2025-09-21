@@ -4,8 +4,6 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
 } from "@/components/ui/carousel"
 
 const HomeHero = ({ banner }) => {
@@ -33,7 +31,6 @@ const HomeHero = ({ banner }) => {
                                     <CardContent className="flex items-center justify-center p-0">
                                         <img
                                             src={`/storage/${item.image}`}
-                                            loading="lazy"
                                             alt={item.name}
                                             className="w-full h-auto object-center rounded-xl"
                                         />

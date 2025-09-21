@@ -61,14 +61,14 @@ const EditAddress = () => {
       <div className='flex items-center gap-2 mb-6'>
         <HiOutlineChevronLeft className='text-2xl' />
         <Link href="/address">
-          <h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Joylashuv</h1>
+          <h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Joylashuv</h1>
         </Link>
       </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
         <div className='col-span-4 my-5 px-10'>
           <div className='grid grid-cols-4 items-center pl-6'>
-            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Oswald' }}>Joylashuvni tahrirlash</h2>
+            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Roboto' }}>Joylashuvni tahrirlash</h2>
           </div>
 
           <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
@@ -95,7 +95,7 @@ const EditAddress = () => {
 };
 const InputBlock = ({ label, name, value, onChange, className = '', error }) => (
   <div className={`bg-slate-100 p-3 rounded-lg space-y-2 ${className}`}>
-    <h3 style={{ fontFamily: 'Oswald' }}>{label}</h3>
+    <h3 style={{ fontFamily: 'Roboto' }}>{label}</h3>
     <input
       type="text"
       value={value}

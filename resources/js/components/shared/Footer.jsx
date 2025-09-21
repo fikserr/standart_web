@@ -11,7 +11,7 @@ const Footer = () => {
             <div className='flex justify-center py-5 md:hidden'>
                 <img src={LogoFooter} alt="" loading="lazy" className="razmer150" />
             </div>
-            <div style={{ fontFamily: "Oswald" }} className='md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center '>
+            <div style={{ fontFamily: "Roboto" }} className='md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center '>
                 <DropdownMenu>
                     <DropdownMenuTrigger className='lg:hidden px-5 outline-none text-black rounded-md bg-white'>Ma'lumot</DropdownMenuTrigger>
                     <DropdownMenuContent className="space-y-1 pb-3 flex flex-col">
@@ -50,22 +50,22 @@ const Footer = () => {
             </div>
             <div className='hidden md:block py-10 '>
                 <div className='flex justify-evenly'>
-                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
-                        <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Katalog</li>
+                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "Roboto" }}>
+                        <li style={{ fontFamily: "Roboto" }} className='text-2xl'>Katalog</li>
                         <Link href={'/category/3'}><li>Kiyimlar</li></Link>
                         <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
                         <Link href={'/category/1'}><li>Aksessuarlar</li></Link>
                     </ul>
-                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
-                        <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Ma'lumot</li>
+                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "Roboto" }}>
+                        <li style={{ fontFamily: "Roboto" }} className='text-2xl'>Ma'lumot</li>
                         <li>Blog</li>
                         <li>Kontaktlar</li>
                         <li>Yetkazib berish</li>
                         <li>To'lov</li>
                         <li>FAQ</li>
                     </ul>
-                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
-                        <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Kontaktlar</li>
+                    <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "Roboto" }}>
+                        <li style={{ fontFamily: "Roboto" }} className='text-2xl'>Kontaktlar</li>
                         <li>info@xwear.info</li>
                         <li>+7 993 608 38 85</li>
                         <li>Messengerlar</li>
@@ -87,7 +87,7 @@ const Footer = () => {
                     <img src={vk} alt="" loading="lazy" className="razmer30 cursor-pointer"/>
                 </div>
                 <div className='text-white text-center'>
-                    <p style={{ fontFamily: "Oswald" }}>Yangiliklarga obuna bo'ling</p>
+                    <p style={{ fontFamily: "Roboto" }}>Yangiliklarga obuna bo'ling</p>
                     <p className='text-xs'>Chegirmalar va yangiliklardan xabardor bo'ling</p>
                 </div>
             </div>

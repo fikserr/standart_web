@@ -58,7 +58,7 @@ const Register = () => {
                 </h2>
                 <div className="grid grid-cols-1 p-5 gap-5">
                     <div className="bg-slate-100 p-3 rounded-lg space-y-2">
-                        <h3 style={{ fontFamily: "Oswald" }}>Ismingiz:</h3>
+                        <h3 style={{ fontFamily: "Roboto" }}>Ismingiz:</h3>
                         <input
                             type="text"
                             name="name"
@@ -75,7 +75,7 @@ const Register = () => {
                     </div>
 
                     <div className="bg-slate-100 p-3 rounded-lg space-y-2">
-                        <h3 style={{ fontFamily: "Oswald" }}>
+                        <h3 style={{ fontFamily: "Roboto" }}>
                             Elektron pochtangiz:
                         </h3>
                         <input
@@ -94,7 +94,7 @@ const Register = () => {
                     </div>
 
                     <div className="bg-slate-100 p-3 rounded-lg space-y-2 relative">
-                        <h3 style={{ fontFamily: "Oswald" }}>Parol:</h3>
+                        <h3 style={{ fontFamily: "Roboto" }}>Parol:</h3>
                         <input
                             type={showPassword ? "text" : "password"}
                             name="password"
@@ -117,7 +117,7 @@ const Register = () => {
                     </div>
 
                     <div className="bg-slate-100 p-3 rounded-lg space-y-2 relative">
-                        <h3 style={{ fontFamily: "Oswald" }}>
+                        <h3 style={{ fontFamily: "Roboto" }}>
                             Parolni takrorlang:
                         </h3>
                         <input
