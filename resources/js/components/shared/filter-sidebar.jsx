@@ -37,7 +37,7 @@ const FilterSidebar = ({
             {/* Kategoriyalar */}
             <div className="border rounded-md p-2 mt-3">
                 <h2
-                    style={{ fontFamily: 'Oswald', fontSize: 24 }}
+                    style={{ fontFamily: 'Roboto', fontSize: 24 }}
                     className="mb-2 font-semibold"
                 >
                     Kategoriyalar
@@ -64,7 +64,7 @@ const FilterSidebar = ({
 
             {/* Narx filteri */}
             <div className="border rounded-md p-2 my-3">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Narx bo‘yicha filter</h2>
+                <h2 style={{ fontFamily: 'Roboto', fontSize: 24 }} className="mb-2 font-semibold">Narx bo‘yicha filter</h2>
                 <div className="flex items-center space-x-1">
                     <input
                         type="number"
@@ -92,7 +92,7 @@ const FilterSidebar = ({
 
             {/* O‘lchamlar */}
             <div className="border p-2 rounded-md my-3">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">O‘lchamlar</h2>
+                <h2 style={{ fontFamily: 'Roboto', fontSize: 24 }} className="mb-2 font-semibold">O‘lchamlar</h2>
                 <div className="grid grid-cols-4 gap-2">
                     {variantsSizes.map(size => (
                         <button
@@ -109,7 +109,7 @@ const FilterSidebar = ({
 
             {/* Ranglar */}
             <div className="border rounded-md p-2 my-3">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="font-semibold mb-2">Ranglar</h2>
+                <h2 style={{ fontFamily: 'Roboto', fontSize: 24 }} className="font-semibold mb-2">Ranglar</h2>
                 <div className="grid grid-cols-4 gap-2">
                     {variantsColors.map(color => (
                         <button
@@ -126,7 +126,7 @@ const FilterSidebar = ({
 
             {/* Brendlar */}
             <div className="border rounded-md p-2 mb-5">
-                <h2 style={{ fontFamily: 'Oswald', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
+                <h2 style={{ fontFamily: 'Roboto', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
                 {brands.map(brand => (
                     <button
                         key={brand}

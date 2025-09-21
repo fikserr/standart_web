@@ -16,6 +16,9 @@ export default defineConfig({
         }),
         react(),
     ],
+    optimizeDeps: {
+        include: ["react", "react-dom"],
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
@@ -25,6 +28,9 @@ export default defineConfig({
         }
     },
     build: {
+        rollupOptions: {
+            treeshake: true,
+        },
         minify: 'terser',
         sourcemap: false,
     },

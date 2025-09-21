@@ -31,7 +31,7 @@ const Login = () => {
         </h2>
         <div className="space-y-6">
           <div className='bg-slate-100 p-3 rounded-lg space-y-2'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Elektron pochtangiz:</h3>
+            <h3 style={{ fontFamily: 'Roboto' }}>Elektron pochtangiz:</h3>
             <input
               type="email"
               name="email"
@@ -44,7 +44,7 @@ const Login = () => {
           </div>
 
           <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-            <h3 style={{ fontFamily: 'Oswald' }}>Parol:</h3>
+            <h3 style={{ fontFamily: 'Roboto' }}>Parol:</h3>
             <input
               type={showPassword ? "text" : "password"}
               name="password"

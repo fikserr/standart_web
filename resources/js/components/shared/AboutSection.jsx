@@ -5,7 +5,7 @@ const AboutSection = () => {
     return (
         <div className='px-5 xl:px-20 grid lg:grid-cols-3 grid-cols-1 gap-5 xl:gap-32 mt-10'>
             <div className='col-span-2'>
-                <h2 style={{ fontFamily: "Oswald" }} className='text-2xl lg:text-6xl mb-2'>Xwear onlayn do'koni haqida</h2>
+                <h2 style={{ fontFamily: "Roboto" }} className='text-2xl lg:text-6xl mb-2'>Xwear onlayn do'koni haqida</h2>
                 <p className='text-sm lg:text-2xl'>
                     XWEAR jamoasi Xitoyning eng yirik Poizon bozoridagi original mahsulotlarni yetkazib berish xizmatini taqdim etadi, shuning uchun mijozlarimiz har bir xaridda 40% dan ko'proq tejaydi.
                     Biz vositachilarsiz ishlaymiz, bu bizga eng yaxshi narxni taklif qilish imkonini beradi. Tez, bepul yetkazib berish.

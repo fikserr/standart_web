@@ -14,35 +14,35 @@ const Profile = () => {
     }
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <Link href={"/"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Oswald" }}>Profile</h1></Link>
+            <Link href={"/"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Profile</h1></Link>
             <div className='grid lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />
                 <div className='col-span-3 lg:col-span-3 my-3'>
-                    <h2 style={{ fontFamily: 'Oswald', fontSize: "32px" }}>Salom, Mehmon!</h2>
+                    <h2 style={{ fontFamily: 'Roboto', fontSize: "32px" }}>Salom, Mehmon!</h2>
                     <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 text-center p-5 gap-5'>
                         <Link href={"/profile"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><BiUser /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Mening profilim</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Mening profilim</p>
                         </Link>
                         <Link href={"/history-order"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><VscChecklist /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Buyurtmalar</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Buyurtmalar</p>
                         </Link>
                         <Link href={"/address"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><MdOutlineLocationOn /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Mening manzilim</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Mening manzilim</p>
                         </Link>
                         <Link href={"/address-add"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><MdOutlineAddLocationAlt /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Manzil qo'shish</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Manzil qo'shish</p>
                         </Link>
                         <Link href={"/edit-password"} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg'>
                             <p className='flex justify-center text-3xl'><RxLockOpen2 /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Parol</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Parol</p>
                         </Link>
                         <button onClick={handleLogOut} className='border text-center p-10 max-w-xs hover:bg-black hover:text-white duration-500 rounded-lg '>
                             <p className='flex justify-center text-3xl'><RiLogoutBoxRLine /></p>
-                            <p style={{ fontFamily: 'OswaldLight' }}>Chiqish</p>
+                            <p style={{ fontFamily: 'Roboto' }}>Chiqish</p>
                         </button>
                     </div>
                 </div>
