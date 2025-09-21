@@ -1,14 +1,15 @@
 import { useEffect, useState, lazy, Suspense } from "react";
-import { HiOutlineChevronRight } from "react-icons/hi";
-import { iphone12, iphone13, inbox, user, check, Blog1, Blog2, Blog3 } from '../images';
 import { Link } from "@inertiajs/react";
+import { HiOutlineChevronRight } from "react-icons/hi";
 import { Spinner } from "@/components/shared/spinner";
 
 const HomeHero = lazy(() => import("../Pages/home-hero"));
 const HomeProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.HomeProducts })));
 const ClothesProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.ClothesProducts })));
 const AccessoryProducts = lazy(() => import("@/components/shared/homeProducts").then(m => ({ default: m.AccessoryProducts })));
-const BlogSection = lazy(() => import("@/components/shared/BlogSection")); // Blog bo‘limini alohida komponentga olib chiqamiz
+const BlogSection = lazy(() => import("@/components/shared/BlogSection"));
+const PriceSection = lazy(() => import("@/components/shared/PriceSection"));
+const AboutSection = lazy(() => import("@/components/shared/AboutSection"));
 
 const Section = ({ title, link, children }) => (
   <div className='my-3'>
@@ -57,7 +58,11 @@ const Home = ({ products, banners, favorites }) => {
 
         {showShoes && (
           <Section title="Oyoq kiyimlar" link="/category/3">
-            <Suspense fallback={<Spinner />}>
+            <Suspense fallback={
+              <div className="w-full min-h-[400px] flex items-center justify-center">
+                <Spinner />
+              </div>
+            }>
               <HomeProducts data={products} favorites={favorites} />
             </Suspense>
           </Section>
@@ -80,41 +85,13 @@ const Home = ({ products, banners, favorites }) => {
         )}
 
       </div>
+      <Suspense fallback={<Spinner />}>
+        <PriceSection />
+      </Suspense>
 
-      <div className='px-5 xl:px-20 grid lg:grid-cols-3 grid-cols-1 gap-5 xl:gap-32 mt-10'>
-        <div className='col-span-2'>
-          <p className='text-sm lg:text-lg'>
-            XWEAR jamoasi Xitoyning eng yirik Poizon bozoridagi original mahsulotlarni yetkazib berish xizmatini taqdim etadi, shuning uchun mijozlarimiz har bir xaridda 40% dan ko'proq tejaydi.
-            Biz vositachilarsiz ishlaymiz, bu bizga eng yaxshi narxni taklif qilish imkonini beradi. Tez, bepul yetkazib berish.
-            Xitoyning Poizon mobil ilovasini yuklab olmasdan, juda ko'p miqdordagi tovarlarni qulay filtrlash, shuningdek, tovarlarning yakuniy narxini darhol ko'rish imkoniyati bilan qulay xarid qilishingiz mumkin bo'lgan sayt
-          </p>
-        </div>
-        <div className='my-5 flex flex-col gap-5 sm:flex-row lg:flex-col xl:max-w-sm bg-slate-100 p-5'>
-          <div className="flex flex-col gap-3">
-            <div className='flex items-start md:items-center gap-3'>
-              <img src={inbox} alt="" style={{ width: "30px", height: "30px" }} />
-              <div className="flex flex-col">
-                <h3 className='font-bold text-md sm:text-xs md:text-base'>Rossiyaga bepul yetkazib berish</h3>
-                <p className='text-sm sm:text-xs'>Buyurtmangizni Rossiyaga mutlaqo bepul yetkazib beramiz</p>
-              </div>
-            </div>
-            <div className='flex items-start md:items-center gap-3'>
-              <img src={user} alt="" style={{ width: "30px", height: "30px" }} />
-              <div className="flex flex-col">
-                <h3 className='font-bold text-md sm:text-xs md:text-base'>Biz vositachilarsiz ishlaymiz</h3>
-                <p className='text-sm sm:text-xs'>Biz va mijoz o'rtasida uchinchi g'ildirak yo'q.</p>
-              </div>
-            </div>
-          </div>
-          <div className='flex items-start lg:items-center gap-3'>
-            <img src={check} alt="" style={{ width: "30px", height: "30px" }} />
-            <div className="flex flex-col">
-              <h3 className='font-bold text-md sm:text-xs md:text-base'>Buyurtma berish va ishlatish oson</h3>
-              <p className='text-sm sm:text-xs'>Poizondan buyurtma berish uchun sizga hech qanday ilova kerak emas</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Suspense fallback={<Spinner />}>
+        <AboutSection />
+      </Suspense>
       {showBlog && (
         <Suspense fallback={<Spinner />}>
           <BlogSection />

@@ -159,7 +159,7 @@ const Accessory = ({ products, categories, favorites = [] }) => {
                                         src={`/storage/${item.photo1}?v=${Date.now()}`}
                                         loading="lazy"
                                         alt={item.product_name}
-                                        className="w-full overflow-hidden object-cover h-56 rounded"
+                                        className="w-full h-auto overflow-hidden object-cover rounded"
                                     />
                                 </div>
                                 <div className='flex items-end justify-between '>

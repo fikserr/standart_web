@@ -5,16 +5,15 @@
 
 @font-face {
   font-family: 'Oswald';
-  src: url('./Oswald/static/Oswald-Bold.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/fonts/Oswald.woff2') format('woff2');
+  font-display: swap;
 }
 
 @font-face {
   font-family: 'OswaldLight';
-  src: url('./Oswald/static/Oswald-Light.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+  src: url('/fonts/Oswald-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
 }
 
 @layer base {
@@ -158,27 +157,49 @@ input[type=number]::-webkit-inner-spin-button {
 .loader {
   height: 15px;
   aspect-ratio: 4;
-  --_g: no-repeat radial-gradient(farthest-side,#000 90%,#0000);
-  background: 
-    var(--_g) left, 
+  --_g: no-repeat radial-gradient(farthest-side, #000 90%, #0000);
+  background:
+    var(--_g) left,
     var(--_g) right;
   background-size: 25% 100%;
   display: flex;
 }
-.loader:before{
+
+.loader:before {
   content: "";
   flex: 1;
   background: inherit;
   animation: l50 2s infinite;
 }
+
 @keyframes l50 {
-  0%    {transform: translate( 37.5%) rotate(0)     }
-  16.67%{transform: translate( 37.5%) rotate(90deg) }
-  33.33%{transform: translate(-37.5%) rotate(90deg) }
-  50%   {transform: translate(-37.5%) rotate(180deg)}
-  66.67%{transform: translate(-37.5%) rotate(270deg)}
-  83.33%{transform: translate( 37.5%) rotate(270deg)}
-  100%  {transform: translate( 37.5%) rotate(360deg)}
+  0% {
+    transform: translate(37.5%) rotate(0)
+  }
+
+  16.67% {
+    transform: translate(37.5%) rotate(90deg)
+  }
+
+  33.33% {
+    transform: translate(-37.5%) rotate(90deg)
+  }
+
+  50% {
+    transform: translate(-37.5%) rotate(180deg)
+  }
+
+  66.67% {
+    transform: translate(-37.5%) rotate(270deg)
+  }
+
+  83.33% {
+    transform: translate(37.5%) rotate(270deg)
+  }
+
+  100% {
+    transform: translate(37.5%) rotate(360deg)
+  }
 }
 
 /* HTML: <div class="loader"></div> */
@@ -187,19 +208,21 @@ input[type=number]::-webkit-inner-spin-button {
   aspect-ratio: 1;
   display: grid;
 }
+
 .loader::before,
-.loader::after {    
-  content:"";
+.loader::after {
+  content: "";
   grid-area: 1/1;
-  --c:no-repeat radial-gradient(farthest-side,#25b09b 92%,#0000);
-  background: 
-    var(--c) 50%  0, 
-    var(--c) 50%  100%, 
-    var(--c) 100% 50%, 
-    var(--c) 0    50%;
+  --c: no-repeat radial-gradient(farthest-side, #25b09b 92%, #0000);
+  background:
+    var(--c) 50% 0,
+    var(--c) 50% 100%,
+    var(--c) 100% 50%,
+    var(--c) 0 50%;
   background-size: 12px 12px;
   animation: l12 1s infinite;
 }
+
 .loader::before {
   margin: 4px;
   filter: hue-rotate(45deg);
@@ -207,6 +230,24 @@ input[type=number]::-webkit-inner-spin-button {
   animation-timing-function: linear
 }
 
-@keyframes l12 { 
-  100%{transform: rotate(.5turn)}
+@keyframes l12 {
+  100% {
+    transform: rotate(.5turn)
+  }
+}
+
+.razmer30 {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+}
+.razmer40 {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.razmer150 {
+  width: 100px;
+  height: auto;
+  object-fit: cover;
 }
