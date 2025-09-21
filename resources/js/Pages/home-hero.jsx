@@ -42,8 +42,6 @@ const HomeHero = ({ banner }) => {
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious data-carousel-prev />
-                    <CarouselNext data-carousel-next />
                 </Carousel>
             </div>
         </div>

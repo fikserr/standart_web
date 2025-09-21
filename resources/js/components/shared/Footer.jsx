@@ -1,15 +1,15 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import LogoFooter from '@images/LogoFooter.avif'
-import telegram from '@images/telegram.avif'
-import whatsapp from '@images/whatsapp.avif'
-import vk from '@images/vk.avif'
+import LogoFooter from '@images/LogoFooter.WebP'
+import telegram from '@images/telegram.WebP'
+import whatsapp from '@images/whatsapp.WebP'
+import vk from '@images/vk.WebP'
 import { Link } from '@inertiajs/react';
 
 const Footer = () => {
     return (
         <div className='bg-[rgb(18,18,20)]'>
             <div className='flex justify-center py-5 md:hidden'>
-                <img src={LogoFooter} alt="" loading="lazy" className="w-full h-auto" />
+                <img src={LogoFooter} alt="" loading="lazy" className="razmer150" />
             </div>
             <div style={{ fontFamily: "Oswald" }} className='md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center '>
                 <DropdownMenu>
@@ -55,7 +55,6 @@ const Footer = () => {
                         <Link href={'/category/3'}><li>Kiyimlar</li></Link>
                         <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
                         <Link href={'/category/1'}><li>Aksessuarlar</li></Link>
-                        <img src={LogoFooter} alt="" className='hidden xl:mt-10 w-full h-auto' loading="lazy" />
                     </ul>
                     <ul className='text-white flex flex-col gap-1 text-lg' style={{ fontFamily: "OswaldLight" }}>
                         <li style={{ fontFamily: "Oswald" }} className='text-2xl'>Ma'lumot</li>
@@ -71,21 +70,21 @@ const Footer = () => {
                         <li>+7 993 608 38 85</li>
                         <li>Messengerlar</li>
                         <li className='flex gap-1'>
-                            <img src={telegram} alt="" className='w-full h-auto' loading="lazy" />
-                            <img src={whatsapp} alt="" className='w-full h-auto' loading="lazy" />
+                            <img src={telegram} alt="" className='razmer40 cursor-pointer' loading="lazy" />
+                            <img src={whatsapp} alt="" className='razmer40 cursor-pointer' loading="lazy" />
                         </li>
                         <li>Bizning ijtimoiy tarmoqlarimiz</li>
                         <li>
-                            <img src={vk} alt="" className='w-full h-auto' loading="lazy" />
+                            <img src={vk} alt="" className='razmer40 cursor-pointer' loading="lazy" />
                         </li>
                     </ul>
                 </div>
             </div>
-            <div className='md:hidden pb-20'>
+            <div className=''>
                 <div className='flex gap-2 justify-center py-5'>
-                    <img src={telegram} alt="" loading="lazy" className="w-full h-auto"/>
-                    <img src={whatsapp} alt="" loading="lazy" className="w-full h-auto"/>
-                    <img src={vk} alt="" loading="lazy" className="w-full h-auto"/>
+                    <img src={telegram} alt="" loading="lazy" className="razmer30 cursor-pointer"/>
+                    <img src={whatsapp} alt="" loading="lazy" className="razmer30 cursor-pointer"/>
+                    <img src={vk} alt="" loading="lazy" className="razmer30 cursor-pointer"/>
                 </div>
                 <div className='text-white text-center'>
                     <p style={{ fontFamily: "Oswald" }}>Yangiliklarga obuna bo'ling</p>
