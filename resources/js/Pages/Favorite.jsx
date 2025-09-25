@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import axios from "axios";
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
-import favoriteImg from "../../../storage/app/private/assets/favorite.png";
+import favoriteImg from "@images/favorite.png";
 import { useToast } from "@/hooks/use-toast"; // Agar sizda mavjud bo'lsa
 import { Link } from "@inertiajs/react";
 
