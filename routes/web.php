@@ -115,15 +115,6 @@ Route::middleware(['auth', IsAdmin::class])->group(function () {
     // Favorites (agar kerak bo‘lsa admin tomonda)
     Route::get('/admin-favorites', fn() => inertia('admin/favorites'));
 });
-Route::get('/assets/{filename}', function ($filename) {
-    $path = storage_path("app/public/assets/{$filename}");
-
-    if (!file_exists($path)) {
-        abort(404);
-    }
-
-    return response()->file($path);
-})->middleware('cache.headers');
 // ❌ 404 page
 Route::fallback(function () {
     return Inertia::render('NotFound');
