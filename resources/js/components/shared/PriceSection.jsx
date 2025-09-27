@@ -15,14 +15,14 @@ const PriceSection = () => {
                             {/* Title and Description */}
                             <div className='flex flex-col sm:mb-2 lg:mb-10 gap-10 col-span-3'>
                                 <h2
-                                    style={{ fontFamily: "Roboto" }}
-                                    className="text-center text-5xl lg:text-7xl min-h-[60px]"
+                                    
+                                    className="font-oswald text-center text-5xl lg:text-7xl min-h-[60px]"
                                 >
                                     Narxni hisoblash
                                 </h2>
                                 <p
-                                    style={{ fontFamily: "Roboto" }}
-                                    className='text-center sm:text-xl lg:text-2xl'
+                                    
+                                    className='font-oswald text-center sm:text-xl lg:text-2xl'
                                 >
                                     Agar siz qidirayotgan narsangizni topa olmasangiz, har doim Poizon bozorida buyurtma narxini avtomatik hisoblash, shu jumladan xizmat komissiyasi va yetkazib berishdan foydalanishingiz mumkin
                                 </p>
@@ -49,8 +49,8 @@ const PriceSection = () => {
                                     </span>
                                 </div>
                                 <span
-                                    style={{ fontFamily: "Roboto" }}
-                                    className='sm:text-xl'
+                                    
+                                    className='font-oswald sm:text-xl'
                                 >
                                     Poizon ilovasini qanday o'rnatish haqida batafsil, bosqichma-bosqich maqola
                                 </span>
@@ -63,8 +63,8 @@ const PriceSection = () => {
                                     </span>
                                 </div>
                                 <p
-                                    style={{ fontFamily: "Roboto" }}
-                                    className='sm:text-xl'
+                                    
+                                    className='font-oswald sm:text-xl'
                                 >
                                     Qaysi mahsulotni sotib olishni xohlayotganingizni bizga Telegram yoki WhatsApp orqali yozing
                                 </p>
