@@ -18,7 +18,7 @@ const Footer = () => {
             <div className="flex justify-center py-5 md:hidden">
                 <img
                     src={LogoFooter}
-                    alt="Logo"
+                    alt="Pro Sys Logo"
                     loading="lazy"
                     width="100"
                     height="50"

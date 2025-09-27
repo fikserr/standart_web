@@ -15,14 +15,14 @@ const AboutSection = () => {
             <div className='my-5 flex flex-col gap-5 sm:flex-row lg:flex-col xl:max-w-sm bg-slate-100 p-5'>
                 <div className="flex flex-col gap-3">
                     <div className='flex items-center md:items-center gap-3'>
-                        <img src={inbox} alt="" style={{ width: "30px", height: "30px" }} />
+                        <img src={inbox} alt="inbox image icon" style={{ width: "30px", height: "30px" }} />
                         <div className="flex flex-col">
                             <h3 className='font-bold text-md sm:text-xs md:text-base'>Rossiyaga bepul yetkazib berish</h3>
                             <p className=' text-xs'>Buyurtmangizni Rossiyaga mutlaqo bepul yetkazib beramiz</p>
                         </div>
                     </div>
                     <div className='flex items-center md:items-center gap-3'>
-                        <img src={user} alt="" style={{ width: "30px", height: "30px" }} />
+                        <img src={user} alt="user image icon" style={{ width: "30px", height: "30px" }} />
                         <div className="flex flex-col">
                             <h3 className='font-bold text-md sm:text-xs md:text-base'>Biz vositachilarsiz ishlaymiz</h3>
                             <p className=' text-xs'>Biz va mijoz o'rtasida uchinchi g'ildirak yo'q.</p>
@@ -30,7 +30,7 @@ const AboutSection = () => {
                     </div>
                 </div>
                 <div className='flex items-center lg:items-center gap-3'>
-                    <img src={check} alt="" style={{ width: "30px", height: "30px" }} />
+                    <img src={check} alt="check image icon" style={{ width: "30px", height: "30px" }} />
                     <div className="flex flex-col">
                         <h3 className='font-bold text-xs md:text-base'>Buyurtma berish va ishlatish oson</h3>
                         <p className='text-xs'>Poizondan buyurtma berish uchun sizga hech qanday ilova kerak emas</p>

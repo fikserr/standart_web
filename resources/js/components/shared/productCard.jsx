@@ -56,7 +56,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 0, src, alt, classN
                 key={index}
                 src={`${src}?v=${Date.now()}`} // cache break
                 loading="lazy"
-                alt={alt}
+                alt={alt || item.product_name}
                 onLoad={() => setImgLoaded(true)}
                 // onError={(e) => {
                 //   e.currentTarget.src = fallback;
