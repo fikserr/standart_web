@@ -32,7 +32,11 @@ const HomeHero = ({ banner }) => {
                                         <img
                                             src={`/storage/${item.image}`}
                                             alt={item.name}
-                                            className="w-full h-auto object-center rounded-xl"
+                                            width={1920}   // ✅ kenglik belgilandi
+                                            height={800}   // ✅ balandlik belgilandi
+                                            loading="lazy" // ✅ CLS ga yordam beradi
+                                            decoding="async"
+                                            className="w-full h-full object-cover rounded-xl"
                                         />
                                     </CardContent>
                                 </Card>

@@ -55,3 +55,21 @@
   BrowserMatch ^Mozilla/4\.0[678] no-gzip
   BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 </IfModule>
+
+
+
+<FilesMatch "\.(html)$">
+  Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+</FilesMatch>
+
+
+  # HTML doim fresh
+  <FilesMatch "\.(html|json|php)$">
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+</IfModule>
+
+
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>
