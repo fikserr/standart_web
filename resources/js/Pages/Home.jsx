@@ -30,7 +30,7 @@ const Home = ({ products, banners, favorites }) => {
   const [showClothes, setShowClothes] = useState(false);
   const [showAccessories, setShowAccessories] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
-  console.log(products, "products");
+
 
   useEffect(() => {
     window.scrollTo(0, 0);

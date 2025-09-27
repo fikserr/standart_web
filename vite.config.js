@@ -33,10 +33,19 @@ export default defineConfig({
     },
   },
   build: {
+    minify: "terser",
+    sourcemap: false,
     rollupOptions: {
       treeshake: true,
     },
-    minify: "terser",
-    sourcemap: false,
+    terserOptions: {
+      compress: {
+        drop_console: true,   // console.log larni olib tashlaydi
+        drop_debugger: true,  // debugger larni olib tashlaydi
+      },
+      format: {
+        comments: false, // kommentlarni olib tashlaydi
+      },
+    },
   },
 });

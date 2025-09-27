@@ -33,7 +33,6 @@ const EditPass = () => {
 
         try {
             const response = await axios.post('/update-password', formData);
-            console.log(response.data);
             setEmail(userEmail);
             setShowModal(true);
         } catch (error) {

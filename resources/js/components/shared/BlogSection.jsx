@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React from "react";
 import { Blog1, Blog2, Blog3 } from "../../images";
 
 import { Card, CardContent } from "@/components/ui/card";

@@ -2,7 +2,6 @@ import React from 'react';
 
 const CheckView = ({ data }) => {
 
-console.log("CheckView Data:", data);
   return (
     <div className="w-full p-2 font-sans text-sm">
       <h1 className="text-4xl font-extrabold text-center mb-2">STROY LIGHT</h1>
