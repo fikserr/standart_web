@@ -1,139 +1,197 @@
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
 
-import LogoFooter from '@images/LogoFooter.WebP'
-import telegram from '@images/telegram.WebP'
-import whatsapp from '@images/whatsapp.WebP'
-import vk from '@images/vk.WebP'
-import { Link } from '@inertiajs/react';
+import LogoFooter from "@images/LogoFooter.WebP";
+import telegram from "@images/telegram.WebP";
+import whatsapp from "@images/whatsapp.WebP";
+import vk from "@images/vk.WebP";
+import { Link } from "@inertiajs/react";
 
 const Footer = () => {
-  return (
-    <footer className="bg-[rgb(18,18,20)] min-h-[320px]">
-      {/* Mobile logo */}
-      <div className="flex justify-center py-5 md:hidden">
-        <img 
-          src={LogoFooter} 
-          alt="Logo" 
-          loading="lazy" 
-          width="150" 
-          height="50" 
-          className="w-[150px] h-auto"
-        />
-      </div>
+    return (
+        <footer className="bg-[rgb(18,18,20)]  ">
+            {/* Mobile logo */}
+            <div className="flex justify-center py-5 md:hidden">
+                <img
+                    src={LogoFooter}
+                    alt="Logo"
+                    loading="lazy"
+                    width="100"
+                    height="50"
+                    className="w-[100px] h-auto"
+                />
+            </div>
 
-      {/* Mobile dropdowns */}
-      <div 
-        
-        className="md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center font-oswald"
-      >
-        {/* Ma'lumot */}
-        <DropdownMenu>
-          <DropdownMenuTrigger className="lg:hidden px-5 outline-none text-black rounded-md bg-white">
-            Ma'lumot
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" sideOffset={5} className="absolute z-50 space-y-1 pb-3 flex flex-col">
-            <DropdownMenuLabel>Ma'lumot</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link><DropdownMenuItem>Ma'lumot</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>Blog</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>Kontaktlar</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>Yetkazib berish</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>To'lov</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>FAQ</DropdownMenuItem></Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            {/* Mobile dropdowns */}
+            <div className="md:hidden px-5 space-x-2 sm:space-x-4 flex flex-col w-full font-oswald">
+                <Accordion type="single" collapsible className="w-full">
+                    {/* Ma'lumot */}
+                    <AccordionItem value="malumot">
+                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                            Ma'lumot
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                            <Link href="#">
+                                <span>Ma'lumot</span>
+                            </Link>
+                            <Link href="#">
+                                <span>Blog</span>
+                            </Link>
+                            <Link href="#">
+                                <span>Kontaktlar</span>
+                            </Link>
+                            <Link href="#">
+                                <span>Yetkazib berish</span>
+                            </Link>
+                            <Link href="#">
+                                <span>To'lov</span>
+                            </Link>
+                            <Link href="#">
+                                <span>FAQ</span>
+                            </Link>
+                        </AccordionContent>
+                    </AccordionItem>
 
-        {/* Katalog */}
-        <DropdownMenu>
-          <DropdownMenuTrigger className="lg:hidden px-5 outline-none text-black rounded-md bg-white">
-            Katalog
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" sideOffset={5} className="absolute z-50 space-y-1 pb-3 flex flex-col">
-            <DropdownMenuLabel>Katalog</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link><DropdownMenuItem>Katalog</DropdownMenuItem></Link>
-            <Link href={"/category/3"}><DropdownMenuItem>Kiyimlar</DropdownMenuItem></Link>
-            <Link href={"/category/4"}><DropdownMenuItem>Oyoq kiyimlar</DropdownMenuItem></Link>
-            <Link href={"/category/1"}><DropdownMenuItem>Aksessuarlar</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>Xarajatlarni hisoblash</DropdownMenuItem></Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                    {/* Katalog */}
+                    <AccordionItem value="katalog">
+                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                            Katalog
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                            <Link href="#">
+                                <span>Katalog</span>
+                            </Link>
+                            <Link href="/category/3">
+                                <span>Kiyimlar</span>
+                            </Link>
+                            <Link href="/category/4">
+                                <span>Oyoq kiyimlar</span>
+                            </Link>
+                            <Link href="/category/1">
+                                <span>Aksessuarlar</span>
+                            </Link>
+                            <Link href="#">
+                                <span>Xarajatlarni hisoblash</span>
+                            </Link>
+                        </AccordionContent>
+                    </AccordionItem>
 
-        {/* Kontaktlar */}
-        <DropdownMenu>
-          <DropdownMenuTrigger className="lg:hidden px-5 outline-none text-black rounded-md bg-white">
-            Kontaktlar
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" sideOffset={5} className="absolute z-50 space-y-1 pb-3 flex flex-col">
-            <DropdownMenuLabel>Kontaktlar</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link><DropdownMenuItem>Kontaktlar</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>info@xwear.info</DropdownMenuItem></Link>
-            <Link><DropdownMenuItem>+7 993 608 38 85</DropdownMenuItem></Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+                    {/* Kontaktlar */}
+                    <AccordionItem value="kontaktlar">
+                        <AccordionTrigger className="px-5 text-3xl text-white rounded-md uppercase">
+                            Kontaktlar
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
+                            <Link href="#">
+                                <span>Kontaktlar</span>
+                            </Link>
+                            <Link href="mailto:info@xwear.info">
+                                <span>info@xwear.info</span>
+                            </Link>
+                            <Link href="tel:+79936083885">
+                                <span>+7 993 608 38 85</span>
+                            </Link>
+                        </AccordionContent>
+                    </AccordionItem>
+                </Accordion>
+            </div>
 
-      {/* Desktop footer */}
-      <div className="hidden md:block py-10">
-        <div className="flex justify-evenly">
-          {/* Katalog */}
-          <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
-            <li className="text-2xl">Katalog</li>
-            <Link href={'/category/3'}><li>Kiyimlar</li></Link>
-            <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
-            <Link href={'/category/1'}><li>Aksessuarlar</li></Link>
-          </ul>
+            {/* Desktop footer */}
+            <div className="hidden md:block py-10">
+                <div className="flex justify-evenly">
+                    {/* Katalog */}
+                    <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
+                        <li className="text-2xl">Katalog</li>
+                        <Link href={"/category/3"}>
+                            <li className="text-base ">Kiyimlar</li>
+                        </Link>
+                        <Link href={"/category/4"}>
+                            <li className="text-base ">Oyoq kiyimlar</li>
+                        </Link>
+                        <Link href={"/category/1"}>
+                            <li className="text-base ">Aksessuarlar</li>
+                        </Link>
+                    </ul>
 
-          {/* Ma'lumot */}
-          <ul className="text-white flex flex-col gap-1 text-lg font-oswald" >
-            <li className="text-2xl">Ma'lumot</li>
-            <li>Blog</li>
-            <li>Kontaktlar</li>
-            <li>Yetkazib berish</li>
-            <li>To'lov</li>
-            <li>FAQ</li>
-          </ul>
+                    {/* Ma'lumot */}
+                    <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
+                        <li className="text-2xl">Ma'lumot</li>
+                        <li className="text-base ">Blog</li>
+                        <li className="text-base">Kontaktlar</li>
+                        <li className="text-base">Yetkazib berish</li>
+                        <li className="text-base">To'lov</li>
+                        <li className="text-base">FAQ</li>
+                    </ul>
 
-          {/* Kontaktlar */}
-          <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
-            <li className="text-2xl">Kontaktlar</li>
-            <li>info@xwear.info</li>
-            <li>+7 993 608 38 85</li>
-            <li>Messengerlar</li>
-            <li className="flex gap-1">
-              <img src={telegram} alt="Telegram" width="40" height="40" className="w-10 h-10 cursor-pointer" loading="lazy" />
-              <img src={whatsapp} alt="Whatsapp" width="40" height="40" className="w-10 h-10 cursor-pointer" loading="lazy" />
-            </li>
-            <li>Bizning ijtimoiy tarmoqlarimiz</li>
-            <li>
-              <img src={vk} alt="VK" width="40" height="40" className="w-10 h-10 cursor-pointer" loading="lazy" />
-            </li>
-          </ul>
-        </div>
-      </div>
+                    {/* Kontaktlar */}
+                    <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
+                        <li className="text-2xl">Kontaktlar</li>
+                        <li className="text-base">info@xwear.info</li>
+                        <li className="text-base">+7 993 608 38 85</li>
+                        <li>Messengerlar</li>
+                        <li className="flex gap-1">
+                            <img
+                                src={telegram}
+                                alt="Telegram"
+                                width="25"
+                                height="25"
+                                className="w-7 h-7 cursor-pointer"
+                                loading="lazy"
+                            />
+                            <img
+                                src={whatsapp}
+                                alt="Whatsapp"
+                                width="25"
+                                height="25"
+                                className="w-7 h-7 cursor-pointer"
+                                loading="lazy"
+                            />
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-      {/* Socials bottom */}
-      <div>
-        <div className="flex gap-2 justify-center py-5">
-          <img src={telegram} alt="Telegram" width="30" height="30" className="w-[30px] h-[30px] cursor-pointer" loading="lazy" />
-          <img src={whatsapp} alt="Whatsapp" width="30" height="30" className="w-[30px] h-[30px] cursor-pointer" loading="lazy" />
-          <img src={vk} alt="VK" width="30" height="30" className="w-[30px] h-[30px] cursor-pointer" loading="lazy" />
-        </div>
-        <div className="text-white text-center">
-          <p className='font-oswald'>Yangiliklarga obuna bo'ling</p>
-          <p className="text-xs">Chegirmalar va yangiliklardan xabardor bo'ling</p>
-        </div>
-      </div>
-    </footer>
-  )
-}
+            {/* Socials bottom */}
+            <div className="pb-5 md:hidden">
+                <div className="flex gap-2 justify-center py-5">
+                    <img
+                        src={telegram}
+                        alt="Telegram"
+                        width="30"
+                        height="30"
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        loading="lazy"
+                    />
+                    <img
+                        src={whatsapp}
+                        alt="Whatsapp"
+                        width="30"
+                        height="30"
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        loading="lazy"
+                    />
+                    <img
+                        src={vk}
+                        alt="VK"
+                        width="30"
+                        height="30"
+                        className="w-[30px] h-[30px] cursor-pointer"
+                        loading="lazy"
+                    />
+                </div>
+                <div className="text-white text-center">
+                    <p className="font-oswald">Yangiliklarga obuna bo'ling</p>
+                    <p className="text-xs">
+                        Chegirmalar va yangiliklardan xabardor bo'ling
+                    </p>
+                </div>
+            </div>
+        </footer>
+    );
+};
 
-export default Footer
+export default Footer;

@@ -33,7 +33,7 @@ const UserNavbar = () => {
 
     return (
         <div className="py-5 px-5 md:px-16 xl:px-20 fixed z-10 top-0 w-full bg-[rgb(18,18,20)]">
-            <div className="flex items-center justify-around md:justify-between">
+            <div className="flex items-center justify-between md:justify-between">
                 {/* MOBILE LEFT */}
                 <div className="flex items-center gap-5 md:hidden">
                     <div className="flex items-center gap-2 sm:gap-5 relative">
@@ -90,18 +90,18 @@ const UserNavbar = () => {
                 {/* LOGO */}
                 <div className="flex items-center gap-10">
                     <HiOutlineMenuAlt4
-                        className="hidden md:block xl:hidden"
+                        className="hidden md:hidden xl:hidden"
                         style={{ color: 'white', fontSize: '32px', cursor: 'pointer' }}
                         onClick={() => setIsSidebarOpen(true)}
                     />
                     <Link href="/">
-                        <img src={Logo} alt="Company Logo" loading="lazy" className="w-full h-auto"/>
+                        <img src={Logo} alt="Company Logo" loading="lazy" className="w-16 md:w-full h-auto md:pr-5"/>
                     </Link>
                 </div>
 
                 {/* NAV LINKS */}
-                <div className="w-4/6 hidden xl:flex justify-start">
-                    <ul className="flex gap-5 2xl:gap-10 text-xl">
+                <div className="w-4/6 hidden md:flex justify-start">
+                    <ul className="flex gap-5 2xl:gap-10 md:text-base xl:text-xl">
                         <NavItem href="/category/3" label="Kiyimlar" />
                         <NavItem href="/category/4" label="Oyoq kiyimlar" />
                         <NavItem href="/category/1" label="Aksessuarlar" />
@@ -110,7 +110,7 @@ const UserNavbar = () => {
                 </div>
 
                 {/* RIGHT ICONS */}
-                <div className="flex items-center gap-2 sm:gap-5 md:gap-6 relative">
+                <div className="flex items-center gap-2 sm:gap-5 md:gap-4 xl:gap-6 relative">
                     <HiOutlineSearch
                         className="hidden md:block"
                         style={{ color: 'white', fontSize: '25px', cursor: 'pointer' }}
