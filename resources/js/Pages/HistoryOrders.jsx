@@ -36,13 +36,13 @@ const HistoryOrders = ({ orders }) => {
         <div className='my-24 px-5 xl:px-32'>
             <div className='flex items-center gap-2'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <Link href={"/profile"}><h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Tarix</h1></Link>
+                <Link href={"/profile"}><h1 className='font-bold text-5xl font-oswald' >Tarix</h1></Link>
             </div>
             <div className='grid lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />
                 <div className='col-span-3 my-3'>
                     <div className='grid grid-cols-4 items-center'>
-                        <h2 className='col-span-3' style={{ fontFamily: 'Roboto', fontSize: "32px" }}>Buyurtmalar</h2>
+                        <h2 className='col-span-3 font-oswald' >Buyurtmalar</h2>
                         <ProfileDropdown />
                     </div>
                     <div className='grid grid-cols-1 sm500:grid-cols-2 md:grid-cols-3 p-5 gap-5'>

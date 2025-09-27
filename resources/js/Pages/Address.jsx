@@ -24,7 +24,7 @@ const Address = ({ address }) => {
         <div className='my-24 px-5 xl:px-32'>
             <Link href="/profile" className='flex items-center gap-2 mb-6'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Joylashuv</h1>
+                <h1 className='font-bold text-5xl font-oswald'>Joylashuv</h1>
             </Link>
 
             <div className='grid lg:grid-cols-4 gap-5'>
@@ -32,7 +32,7 @@ const Address = ({ address }) => {
 
                 <div className='col-span-3'>
                     <div className='flex items-end justify-between gap-4'>
-                        <h2 className='text-3xl sm500:text-4xl' style={{ fontFamily: 'Roboto' }}>Manzil</h2>
+                        <h2 className='text-3xl sm500:text-4xl font-oswald' >Manzil</h2>
                         <ProfileDropdown />
                     </div>
 
@@ -40,23 +40,23 @@ const Address = ({ address }) => {
                         {address.map((item) => (
                             <div className='border p-5 rounded-lg relative h-[300px]' key={item.id}>
                                 <div className='absolute top-0 right-0 bg-slate-50 p-3 rounded-bl-lg border'>
-                                    <h3 style={{ fontFamily: 'RobotoLight' }}>Manzil #{item.id}</h3>
+                                    <h3 className='font-oswald'>Manzil #{item.id}</h3>
                                 </div>
                                 <div className='space-y-2'>
-                                    <h2 className='mt-3 text-2xl' style={{ fontFamily: 'Roboto' }}>
+                                    <h2 className='mt-3 text-2xl font-oswald'>
                                         {item.first_name} {item.last_name}
                                     </h2>
                                     <div>
-                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'RobotoLight' }}>Viloyat/Tuman</p>
-                                        <p className='xl:text-md' style={{ fontFamily: 'Roboto' }}>{`${item.region},${item.city}`}</p>
+                                        <p className='text-slate-500 text-md font-oswald' >Viloyat/Tuman</p>
+                                        <p className='xl:text-md font-oswald'>{`${item.region},${item.city}`}</p>
                                     </div>
                                     <div>
-                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'RobotoLight' }}>Ko'cha/xonadon</p>
-                                        <p className='xl:text-md' style={{ fontFamily: 'Roboto' }}>{`${item.street}, ${item.house_number}`}</p>
+                                        <p className='text-slate-500 text-md font-oswald' >Ko'cha/xonadon</p>
+                                        <p className='xl:text-md font-oswald' >{`${item.street}, ${item.house_number}`}</p>
                                     </div>
                                     <div className='my-3'>
-                                        <p className='text-slate-500 text-md' style={{ fontFamily: 'RobotoLight' }}>Telefon</p>
-                                        <p className='xl:text-md' style={{ fontFamily: 'Roboto' }}>{item.phone}</p>
+                                        <p className='text-slate-500 text-md font-oswald'>Telefon</p>
+                                        <p className='xl:text-md font-oswald'>{item.phone}</p>
                                     </div>
                                 </div>
 

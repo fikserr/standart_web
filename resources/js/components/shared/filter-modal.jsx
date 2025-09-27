@@ -189,7 +189,7 @@ const FilterModal = ({
 
                         {/* Brendlar */}
                         <div className="border rounded-md p-2 mb-5">
-                            <h2 style={{ fontFamily: 'Roboto', fontSize: 24 }} className="mb-2 font-semibold">Brendlar</h2>
+                            <h2  className="mb-2 font-semibold font-oswald text-3xl">Brendlar</h2>
                             {brands.map(brand => (
                                 <button
                                     key={brand}

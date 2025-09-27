@@ -139,8 +139,8 @@ const Index = ({ detail }) => {
                 </div>
                 <div className="my-5">
                     <h1
-                        className="text-2xl font-bold mb-4"
-                        style={{ fontFamily: "Roboto" }}
+                        className="text-2xl font-bold mb-4 font-oswald"
+
                     >
                         {detail.product_name}
                     </h1>
@@ -179,10 +179,7 @@ const Index = ({ detail }) => {
                     </div>
                     <div className="flex items-center justify-between mt-5">
                         <p
-                            style={{
-                                fontFamily: "Roboto",
-                                fontSize: "20px",
-                            }}
+                        className="font-oswald"
                         >
                             Narxi:{" "}
                             {(activeVariant?.price ?? detail.price)}{" "}
@@ -230,8 +227,7 @@ const Index = ({ detail }) => {
                                 return (
                                     <div
                                         key={index}
-                                        className="flex items-center justify-between"
-                                        style={{ fontFamily: "Roboto" }}
+                                        className="flex items-center justify-between font-oswald"
                                     >
                                         <h3 style={{ fontSize: "20px" }}>
                                             {label}

@@ -120,13 +120,13 @@ const AddAddress = ({ address }) => {
     <div className='my-24 px-5 xl:px-32'>
       <Link href={"/address"} className='flex items-center gap-2'>
         <HiOutlineChevronLeft className='text-2xl' />
-        <h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Joylashuv</h1>
+        <h1 className='font-bold text-5xl font-oswald' >Joylashuv</h1>
       </Link>
 
       <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
         <div className='col-span-4 my-5 px-10'>
           <div className='grid grid-cols-4 items-center pl-6'>
-            <h2 className='col-span-3 text-2xl' style={{ fontFamily: 'Roboto' }}>Joylashuv qo'shish</h2>
+            <h2 className='col-span-3 text-2xl font-oswald' >Joylashuv qo'shish</h2>
           </div>
           <form onSubmit={handleSubmit} className='grid p-5 gap-5'>
             <InputBlock label="Ismingiz:" name="first_name" value={formData.first_name} onChange={setFormData} error={errors.first_name} />
@@ -149,7 +149,7 @@ const AddAddress = ({ address }) => {
 
 const InputBlock = ({ label, name, value, onChange, className = '', error }) => (
   <div className={`bg-slate-100 p-3 rounded-lg space-y-2 ${className}`}>
-    <h3 style={{ fontFamily: 'Roboto' }}>{label}</h3>
+    <h3 className='font-oswald'>{label}</h3>
     <input
       type="text"
       value={value}
@@ -163,7 +163,7 @@ const InputBlock = ({ label, name, value, onChange, className = '', error }) => 
 
 const PhoneInput = ({ label, value, onChange, error }) => (
   <div className="bg-slate-100 p-3 rounded-lg space-y-2">
-    <h3 style={{ fontFamily: 'Roboto' }}>{label}</h3>
+    <h3 className='font-oswald'>{label}</h3>
     <input
       type="tel"
       value={value}

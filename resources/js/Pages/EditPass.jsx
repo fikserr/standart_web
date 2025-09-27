@@ -77,14 +77,14 @@ const EditPass = () => {
         <div className='my-24 px-5 xl:px-32'>
             <Link href="/profile" className='flex items-center gap-2'>
                 <HiOutlineChevronLeft className='text-2xl' />
-                <h1 className='font-bold text-5xl' style={{ fontFamily: "Roboto" }}>Profile</h1>
+                <h1 className='font-bold text-5xl font-oswald'>Profile</h1>
             </Link>
 
             <div className='grid grid-cols-1 lg:grid-cols-4 gap-5'>
                 <ProfileSidebar />
                 <div className='col-span-3 my-3'>
                     <div className='grid grid-cols-4 items-center'>
-                        <h2 className='col-span-3 text-2xl font-bold' style={{ fontFamily: 'Roboto' }}>
+                        <h2 className='col-span-3 text-2xl font-bold font-oswald' >
                             Parolni tahrirlash
                         </h2>
                         <ProfileDropdown />
@@ -93,7 +93,7 @@ const EditPass = () => {
                     <form onSubmit={handleSubmit} className='grid grid-cols-1 max-w-md p-5 gap-5'>
                         {/* Joriy parol */}
                         <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-                            <h3 style={{ fontFamily: 'Roboto' }}>Joriy parol:</h3>
+                            <h3 className='font-oswald'>Joriy parol:</h3>
                             <input
                                 type={showCurrentPassword ? 'text' : 'password'}
                                 value={formData.current_password}
@@ -109,7 +109,7 @@ const EditPass = () => {
 
                         {/* Yangi parol */}
                         <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-                            <h3 style={{ fontFamily: 'Roboto' }}>Yangi parol:</h3>
+                            <h3 className='font-oswald'>Yangi parol:</h3>
                             <input
                                 type={showNewPassword ? 'text' : 'password'}
                                 value={formData.new_password}
@@ -125,7 +125,7 @@ const EditPass = () => {
 
                         {/* Yangi parolni takrorlash */}
                         <div className='bg-slate-100 p-3 rounded-lg space-y-2 relative'>
-                            <h3 style={{ fontFamily: 'Roboto' }}>Yangi parolni takrorlang:</h3>
+                            <h3 className='font-oswald'>Yangi parolni takrorlang:</h3>
                             <input
                                 type={showRepeatPassword ? 'text' : 'password'}
                                 value={formData.new_password_confirmation}

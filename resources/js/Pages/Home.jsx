@@ -14,8 +14,8 @@ const AboutSection = lazy(() => import("@/components/shared/AboutSection"));
 const Section = ({ title, link, children }) => (
   <div className='my-3'>
     <div className='flex items-center justify-between'>
-      <h3 style={{ fontFamily: 'Roboto' }} className='font-bold text-2xl'>{title}</h3>
-      <h4 style={{ fontFamily: 'Roboto' }} className='border-b-2 border-black text-xl flex items-center p-1'>
+      <h3 className='font-bold text-2xl font-oswald'>{title}</h3>
+      <h4 className='border-b-2 border-black text-xl flex items-center p-1 font-oswald'>
         <Link href={link} className='md:hidden'>Ko'proq</Link>
         <Link href={link} className='hidden md:block mb-3'>Ko'proq maxsulot</Link>
         <HiOutlineChevronRight />

@@ -30,8 +30,8 @@ const Footer = () => {
 
       {/* Mobile dropdowns */}
       <div 
-        style={{ fontFamily: "Roboto" }} 
-        className="md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center"
+        
+        className="md:hidden px-5 space-x-2 sm:space-x-4 flex justify-center font-oswald"
       >
         {/* Ma'lumot */}
         <DropdownMenu>
@@ -85,7 +85,7 @@ const Footer = () => {
       <div className="hidden md:block py-10">
         <div className="flex justify-evenly">
           {/* Katalog */}
-          <ul className="text-white flex flex-col gap-1 text-lg" style={{ fontFamily: "Roboto" }}>
+          <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
             <li className="text-2xl">Katalog</li>
             <Link href={'/category/3'}><li>Kiyimlar</li></Link>
             <Link href={'/category/4'}><li>Oyoq kiyimlar</li></Link>
@@ -93,7 +93,7 @@ const Footer = () => {
           </ul>
 
           {/* Ma'lumot */}
-          <ul className="text-white flex flex-col gap-1 text-lg" style={{ fontFamily: "Roboto" }}>
+          <ul className="text-white flex flex-col gap-1 text-lg font-oswald" >
             <li className="text-2xl">Ma'lumot</li>
             <li>Blog</li>
             <li>Kontaktlar</li>
@@ -103,7 +103,7 @@ const Footer = () => {
           </ul>
 
           {/* Kontaktlar */}
-          <ul className="text-white flex flex-col gap-1 text-lg" style={{ fontFamily: "Roboto" }}>
+          <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
             <li className="text-2xl">Kontaktlar</li>
             <li>info@xwear.info</li>
             <li>+7 993 608 38 85</li>
@@ -128,7 +128,7 @@ const Footer = () => {
           <img src={vk} alt="VK" width="30" height="30" className="w-[30px] h-[30px] cursor-pointer" loading="lazy" />
         </div>
         <div className="text-white text-center">
-          <p style={{ fontFamily: "Roboto" }}>Yangiliklarga obuna bo'ling</p>
+          <p className='font-oswald'>Yangiliklarga obuna bo'ling</p>
           <p className="text-xs">Chegirmalar va yangiliklardan xabardor bo'ling</p>
         </div>
       </div>

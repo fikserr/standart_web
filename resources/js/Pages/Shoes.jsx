@@ -114,7 +114,7 @@ const Shoes = ({ products, categories, favorites = [] }) => {
 
     return (
         <div className='px-5 xl:px-20 mt-20'>
-            <h2 style={{ fontFamily: "Roboto" }} className='text-2xl'>Mahsulotlar</h2>
+            <h2  className='text-2xl font-oswald'>Mahsulotlar</h2>
 
             <FilterModal
                 onPriceChange={setPriceFilter}
