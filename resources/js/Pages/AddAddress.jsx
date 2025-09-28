@@ -118,7 +118,7 @@ const AddAddress = ({ address }) => {
 
   return (
     <div className='my-24 px-5 xl:px-32'>
-      <Link href={"/address"} className='flex items-center gap-2'>
+      <Link href={"/address"} className='flex items-center gap-2' aria-label='Back to Address'>
         <HiOutlineChevronLeft className='text-2xl' />
         <h1 className='font-bold text-5xl font-oswald' >Joylashuv</h1>
       </Link>

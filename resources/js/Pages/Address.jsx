@@ -22,7 +22,7 @@ const Address = ({ address }) => {
 
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <Link href="/profile" className='flex items-center gap-2 mb-6'>
+            <Link href="/profile" className='flex items-center gap-2 mb-6' aria-label='Back to Profile'>
                 <HiOutlineChevronLeft className='text-2xl' />
                 <h1 className='font-bold text-5xl font-oswald'>Joylashuv</h1>
             </Link>
@@ -61,13 +61,14 @@ const Address = ({ address }) => {
                                 </div>
 
                                 <div className='absolute bottom-0 left-0 bg-slate-50 rounded-tr-lg rounded-bl-lg flex items-center gap-5 p-3 border w-full'>
-                                    <Link href={`/edit-address/${item.id}`} className='flex items-center gap-2'>
+                                    <Link href={`/edit-address/${item.id}`} className='flex items-center gap-2' aria-label='Edit Address'>
                                         <BiSolidPencil />
                                         <span>Tahrirlash</span>
                                     </Link>
                                     <button
                                         onClick={() => handleDelete(item.id)}
                                         className='flex items-center gap-2 text-red-600 hover:text-red-800'
+                                        aria-label='Delete Address'
                                     >
                                         <BiSolidTrash />
                                         <span>O'chirish</span>

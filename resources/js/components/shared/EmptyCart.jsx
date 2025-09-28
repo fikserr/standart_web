@@ -23,6 +23,7 @@ const EmptyCart = () => {
                 <Link
                     className="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition"
                     href="/"
+                    aria-label="Go to Catalog Button"
                 >
                     KATALOGGA O‘TISH
                 </Link>

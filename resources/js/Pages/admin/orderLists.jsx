@@ -195,10 +195,10 @@ export default function OrderList({ orders }) {
                                 </td>
                                 <td>
                                     <div className="flex">
-                                        <Link href={`/admin/orders/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200">
+                                        <Link href={`/admin/orders/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200" aria-label="Print Button">
                                             <FcPrint />
                                         </Link>
-                                        <Link href={`/admin/orders/pos/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200">
+                                        <Link href={`/admin/orders/pos/${order.id}`} className="text-2xl px-2 rounded hover:bg-slate-200" aria-label="POS View Button">
                                             <FcRules   />
                                         </Link>
                                     </div>

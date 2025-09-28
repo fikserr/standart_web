@@ -116,7 +116,6 @@ const ProductStock = ({ products }) => {
 
         return () => clearTimeout(delayDebounceFn);
     }, [search]);
-    console.log(products);
     return (
         <div className="p-6 mx-5 w-[1200px]">
             <h1 className="text-3xl font-bold mb-4">Product Stock</h1>

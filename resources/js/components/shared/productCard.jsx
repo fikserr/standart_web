@@ -42,7 +42,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 0, src, alt, classN
   }, [delay, images.length]);
 
   return (
-    <Link href={`/detail/${item.id}`} className='rounded-lg flex flex-col h-80'>
+    <Link href={`/detail/${item.id}`} className='rounded-lg flex flex-col h-80' aria-label='Product Card Link'>
       <div className='relative h-[65%] overflow-hidden rounded-t-lg'>
         <div
           className="flex transition-transform duration-700 ease-in-out w-full h-full"
@@ -98,7 +98,7 @@ const ProductCard = ({ item, handleClick, isStarred, delay = 0, src, alt, classN
             {sizes.join(', ')}
           </p>
         </div>
-        <Link href={`/detail/${item.id}`} className='hidden sm:block'>
+        <Link href={`/detail/${item.id}`} className='hidden sm:block' aria-label="View More Button">
           <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
             Ko'proq
           </button>

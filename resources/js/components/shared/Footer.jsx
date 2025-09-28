@@ -35,22 +35,19 @@ const Footer = () => {
                             Ma'lumot
                         </AccordionTrigger>
                         <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
-                            <Link href="#">
+                            <Link href="#" aria-label="Information Link">
                                 <span>Ma'lumot</span>
                             </Link>
-                            <Link href="#">
+                            <Link href="#" aria-label="Blog Link">
                                 <span>Blog</span>
                             </Link>
-                            <Link href="#">
+                            <Link href="#" aria-label="Contacts Link">
                                 <span>Kontaktlar</span>
                             </Link>
-                            <Link href="#">
-                                <span>Yetkazib berish</span>
-                            </Link>
-                            <Link href="#">
+                            <Link href="#" aria-label="Delivery Link">
                                 <span>To'lov</span>
                             </Link>
-                            <Link href="#">
+                            <Link href="#" aria-label="FAQ Link">
                                 <span>FAQ</span>
                             </Link>
                         </AccordionContent>
@@ -62,19 +59,19 @@ const Footer = () => {
                             Katalog
                         </AccordionTrigger>
                         <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
-                            <Link href="#">
+                            <Link href="#" aria-label="Catalog Link">
                                 <span>Katalog</span>
                             </Link>
-                            <Link href="/category/3">
+                            <Link href="/category/3" aria-label="Clothes Link">
                                 <span>Kiyimlar</span>
                             </Link>
-                            <Link href="/category/4">
+                            <Link href="/category/4" aria-label="Shoes Link">
                                 <span>Oyoq kiyimlar</span>
                             </Link>
-                            <Link href="/category/1">
+                            <Link href="/category/1" aria-label="Accessories Link">
                                 <span>Aksessuarlar</span>
                             </Link>
-                            <Link href="#">
+                            <Link href="#" aria-label="Calculate Expenses Link">
                                 <span>Xarajatlarni hisoblash</span>
                             </Link>
                         </AccordionContent>
@@ -86,13 +83,13 @@ const Footer = () => {
                             Kontaktlar
                         </AccordionTrigger>
                         <AccordionContent className="flex flex-col space-y-2 py-2 text-white">
-                            <Link href="#">
+                            <Link href="#" aria-label="Contacts Link">
                                 <span>Kontaktlar</span>
                             </Link>
-                            <Link href="mailto:info@xwear.info">
+                            <Link href="mailto:info@xwear.info" aria-label="Email Link">
                                 <span>info@xwear.info</span>
                             </Link>
-                            <Link href="tel:+79936083885">
+                            <Link href="tel:+79936083885" aria-label="Phone Number Link">
                                 <span>+7 993 608 38 85</span>
                             </Link>
                         </AccordionContent>
@@ -106,13 +103,13 @@ const Footer = () => {
                     {/* Katalog */}
                     <ul className="text-white flex flex-col gap-1 text-lg font-oswald">
                         <li className="text-2xl">Katalog</li>
-                        <Link href={"/category/3"}>
+                        <Link href={"/category/3"}  aria-label="Clothes Link">
                             <li className="text-base ">Kiyimlar</li>
                         </Link>
-                        <Link href={"/category/4"}>
+                        <Link href={"/category/4"} aria-label="Shoes Link">
                             <li className="text-base ">Oyoq kiyimlar</li>
                         </Link>
-                        <Link href={"/category/1"}>
+                        <Link href={"/category/1"} aria-label="Accessories Link">
                             <li className="text-base ">Aksessuarlar</li>
                         </Link>
                     </ul>

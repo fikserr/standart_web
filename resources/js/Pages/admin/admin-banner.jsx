@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useForm, Link } from '@inertiajs/react'
+import { useForm } from '@inertiajs/react'
 
 const AdminBanner = () => {
     const [banner, setBanner] = useState(null)

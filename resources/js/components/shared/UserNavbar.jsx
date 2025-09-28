@@ -78,12 +78,12 @@ const UserNavbar = () => {
                         </button>
                     </div>
                     <div className="space-y-2 mt-10">
-                        <Link href={`/category/3`}><SidebarButton label="Kiyimlar" /></Link>
-                        <Link href={'/category/4'}><SidebarButton label="Oyoq kiyimlar" /></Link>
-                        <Link href={'/category/1'}><SidebarButton label="Aksesuarlar" /></Link>
-                        <Link href={'/policy'}><SidebarButton label="Ma'lumot"/></Link>
-                        <Link href={'/profile'}><SidebarButton label="Profile" /></Link>
-                        <Link href={'/favorites'}><SidebarButton label="Favorites" /></Link>
+                        <Link href={`/category/3`} aria-label='Short'><SidebarButton label="Kiyimlar" /></Link>
+                        <Link href={'/category/4'} aria-label='Shoes'><SidebarButton label="Oyoq kiyimlar" /></Link>
+                        <Link href={'/category/1'} aria-label='Aksesuarlar'><SidebarButton label="Aksesuarlar" /></Link>
+                        <Link href={'/policy'} aria-label='Policy link'><SidebarButton label="Ma'lumot"/></Link>
+                        <Link href={'/profile'} aria-label='Profile Link'><SidebarButton label="Profile" /></Link>
+                        <Link href={'/favorites'} aria-label='Faorites Link'><SidebarButton label="Favorites" /></Link>
                     </div>
                 </div>
 
@@ -94,7 +94,7 @@ const UserNavbar = () => {
                         style={{ color: 'white', fontSize: '32px', cursor: 'pointer' }}
                         onClick={() => setIsSidebarOpen(true)}
                     />
-                    <Link href="/">
+                    <Link href="/" aria-label="Home Link">
                         <img src={Logo} alt="Company Logo" loading="lazy" className="w-16 md:w-full h-auto md:pr-5"/>
                     </Link>
                 </div>
@@ -102,10 +102,10 @@ const UserNavbar = () => {
                 {/* NAV LINKS */}
                 <div className="w-4/6 hidden md:flex justify-start">
                     <ul className="flex gap-5 2xl:gap-10 md:text-base xl:text-xl">
-                        <NavItem href="/category/3" label="Kiyimlar" />
-                        <NavItem href="/category/4" label="Oyoq kiyimlar" />
-                        <NavItem href="/category/1" label="Aksessuarlar" />
-                        <NavItem href="/policy" label="Ma'lumot" />
+                        <NavItem href="/category/3" label="Kiyimlar" aria-label="short"/>
+                        <NavItem href="/category/4" label="Oyoq kiyimlar" aria-label="shoes link"/>
+                        <NavItem href="/category/1" label="Aksessuarlar" aria-label="aksassuarlar link"/>
+                        <NavItem href="/policy" label="Ma'lumot" aria-label="policy link"/>
                     </ul>
                 </div>
 
@@ -115,19 +115,20 @@ const UserNavbar = () => {
                         className="hidden md:block"
                         style={{ color: 'white', fontSize: '25px', cursor: 'pointer' }}
                         onClick={toggleSearch}
+                        aria-label="Search Icon"
                     />
-                    <Link href="/favorites" className='hidden md:block'>
+                    <Link href="/favorites" className='hidden md:block' aria-label="Favorites Link">
                         <ImStarEmpty style={{ color: 'white', fontSize: '25px' }} />
                     </Link>
-                    <Link href="/basket" className="text-white flex items-end">
+                    <Link href="/basket" className="text-white flex items-end" aria-label="Shopping Cart Link">
                         <HiOutlineShoppingBag style={{ fontSize: '25px' }} />
                     </Link>
                     {auth.user ? (
-                        <Link href="/profile" className='hidden md:block'>
+                        <Link href="/profile" className='hidden md:block' aria-label="User Profile Link">
                             <BiUser style={{ color: 'white', fontSize: '25px' }} />
                         </Link>
                     ) : (
-                        <Link href="/login" className="text-white">
+                        <Link href="/login" className="text-white" aria-label="Login Link">
                             Login
                         </Link>
                     )}
@@ -144,6 +145,7 @@ const UserNavbar = () => {
                             <HiOutlineSearch
                                 style={{ color: 'white', fontSize: '25px', cursor: 'pointer' }}
                                 onClick={toggleSearch}
+                                aria-label="Search Icon"
                             />
                         </div>
                     </div>

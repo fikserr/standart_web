@@ -31,8 +31,6 @@ const Register = () => {
 
     const handleVerifyCode = async (code) => {
     try {
-        console.log("Modalda kelgan kod:", code);
-        
         const response = await axios.post("/verify-register", { code });
 
         // Agar success bo‘lsa (200 OK)

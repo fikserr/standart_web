@@ -85,7 +85,7 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
                                                 : "Narx mavjud emas"}
                                         </p>
                                     </div>
-                                    <Link href={`/detail/${product.id}`} className='hidden sm:block'>
+                                    <Link href={`/detail/${product.id}`} className='hidden sm:block' aria-label="View More Button">
                                         <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
                                             Ko'proq
                                         </button>

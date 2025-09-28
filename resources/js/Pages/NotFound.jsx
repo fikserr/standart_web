@@ -9,7 +9,7 @@ const NotFound = () => {
                     <h1 className="text-8xl font-extrabold">404</h1>
                     <p className="mt-4 text-2xl text-gray-700">Sahifa topilmadi</p>
                     <p className="mt-2 text-gray-500">Kechirasiz, qidirayotgan sahifangiz mavjud emas.</p>
-                    <Link href="/" className="mt-6 inline-block px-10 py-3 bg-black text-white rounded-lg">
+                    <Link href="/" className="mt-6 inline-block px-10 py-3 bg-black text-white rounded-lg" aria-label='Go to Home Button'>
                         Bosh sahifaga qaytish
                     </Link>
                 </div>

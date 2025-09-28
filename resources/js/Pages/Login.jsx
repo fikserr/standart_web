@@ -68,10 +68,11 @@ const Login = () => {
             type='submit'
             disabled={processing}
             className='p-3 bg-black text-white w-[40%] sm:w-[30%] rounded-lg text-center'
+            aria-label='Login Button'
           >
             Saqlash
           </button>
-          <Link href="/register" className="text-black underline hover:text-blue-800 text-sm transition">
+          <Link href="/register" className="text-black underline hover:text-blue-800 text-sm transition" aria-label='Register Link'>
             Registratsiya
           </Link>
         </div>

@@ -153,7 +153,7 @@ const Accessory = ({ products, categories, favorites = [] }) => {
                     {filteredProducts?.map((item) => {
                         const minPrice = Math.min(...item.variants.map(v => v.price));
                         return (
-                            <Link href={`/detail/${item.id}`} key={item.id} className='rounded relative'>
+                            <Link href={`/detail/${item.id}`} key={item.id} className='rounded relative' aria-label={`View details for ${item.product_name}`}>
                                 <div className='flex justify-end rounded-t-lg'>
                                     <img
                                         src={`/storage/${item.photo1}?v=${Date.now()}`}
@@ -187,7 +187,7 @@ const Accessory = ({ products, categories, favorites = [] }) => {
                                             <ImStarEmpty className="text-2xl text-black" />
                                         )}
                                     </button>
-                                    <Link href={`/detail/${item.id}`} className='hidden sm:block'>
+                                    <Link href={`/detail/${item.id}`} className='hidden sm:block' aria-label="View More Button">
                                         <button className='bg-black text-white w-full p-2 rounded-lg hover:bg-gray-800 transition xl:px-8'>
                                             Ko'proq
                                         </button>

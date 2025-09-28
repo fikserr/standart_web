@@ -4,7 +4,6 @@ import html2canvas from 'html2canvas';
 import OrderChek from '@/components/shared/OrderChek';
 
 const OrderTable = ({order}) => {
-    console.log(order);
     
     const printRef = useRef();
 

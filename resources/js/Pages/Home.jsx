@@ -16,7 +16,7 @@ const Section = ({ title, link, children }) => (
     <div className='flex items-center justify-between'>
       <h3 className='font-bold text-2xl font-oswald'>{title}</h3>
       <h4 className='border-b-2 border-black text-xl flex items-center p-1 font-oswald'>
-        <Link href={link} className='md:hidden'>Ko'proq</Link>
+        <Link href={link}  className='md:hidden' >Ko'proq</Link>
         <Link href={link} className='hidden md:block mb-3'>Ko'proq maxsulot</Link>
         <HiOutlineChevronRight />
       </h4>
@@ -30,7 +30,7 @@ const Home = ({ products, banners, favorites }) => {
   const [showClothes, setShowClothes] = useState(false);
   const [showAccessories, setShowAccessories] = useState(false);
   const [showBlog, setShowBlog] = useState(false);
-  console.log(products, "products");
+
 
   useEffect(() => {
     window.scrollTo(0, 0);

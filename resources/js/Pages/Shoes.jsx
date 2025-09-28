@@ -154,7 +154,7 @@ const Shoes = ({ products, categories, favorites = [] }) => {
                     {filteredProducts?.map((item) => {
                         const minPrice = Math.min(...item.variants.map(v => v.price));
                         return (
-                            <Link href={`/detail/${item.id}`} key={item.id} className='rounded relative'>
+                            <Link href={`/detail/${item.id}`} key={item.id} className='rounded relative' aria-label='View details for {item.product_name}'>
                                 <div className='flex justify-end rounded-t-lg'>
                                     <img
                                         src={`/storage/${item.photo1}?v=${Date.now()}`}

@@ -10,7 +10,6 @@ const CartPage = ({ cartItems, address }) => {
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [processingOrder, setProcessingOrder] = useState(false);
     const { toast } = useToast();
-    console.log("Cart Items:", cartItems);
     
     useEffect(() => {
         if (address && address.length > 0) {

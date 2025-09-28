@@ -80,8 +80,6 @@ const AddProductForm = ({ categories }) => {
                 window.location.href = "/admin-productStock";
             },
             onError: () => {
-                console.log(errors);
-
                 toast({
                     title: "Xatolik",
                     description: "Ma'lumotlarni to‘ldirishda xatolik bor.",

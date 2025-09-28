@@ -63,7 +63,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <Link href={"/admin-dashboard"}>
+          <Link href={"/admin-dashboard"} aria-label="Admin Panel Link">
             <SidebarGroupLabel style={{ padding: "30px", fontSize: "30px", color: "black" }}>
               <span style={{ color: "blue" }}>Admin</span> Panel
             </SidebarGroupLabel>
@@ -73,14 +73,14 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} style={{ padding: "5px" }}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url} className="flex items-center gap-2">
+                    <a href={item.url} className="flex items-center gap-2" aria-label={`${item.title} Link`}>
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              <Button onClick={handleLogout} className="w-full mt-2" variant="destructive">
+              <Button onClick={handleLogout} className="w-full mt-2" variant="destructive" aria-label="Log Out Button">
                 Log Out
               </Button>
             </SidebarMenu>

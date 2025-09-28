@@ -73,7 +73,6 @@ const Index = ({ detail }) => {
             });
             return;
         }
-            console.log(activeVariant.price,);
         setProcessing(true);
        
         

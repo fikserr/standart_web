@@ -33,7 +33,6 @@ const EditPass = () => {
 
         try {
             const response = await axios.post('/update-password', formData);
-            console.log(response.data);
             setEmail(userEmail);
             setShowModal(true);
         } catch (error) {
@@ -75,7 +74,7 @@ const EditPass = () => {
 
     return (
         <div className='my-24 px-5 xl:px-32'>
-            <Link href="/profile" className='flex items-center gap-2'>
+            <Link href="/profile" className='flex items-center gap-2' aria-label='Back to Profile'>
                 <HiOutlineChevronLeft className='text-2xl' />
                 <h1 className='font-bold text-5xl font-oswald'>Profile</h1>
             </Link>

@@ -60,7 +60,7 @@ const EditAddress = () => {
     <div className='my-24 px-5 xl:px-32'>
       <div className='flex items-center gap-2 mb-6'>
         <HiOutlineChevronLeft className='text-2xl' />
-        <Link href="/address">
+        <Link href="/address" aria-label='Back to Address'>
           <h1 className='font-bold text-5xl font-oswald'>Joylashuv</h1>
         </Link>
       </div>

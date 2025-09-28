@@ -4,11 +4,8 @@ import html2canvas from 'html2canvas';
 import OrderChek80 from '@/components/shared/OrderChekBig';
 
 const OrderTable = ({order}) => {
-console.log('Order data:', order);
-
 
   const printRef = useRef();
-  console.log(order);
   
   const handleDownload = async () => {
     const element = printRef.current;

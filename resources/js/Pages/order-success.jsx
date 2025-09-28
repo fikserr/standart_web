@@ -8,7 +8,7 @@ const OrderSuccess = () => {
             <p className="text-lg text-center mb-4">Rahmat! Sizning buyurtmangiz qabul qilindi.</p>
             <p className="text-center mt-4">Tez orada siz bilan bog‘lanamiz.</p>
             <div className="mt-8 text-center">
-                <Link href={"/"} className="bg-black text-white px-6 py-2 rounded hover:bg-slate-600 transition-colors">
+                <Link href={"/"} className="bg-black text-white px-6 py-2 rounded hover:bg-slate-600 transition-colors" aria-label='Go to Home Button'>
                     Bosh sahifaga qaytish
                 </Link>
             </div>
