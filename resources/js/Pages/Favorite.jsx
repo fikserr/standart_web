@@ -94,6 +94,7 @@ const EmptyFavorites = ({ favorites = [], products = [] }) => {
                                 <button
                                     onClick={() => handleClick(product.id)}
                                     className="absolute top-4 right-4 z-10"
+                                    aria-label="Star Button"
                                 >
                                     {isStarred ? (
                                         <ImStarFull className="text-2xl text-yellow-400" />

@@ -21,10 +21,10 @@ const PriceSection = () => {
                         <div className="grid sm:grid-cols-3 md:gap-10">
                             {/* Title and Description */}
                             <div className="flex flex-col sm:mb-2 lg:mb-10 gap-4 md:gap-10 col-span-3">
-                                <h2 className="font-oswald text-center text-5xl lg:text-7xl ">
+                                <h1 className="font-oswald text-center text-5xl lg:text-7xl  text-slate-950">
                                     Narxni hisoblash
-                                </h2>
-                                <p className="font-oswald text-center sm:text-xl lg:text-2xl">
+                                </h1>
+                                <p className="font-oswald text-center sm:text-xl lg:text-2xl text-slate-800">
                                     Agar siz qidirayotgan narsangizni topa
                                     olmasangiz, har doim Poizon bozorida
                                     buyurtma narxini avtomatik hisoblash, shu
@@ -48,22 +48,22 @@ const PriceSection = () => {
                         {/* Steps */}
                         <div>
                             <div className="flex items-start mt-5 gap-4">
-                                <span className="px-3 py-1 rounded-full flex justify-center items-center border">
+                                <span className="px-3 py-1 rounded-full flex justify-center items-center border text-slate-800">
                                     1
                                 </span>
 
-                                <span className="font-oswald sm:text-xl">
+                                <span className="font-oswald sm:text-xl text-slate-800">
                                     Poizon ilovasini qanday o'rnatish haqida
                                     batafsil, bosqichma-bosqich maqola
                                 </span>
                             </div>
 
                             <div className="flex items-start gap-4 my-4">
-                                <p className="px-3 py-1 rounded-full flex justify-center items-center border">
+                                <p className="px-3 py-1 rounded-full flex justify-center items-center border text-slate-800">
                                     2
                                 </p>
 
-                                <p className="font-oswald sm:text-xl">
+                                <p className="font-oswald sm:text-xl text-slate-800">
                                     Qaysi mahsulotni sotib olishni
                                     xohlayotganingizni bizga Telegram yoki
                                     WhatsApp orqali yozing
