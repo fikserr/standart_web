@@ -4,12 +4,18 @@ services:
     env: php
     plan: free
     region: frankfurt
+
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       php artisan storage:link
       npm ci
       npm run build
+
     startCommand: php artisan serve --host 0.0.0.0 --port $PORT
+
+    phpVersion: 8.3
+    nodeVersion: 20
+
     envVars:
       - key: APP_ENV
         value: production
@@ -37,5 +43,3 @@ services:
         fromDatabase:
           name: standart-db
           property: password
-    phpVersion: 8.3
-    nodeVersion: 20
