@@ -1,13 +1,29 @@
 [phases.setup]
-# Bu setup bosqichida kerakli paketlar qo‘shiladi (agar kerak bo‘lsa)
-# Masalan php8.2 bilan bog‘liq ext qo‘shish
-nixPkgs = ["php82", "php82Extensions.bcmath", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.zip", "php82Extensions.curl", "php82Extensions.openssl", "nginx", "libmysqlclient"]
+# PHP 8.3 + kerakli extensions
+nixPkgs = [
+  "php83",
+  "php83Extensions.bcmath",
+  "php83Extensions.mbstring",
+  "php83Extensions.xml",
+  "php83Extensions.zip",
+  "php83Extensions.curl",
+  "php83Extensions.openssl",
+  "php83Extensions.pdo",
+  "php83Extensions.mysql",
+  "nginx"
+]
 
 [phases.install]
-cmds = ["composer install --no-dev --optimize-autoloader"]
+cmds = [
+  "composer install --no-dev --optimize-autoloader",
+  "php artisan storage:link"
+]
 
 [phases.build]
-cmds = ["npm ci", "npm run build"]
+cmds = [
+  "npm ci",
+  "npm run build"
+]
 
 [start]
 cmd = "php artisan migrate --force && php artisan serve --host 0.0.0.0 --port $PORT"
