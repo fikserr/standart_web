@@ -3,7 +3,7 @@ services:
     name: standart-web
     runtime: nixpacks
     plan: free
-    region: frankfurt
+    region: singapore
 
     buildCommand: |
       composer install --no-dev --optimize-autoloader
