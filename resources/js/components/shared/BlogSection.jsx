@@ -17,10 +17,7 @@ export default function BlogSection() {
     <div className="px-5 xl:px-20 my-5 lg:my-10">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-oswald">Bizning blog</h2>
-        <h4 className="text-lg font-oswald cursor-pointer hover:underline">
-          Blogga o'tish
-        </h4>
+        <h1 className="text-xl font-oswald">Bizning blog</h1>
       </div>
 
       {/* Carousel */}

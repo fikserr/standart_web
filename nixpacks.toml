@@ -1,0 +1,13 @@
+[phases.setup]
+# Bu setup bosqichida kerakli paketlar qo‘shiladi (agar kerak bo‘lsa)
+# Masalan php8.2 bilan bog‘liq ext qo‘shish
+nixPkgs = ["php82", "php82Extensions.bcmath", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.zip", "php82Extensions.curl", "php82Extensions.openssl", "nginx", "libmysqlclient"]
+
+[phases.install]
+cmds = ["composer install --no-dev --optimize-autoloader"]
+
+[phases.build]
+cmds = ["npm ci", "npm run build"]
+
+[start]
+cmd = "php artisan migrate --force && php artisan serve --host 0.0.0.0 --port $PORT"
