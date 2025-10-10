@@ -5,7 +5,9 @@ nixPkgs = ["php83", "php83Packages.composer", "nodejs_18"]
 cmds = [
   "composer install --no-dev --optimize-autoloader",
   "php artisan storage:link",
-  "npm ci",
+  "rm -rf node_modules package-lock.json",
+  "npm install --force",
+  "npm rebuild rollup --force",
   "npm run build"
 ]
 
