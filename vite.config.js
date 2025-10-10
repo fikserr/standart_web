@@ -6,8 +6,8 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   server: {
-    host: "127.0.0.1",
-    port: 5173,
+    host: "0.0.0.0", // ✅ tashqi tarmoqdan ham kirish uchun
+    port: process.env.PORT || 5173, // Railway o'z portini o‘zi beradi
   },
   plugins: [
     laravel({
@@ -16,9 +16,9 @@ export default defineConfig({
     }),
     react(),
     visualizer({
-      filename: "bundle-report.html", // build natijasi shu faylga yoziladi
-      template: "treemap",            // yoki "sunburst"
-      open: true,                     // build tugagandan keyin avtomatik ochadi
+      filename: "bundle-report.html",
+      template: "treemap",
+      open: false,
     }),
   ],
   optimizeDeps: {
