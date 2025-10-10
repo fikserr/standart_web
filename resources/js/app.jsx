@@ -6,17 +6,19 @@ import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 import axios from 'axios';
 
+/* ✅ HTTPS uchun to‘g‘ri bazaviy URL ni o‘rnatamiz */
+axios.defaults.baseURL = import.meta.env.VITE_APP_URL || window.location.origin;
+
+/* ✅ Inertia CSRF va XHR uchun kerak */
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 createInertiaApp({
   resolve: async (name) => {
     const pages = import.meta.glob('./Pages/**/*.jsx');
-
     const importPage = pages[`./Pages/${name}.jsx`];
 
     if (!importPage) {
-      // Sahifa topilmasa fallback
       const NotFound = (await pages['./Pages/Errors/NotFound.jsx']());
       return NotFound.default;
     }
@@ -24,7 +26,7 @@ createInertiaApp({
     const page = await importPage();
     const Component = page.default;
 
-    // ❗ faqat .layout mavjud bo'lmagan sahifalar uchun belgilaymiz
+    /* ✅ Layout belgilash */
     if (typeof Component.layout === 'undefined') {
       Component.layout = (pageProps) => {
         const isAdmin = pageProps?.props?.auth?.user?.is_admin;

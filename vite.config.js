@@ -6,7 +6,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 
 export default defineConfig({
   server: {
-    host: "0.0.0.0", // ✅ tashqi tarmoqdan ham kirish uchun
+    host: "127.0.0.1", // ✅ tashqi tarmoqdan ham kirish uchun
     port: process.env.PORT || 5173, // Railway o'z portini o‘zi beradi
   },
   plugins: [
