@@ -131,7 +131,7 @@ return [
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         // ...
-        Laravel\Pail\PailServiceProvider::class, // ❌ ShU joyda bo‘lishi mumkin
+        // Laravel\Pail\PailServiceProvider::class, // ❌ ShU joyda bo‘lishi mumkin
     ],
 
     'aliases' => [
