@@ -6,12 +6,11 @@ import AdminLayout from './Layout/AdminLayout';
 import UserLayout from './Layout/UserLayout';
 import axios from 'axios';
 
-/* ✅ HTTPS uchun to‘g‘ri bazaviy URL ni o‘rnatamiz */
-axios.defaults.baseURL = import.meta.env.VITE_APP_URL || window.location.origin;
-
-/* ✅ Inertia CSRF va XHR uchun kerak */
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+// ✅ Railway deploy uchun HTTPS bazaviy URL
+axios.defaults.baseURL = window.location.origin;
 
 createInertiaApp({
   resolve: async (name) => {
