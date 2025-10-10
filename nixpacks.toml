@@ -1,29 +1,13 @@
 [phases.setup]
-# PHP 8.3 + kerakli extensions
-nixPkgs = [
-  "php83",
-  "php83Extensions.bcmath",
-  "php83Extensions.mbstring",
-  "php83Extensions.xml",
-  "php83Extensions.zip",
-  "php83Extensions.curl",
-  "php83Extensions.openssl",
-  "php83Extensions.pdo",
-  "php83Extensions.mysql",
-  "nginx"
-]
-
-[phases.install]
-cmds = [
-  "composer install --no-dev --optimize-autoloader",
-  "php artisan storage:link"
-]
+nixPkgs = ["php83", "php83Packages.composer", "nodejs_18", "npm"]
 
 [phases.build]
 cmds = [
+  "composer install --no-dev --optimize-autoloader",
+  "php artisan storage:link",
   "npm ci",
   "npm run build"
 ]
 
 [start]
-cmd = "php artisan migrate --force && php artisan serve --host 0.0.0.0 --port $PORT"
+cmd = "php artisan serve --host 0.0.0.0 --port $PORT"
